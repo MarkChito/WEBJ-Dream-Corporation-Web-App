@@ -47,8 +47,8 @@
         </div>
     </div>
 </div>
-<!-- //team -->
-<!-- testimonials -->
+
+<!-- Testimonials -->
 <div class="testimonials">
     <div class="container">
         <h3>Testimonials</h3>

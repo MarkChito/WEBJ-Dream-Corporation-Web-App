@@ -42,7 +42,7 @@
                             <input type="password" class="form-control" id="login_password" required>
                         </div>
 
-                        <span>Don't have an account? </span><a href="#">Register Now!</a>
+                        <span>Don't have an account? </span><a href="register">Register Now!</a>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -101,7 +101,7 @@
                             <?php if ($category_count < 2) : ?>
                                 <li><a href="products?category=<?= $category->id ?>"><?= $category->name ?></a></li>
                             <?php endif ?>
-                            
+
                             <?php $category_count++; ?>
                         <?php endforeach ?>
                     <?php endif ?>
@@ -188,16 +188,16 @@
                 });
             })
 
-            $("#newsletter_form").submit(function(){
+            $("#newsletter_form").submit(function() {
                 var email = $("#newsletter_email").val();
 
                 $("#newsletter_submit").val("Processing...");
                 $("#newsletter_submit").attr("disabled", true);
 
                 var formData = new FormData();
-                
+
                 formData.append('email', email);
-                
+
                 $.ajax({
                     url: 'server/add_newsletter_email',
                     data: formData,
@@ -213,8 +213,8 @@
                     }
                 });
             })
-            
-            $("#contact_us_form").submit(function(){
+
+            $("#contact_us_form").submit(function() {
                 var name = $("#contact_us_name").val();
                 var mobile_number = $("#contact_us_mobile_number").val();
                 var email = $("#contact_us_email").val();
@@ -226,19 +226,19 @@
                 $("#contact_us_email").attr("disabled", true);
                 $("#contact_us_subject").attr("disabled", true);
                 $("#contact_us_message").attr("disabled", true);
-                
+
                 $("#contact_us_submit").val("Processing Request...");
                 $("#contact_us_submit").attr("disabled", true);
                 $("#contact_us_reset").attr("disabled", true);
 
                 var formData = new FormData();
-                
+
                 formData.append('name', name);
                 formData.append('mobile_number', mobile_number);
                 formData.append('email', email);
                 formData.append('subject', subject);
                 formData.append('message', message);
-                
+
                 $.ajax({
                     url: 'server/add_contact_message',
                     data: formData,
@@ -253,6 +253,10 @@
                         console.error(error);
                     }
                 });
+            })
+
+            $('#register_upload_button').click(function() {
+                $('#register_image').click();
             })
         });
     </script>

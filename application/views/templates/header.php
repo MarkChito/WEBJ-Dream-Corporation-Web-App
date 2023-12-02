@@ -498,6 +498,81 @@
                     </div>
                 </div>
             </div>
+        <?php elseif ($this->session->userdata("current_tab") == "register") : ?>
+            <div class="w3l_banner_nav_right">
+                <div class="w3_login">
+                    <h3>Create an Account</h3>
+                    <br>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <form action="javascript:void(0)" id="register_form">
+                                <div class="text-center">
+                                    <img id="register_image_display" class="img-circle img-bordered" width="200" height="200" src="./dist/images/uploads/default_user_image.png">
+
+                                    <button type="button" class="btn btn-success" id="register_upload_button" style="width: 100%; margin-top: 10px; display:block;">Upload Image</button>
+                                    <input type="file" id="register_image" style="display: none;">
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_first_name">First Name: <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="register_first_name" required>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_middle_name">Middle Name:</label>
+                                        <input type="text" class="form-control" id="register_middle_name">
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_last_name">Last Name: <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="register_last_name" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="register_mobile_number">Mobile Number: <span style="color: red;">*</span></label>
+                                        <input type="number" class="form-control" id="register_mobile_number" required>
+                                    </div>
+                                    <div class="form-group col-lg-6 col-12">
+                                        <label for="register_email">Email: <span style="color: red;">*</span></label>
+                                        <input type="email" class="form-control" id="register_email" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_house_number">House Number:</label>
+                                        <input type="number" class="form-control" id="register_house_number">
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_subdivision_zone_purok">Subdivision/Zone/Purok:</label>
+                                        <input type="text" class="form-control" id="register_subdivision_zone_purok">
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_city">City: <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="register_city" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_province">Province: <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="register_province" required>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_country">Country: <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="register_country" required>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_zip_code">Zip Code: <span style="color: red;">*</span></label>
+                                        <input type="number" class="form-control" id="register_zip_code" required>
+                                    </div>
+                                </div>
+
+                                <input type="submit" class="btn btn-primary" id="register_submit" value="Register" style="width: 49%;">
+                                <input type="reset" class="btn btn-danger" id="register_clear" value="Clear" style="width: 49%; float: right;">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php else : ?>
             <div class="w3l_banner_nav_right">
                 <div class="w3l_banner_nav_right_banner3" style="background: url(./dist/images/banner-9.jpg)">
