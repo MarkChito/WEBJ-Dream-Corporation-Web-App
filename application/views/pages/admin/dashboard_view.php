@@ -73,7 +73,7 @@
             </div>
             <div class="row">
                 <!-- Latest Orders -->
-                <div class="col-lg-8">
+                <div class="col-lg-7 col-12">
                     <div class="card">
                         <div class="card-header border-transparent">
                             <h3 class="card-title">Latest Orders</h3>
@@ -99,41 +99,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <!-- <tr>
                                             <td><a href="pages/examples/invoice.html">OR9842</a></td>
                                             <td>Call of Duty IV</td>
                                             <td class="text-center">0</td>
                                             <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
+                                            <td colspan="4" class="text-center text-muted"><h1 class="py-3">No Recent Orders</h1></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -145,7 +118,7 @@
                     </div>
                 </div>
                 <!-- Latest Registered Customers -->
-                <div class="col-lg-4">
+                <div class="col-lg-5 col-12">
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Latest Registered Customers</h3>

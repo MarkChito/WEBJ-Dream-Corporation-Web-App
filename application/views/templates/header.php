@@ -51,9 +51,9 @@
 <body>
     <!-- Header -->
     <div class="agileits_header">
-        <!-- Special Offers -->
+        <!-- Contact Us -->
         <div class="w3l_offers">
-            <a href="products">Today's special offers!</a>
+            <a href="contact_us">Contact Us</a>
         </div>
         <!-- Search -->
         <div class="w3l_search">
@@ -66,25 +66,13 @@
         <div class="product_list_header">
             <input type="button" value="View your cart" class="button" />
         </div>
-        <!-- Login/Sign Up -->
-        <div class="w3l_header_right">
-            <ul>
-                <li class="dropdown profile_details_drop">
-                    <?php if ($this->session->userdata("id")) : ?>
-                        <a href="admin/dashboard" style="text-decoration: none;">
-                            <i class="fa fa-user"></i>&nbsp; <?= $name ?>
-                        </a>
-                    <?php else : ?>
-                        <a href="#" data-toggle="modal" data-target="#login" style="text-decoration: none;">
-                            <i class="fa fa-user"></i>&nbsp; Login or Register
-                        </a>
-                    <?php endif ?>
-                </li>
-            </ul>
-        </div>
-        <!-- Contact Us -->
+        <!-- Login or Register -->
         <div class="w3l_header_right1">
-            <h2><a href="contact_us">Contact Us</a></h2>
+            <?php if ($this->session->userdata("id")) : ?>
+                <h2><a href="admin/dashboard">Go to Dashboard</a></h2>
+            <?php else : ?>
+                <h2><a href="#" data-toggle="modal" data-target="#login">Login or Register</a></h2>
+            <?php endif ?>
         </div>
         <div class="clearfix"></div>
     </div>
@@ -108,7 +96,6 @@
                     </li>
                 </ul>
             </div>
-
             <div class="clearfix"> </div>
         </div>
     </div>
@@ -178,50 +165,9 @@
         </div>
         <?php if ($this->session->userdata("current_tab") == "home") : ?>
             <div class="w3l_banner_nav_right">
-                <section class="slider">
-                    <div class="flexslider">
-                        <ul class="slides">
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-1.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-2.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-3.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-4.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-5.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-6.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-7.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                            <li>
-                                <div class="w3l_banner_nav_right_banner" style="background: url(./dist/images/banner-8.jpg) no-repeat 0px 0px;"></div>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
-
-                <link rel="stylesheet" href="./dist/css/flexslider.css" type="text/css" media="screen" property="" />
-
-                <script defer src="./dist/js/jquery.flexslider.js"></script>
-                <script>
-                    $(window).load(function() {
-                        $('.flexslider').flexslider({
-                            animation: "slide",
-                            start: function(slider) {
-                                $('body').removeClass('loading');
-                            }
-                        });
-                    });
-                </script>
+                <div class="w3l_banner_nav_right_banner3" style="background: url(./dist/images/banner-9.jpg);">
+                    <h3>Best Deals For New Products<span class="blink_me"></span></h3>
+                </div>
             </div>
         <?php elseif ($this->session->userdata("current_tab") == "product") : ?>
             <div class="w3l_banner_nav_right">
