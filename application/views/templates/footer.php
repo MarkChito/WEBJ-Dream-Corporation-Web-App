@@ -143,6 +143,46 @@
             var current_tab = "<?= $this->session->userdata("current_tab") ?>";
             var base_url = "<?= base_url() ?>";
 
+            const zipCodes = {
+                "Baao": "4432",
+                "Balatan": "4436",
+                "Bato": "4435",
+                "Bombon": "4407",
+                "Buhi": "4433",
+                "Bula": "4427",
+                "Cabusao": "4410",
+                "Calabanga": "4405",
+                "Camaligan": "4406",
+                "Canaman": "4402",
+                "Caramoan": "4420",
+                "Del Gallego": "4405",
+                "Gainza": "4412",
+                "Garchitorena": "4429",
+                "Goa": "4422",
+                "Iriga City": "4431",
+                "Lagonoy": "4428",
+                "Libmanan": "4409",
+                "Lupi": "4404",
+                "Magarao": "4403",
+                "Milaor": "4414",
+                "Minalabac": "4417",
+                "Nabua": "4434",
+                "Naga City": "4400",
+                "Ocampo": "4419",
+                "Pamplona": "4415",
+                "Pasacao": "4411",
+                "Pili": "4418",
+                "Presentacion": "4421",
+                "Ragay": "4408",
+                "Sagnay": "4426",
+                "San Fernando": "4416",
+                "San Jose": "4423",
+                "Sipocot": "4401",
+                "Siruma": "4424",
+                "Tigaon": "4425",
+                "Tinambac": "4427"
+            };
+
             if (alert.length != 0) {
                 $("#alert").modal().show();
             }
@@ -257,6 +297,83 @@
 
             $('#register_upload_button').click(function() {
                 $('#register_image').click();
+                $("#register_first_name").focus();
+            })
+
+            $("#register_city").change(function() {
+                var city = $(this).val();
+                var province = $("#register_province").val();
+                var country = $("#register_country").val();
+                var zipCode = zipCodes[city];
+
+                if (province && country) {
+                    $("#register_zip_code").val(zipCode);
+                }
+
+                $("#register_province").removeAttr("disabled");
+            })
+
+            $("#register_province").change(function() {
+                $("#register_country").removeAttr("disabled");
+            })
+
+            $("#register_country").change(function() {
+                var city = $("#register_city").val();
+                var zipCode = zipCodes[city];
+
+                $("#register_zip_code").val(zipCode);
+            })
+
+            $("#register_image").change(function() {
+                var image = $("#register_image")[0].files[0];
+
+                $("#register_image_display").attr("src", window.URL.createObjectURL(image));
+            })
+
+            $("#register_form").submit(function() {
+                var first_name = $("#register_first_name").val();
+                var middle_name = $("#register_middle_name").val();
+                var last_name = $("#register_last_name").val();
+                var email = $("#register_email").val();
+                var house_number = $("#register_house_number").val();
+                var subdivision_zone_purok = $("#register_subdivision_zone_purok").val();
+                var province = $("#register_province").val();
+                var country = $("#register_country").val();
+                var zip_code = $("#register_zip_code").val();
+                var username = $("#register_username").val();
+                var password = $("#register_password").val();
+                var confirm_password = $("#register_confirm_password").val();
+                var image = $("#register_image")[0].files[0];
+
+                var formData = new FormData();
+                
+                formData.append('first_name', first_name);
+                formData.append('middle_name', middle_name);
+                formData.append('last_name', last_name);
+                formData.append('email', email);
+                formData.append('house_number', house_number);
+                formData.append('subdivision_zone_purok', subdivision_zone_purok);
+                formData.append('province', province);
+                formData.append('country', country);
+                formData.append('zip_code', zip_code);
+                formData.append('username', username);
+                formData.append('password', password);
+                formData.append('image', image);
+                
+                $.ajax({
+                    url: 'server/register',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             })
         });
     </script>

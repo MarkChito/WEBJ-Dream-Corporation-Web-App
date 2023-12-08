@@ -531,6 +531,7 @@
                                     <div class="form-group col-lg-6 col-12">
                                         <label for="register_mobile_number">Mobile Number: <span style="color: red;">*</span></label>
                                         <input type="number" class="form-control" id="register_mobile_number" required>
+                                        <small class="hidden" style="color: red;">Invalid Mobile Number</small>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
                                         <label for="register_email">Email: <span style="color: red;">*</span></label>
@@ -547,22 +548,81 @@
                                         <input type="text" class="form-control" id="register_subdivision_zone_purok">
                                     </div>
                                     <div class="form-group col-lg-4 col-12">
-                                        <label for="register_city">City: <span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" id="register_city" required>
+                                        <label for="register_city">City/Municipality: <span style="color: red;">*</span></label>
+                                        <select class="form-control" id="register_city" required>
+                                            <option value="" selected disabled>-- Select One --</option>
+                                            <option value="Baao">Baao</option>
+                                            <option value="Balatan">Balatan</option>
+                                            <option value="Bato">Bato</option>
+                                            <option value="Bombon">Bombon</option>
+                                            <option value="Buhi">Buhi</option>
+                                            <option value="Bula">Bula</option>
+                                            <option value="Cabusao">Cabusao</option>
+                                            <option value="Calabanga">Calabanga</option>
+                                            <option value="Camaligan">Camaligan</option>
+                                            <option value="Canaman">Canaman</option>
+                                            <option value="Caramoan">Caramoan</option>
+                                            <option value="Del Gallego">Del Gallego</option>
+                                            <option value="Gainza">Gainza</option>
+                                            <option value="Garchitorena">Garchitorena</option>
+                                            <option value="Goa">Goa</option>
+                                            <option value="Iriga City">Iriga City</option>
+                                            <option value="Lagonoy">Lagonoy</option>
+                                            <option value="Libmanan">Libmanan</option>
+                                            <option value="Lupi">Lupi</option>
+                                            <option value="Magarao">Magarao</option>
+                                            <option value="Milaor">Milaor</option>
+                                            <option value="Minalabac">Minalabac</option>
+                                            <option value="Nabua">Nabua</option>
+                                            <option value="Naga City">Naga City</option>
+                                            <option value="Ocampo">Ocampo</option>
+                                            <option value="Pamplona">Pamplona</option>
+                                            <option value="Pasacao">Pasacao</option>
+                                            <option value="Pili">Pili</option>
+                                            <option value="Presentacion">Presentacion</option>
+                                            <option value="Ragay">Ragay</option>
+                                            <option value="Sagnay">Sagnay</option>
+                                            <option value="San Fernando">San Fernando</option>
+                                            <option value="San Jose">San Jose</option>
+                                            <option value="Sipocot">Sipocot</option>
+                                            <option value="Siruma">Siruma</option>
+                                            <option value="Tigaon">Tigaon</option>
+                                            <option value="Tinambac">Tinambac</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_province">Province: <span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" id="register_province" required>
+                                        <select class="form-control" id="register_province" required disabled>
+                                            <option value="" selected disabled>-- Select One --</option>
+                                            <option value="Camarines Sur">Camarines Sur</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_country">Country: <span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" id="register_country" required>
+                                        <select class="form-control" id="register_country" required disabled>
+                                            <option value="" selected disabled>-- Select One --</option>
+                                            <option value="Philippines">Philippines</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_zip_code">Zip Code: <span style="color: red;">*</span></label>
-                                        <input type="number" class="form-control" id="register_zip_code" required>
+                                        <input type="number" class="form-control" id="register_zip_code" readonly required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_username">Username: <span style="color: red;">*</span></label>
+                                        <input type="text" class="form-control" id="register_username" required>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_psssword">Password: <span style="color: red;">*</span></label>
+                                        <input type="password" class="form-control" id="register_psssword" required>
+                                    </div>
+                                    <div class="form-group col-lg-4 col-12">
+                                        <label for="register_confirm_password">Confirm Password: <span style="color: red;">*</span></label>
+                                        <input type="password" class="form-control" id="register_confirm_password" required>
                                     </div>
                                 </div>
 

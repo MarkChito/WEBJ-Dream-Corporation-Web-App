@@ -101,6 +101,13 @@ class model extends CI_Model
 
         $this->db->query($sql, array($name, $mobile_number, $email, $subject, $message));
     }
+    
+    public function MOD_ADD_USER_ACCOUNT($name, $username, $password, $image)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_messages` (`id`, `name`, `username`, `password`, `image`, `user_type`) VALUES (NULL, ?, ?, ?, ?, 'customer')";
+
+        $this->db->query($sql, array($name, $username, $password, $image));
+    }
 
     /*============================== UPDATE QUERIES ==============================*/
     public function MOD_UPDATE_CATEGORY($name, $description, $id)

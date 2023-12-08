@@ -142,6 +142,40 @@ class server extends CI_Controller
         echo json_encode(true);
     }
 
+    public function register()
+    {
+        $first_name = $this->input->post("first_name");
+        $middle_name = $this->input->post("middle_name");
+        $last_name = $this->input->post("last_name");
+        $mobile_number = $this->input->post("mobile_number");
+        $email = $this->input->post("email");
+        $house_number = $this->input->post("house_number");
+        $subdivision_zone_purok = $this->input->post("subdivision_zone_purok");
+        $province = $this->input->post("province");
+        $country = $this->input->post("country");
+        $zip_code = $this->input->post("zip_code");
+        $username = $this->input->post("username");
+        $password = $this->input->post("password");
+        $image = $this->input->post("image") ? $this->input->post("image") : "default_user_image.png";
+
+        if (!empty($middle_name)) {
+            $middle_initial = substr($middle_name, 0, 1) . ".";
+            $name = $first_name . " " . $middle_initial . " " . $last_name;
+        } else {
+            $name = $first_name . " " . $last_name;
+        }
+
+        $this->model->MOD_ADD_USER_ACCOUNT($name, $username, password_hash($password, PASSWORD_BCRYPT), $image);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Account is successfully registered!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
     public function logout()
     {
         $this->session->unset_userdata("id");
