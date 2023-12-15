@@ -18,6 +18,16 @@ class dashboard extends CI_Controller
 
             redirect(base_url());
         }
+        
+        if ($this->session->userdata("user_type") != "admin") {
+            $this->session->set_userdata("alert", array(
+                "title" => "Oops...",
+                "message" => "You do not have an access to this page!",
+                "type" => "error"
+            ));
+
+            redirect(base_url());
+        }
     }
 
     public function index()

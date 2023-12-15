@@ -55,8 +55,8 @@
                         &nbsp;<?= $name ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" id="btn_edit_admin_profile" href="#"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#about_the_developers_modal"><i class="fas fa-info-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;About</a>
+                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#edit_login_account" id="btn_edit_login_account"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
+                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#about_the_developers_modal"><i class="fas fa-info-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Developers</a>
                         <a class="dropdown-item btn_logout" href="javascript:void(0)"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Log Out</a>
                     </div>
                 </li>

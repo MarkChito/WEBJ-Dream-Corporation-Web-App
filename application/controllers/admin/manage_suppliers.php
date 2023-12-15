@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class manage_categories extends CI_Controller
+class manage_suppliers extends CI_Controller
 {
     function __construct()
     {
@@ -40,11 +40,11 @@ class manage_categories extends CI_Controller
             $data["image"] = $administrator[0]->image;
         }
 
-        $this->session->set_userdata("current_tab", "admin/manage_categories");
-        $this->session->set_userdata("title", " - Manage Categories");
+        $this->session->set_userdata("current_tab", "admin/manage_suppliers");
+        $this->session->set_userdata("title", " - Manage Suppliers");
 
         $this->load->view('templates/admin_customer/header.php', $data);
-        $this->load->view('pages/admin/manage_categories_view.php');
+        $this->load->view('pages/admin/manage_suppliers_view.php');
         $this->load->view('templates/admin_customer/footer.php');
     }
 }

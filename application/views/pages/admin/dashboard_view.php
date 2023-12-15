@@ -46,7 +46,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>0</h3>
+                            <h3><?= count($this->model->MOD_GET_ALL_CUSTOMERS()) ?></h3>
 
                             <p>Registered Customers</p>
                         </div>
@@ -106,7 +106,9 @@
                                             <td class="text-center"><span class="badge badge-success">Shipped</span></td>
                                         </tr> -->
                                         <tr>
-                                            <td colspan="4" class="text-center text-muted"><h1 class="py-3">No Recent Orders</h1></td>
+                                            <td colspan="4" class="text-center text-muted">
+                                                <h1 class="py-3">No Recent Orders</h1>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -134,46 +136,46 @@
                         </div>
                         <div class="card-body p-0">
                             <ul class="users-list clearfix">
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
-                                <li>
-                                    <img src="<?= base_url() ?>dist/images/uploads/default_user_image.png" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                    <a class="users-list-name" href="#">Alexander Pierce</a>
-                                    <span class="users-list-date">Today</span>
-                                </li>
+                                <?php $customers = $this->model->MOD_GET_CUSTOMERS() ?>
+                                <?php if ($customers) : ?>
+                                    <?php foreach ($customers as $customer) : ?>
+                                        <?php $customers_useraccount = $this->model->MOD_GET_ADMINISTRATOR_DATA($customer->useraccount_id) ?>
+                                        <li>
+                                            <img src="<?= base_url() ?>dist/images/uploads/<?= $customers_useraccount[0]->image ? $customers_useraccount[0]->image : "default_user_image.png" ?>" style="width: 91.75px; height: 91.75px;" alt="User Image">
+                                            <a class="users-list-name" href="#"><?= $customer->first_name ?></a>
+                                            <?php
+                                            $dateToCompare = $customer->date_registered;
+
+                                            $now = new DateTime();
+                                            $providedDate = new DateTime($dateToCompare);
+                                            $interval = $now->diff($providedDate);
+
+                                            $yearsDifference = $interval->y;
+                                            $monthsDifference = $interval->m;
+                                            $daysDifference = $interval->d;
+                                            $date_interval = null;
+
+                                            if ($yearsDifference > 0) {
+                                                $date_interval = $yearsDifference . ($yearsDifference === 1 ? " year ago" : " years ago");
+                                            } elseif ($monthsDifference > 0) {
+                                                $date_interval = $monthsDifference . ($monthsDifference === 1 ? " month ago" : " months ago");
+                                            } elseif ($daysDifference === 0) {
+                                                $date_interval = "Today";
+                                            } elseif ($daysDifference === 1) {
+                                                $date_interval = "Yesterday";
+                                            } else {
+                                                $date_interval = $daysDifference . " days ago";
+                                            }
+                                            ?>
+
+                                            <span class="users-list-date"><?= $date_interval ?></span>
+                                        </li>
+                                    <?php endforeach ?>
+                                <?php else : ?>
+                                    <div class="text-center text-muted">
+                                        <h1 class="py-3">No Recent Customers</h1>
+                                    </div>
+                                <?php endif ?>
                             </ul>
                             <!-- /.users-list -->
                         </div>

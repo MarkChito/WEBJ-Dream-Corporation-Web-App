@@ -217,7 +217,11 @@
                     contentType: false,
                     success: function(response) {
                         if (response) {
-                            location.href = base_url + "admin/dashboard";
+                            if (response == "admin") {
+                                location.href = base_url + "admin/dashboard";
+                            } else {
+                                location.href = base_url + "customer/dashboard";
+                            }
                         } else {
                             location.href = base_url + current_tab;
                         }
@@ -335,8 +339,10 @@
                 var middle_name = $("#register_middle_name").val();
                 var last_name = $("#register_last_name").val();
                 var email = $("#register_email").val();
+                var mobile_number = $("#register_mobile_number").val();
                 var house_number = $("#register_house_number").val();
                 var subdivision_zone_purok = $("#register_subdivision_zone_purok").val();
+                var city = $("#register_city").val();
                 var province = $("#register_province").val();
                 var country = $("#register_country").val();
                 var zip_code = $("#register_zip_code").val();
@@ -345,36 +351,166 @@
                 var confirm_password = $("#register_confirm_password").val();
                 var image = $("#register_image")[0].files[0];
 
-                var formData = new FormData();
-                
-                formData.append('first_name', first_name);
-                formData.append('middle_name', middle_name);
-                formData.append('last_name', last_name);
-                formData.append('email', email);
-                formData.append('house_number', house_number);
-                formData.append('subdivision_zone_purok', subdivision_zone_purok);
-                formData.append('province', province);
-                formData.append('country', country);
-                formData.append('zip_code', zip_code);
-                formData.append('username', username);
-                formData.append('password', password);
-                formData.append('image', image);
-                
-                $.ajax({
-                    url: 'server/register',
-                    data: formData,
-                    type: 'POST',
-                    dataType: 'JSON',
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        location.href = base_url + current_tab;
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+                var password_error_label = $("#error_register_password");
+                var mobile_number_error_label = $("#error_register_mobile_number");
+
+                var errors = 0;
+
+                if (!verify_password(password, confirm_password, password_error_label)) {
+                    errors++;
+                }
+
+                if (!verify_mobile_number(mobile_number, mobile_number_error_label)) {
+                    errors++;
+                }
+
+                if (errors == 0) {
+                    $("#register_submit").val("Processing Request...");
+                    $("#register_submit").attr("disabled", true);
+
+                    $("#register_clear").attr("disabled", true);
+
+                    var formData = new FormData();
+
+                    formData.append('first_name', first_name);
+                    formData.append('middle_name', middle_name);
+                    formData.append('last_name', last_name);
+                    formData.append('email', email);
+                    formData.append('mobile_number', mobile_number);
+                    formData.append('house_number', house_number);
+                    formData.append('subdivision_zone_purok', subdivision_zone_purok);
+                    formData.append('city', city);
+                    formData.append('province', province);
+                    formData.append('country', country);
+                    formData.append('zip_code', zip_code);
+                    formData.append('image', image);
+
+                    formData.append('username', username);
+                    formData.append('password', password);
+
+                    $.ajax({
+                        url: 'server/register',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response) {
+                                location.href = base_url + current_tab;
+                            } else {
+                                $("#error_register_username").removeClass("hidden");
+                                $("#error_register_username").html("Username is already taken");
+
+                                $("#register_clear").removeAttr("disabled");
+                                $("#register_submit").removeAttr("disabled");
+                                $("#register_submit").val("Register");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
             })
+
+            $("#register_password").keypress(function() {
+                $("#error_register_password").addClass("hidden");
+            })
+
+            $("#register_confirm_password").keypress(function() {
+                $("#error_register_password").addClass("hidden");
+            })
+
+            $("#register_mobile_number").keypress(function() {
+                $("#error_register_mobile_number").addClass("hidden");
+            })
+
+            $("#register_username").keypress(function() {
+                $("#error_register_username").addClass("hidden");
+            })
+
+            function verify_password(password, confirm_password, password_error_label) {
+                var error = 0;
+                var error_message = null;
+
+                if (!/[A-Z]/.test(password)) {
+                    error_message = "Password must have at least one uppercase letter (A-Z)";
+
+                    error++;
+                }
+
+                if (!/[a-z]/.test(password)) {
+                    error_message = "Password must have at least one lowercase letter (a-z)";
+
+                    error++;
+                }
+
+                if (!/[0-9]/.test(password)) {
+                    error_message = "Password must have at least one digit (0-9)";
+
+                    error++;
+                }
+
+                if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password)) {
+                    error_message = "Password must have at least one special character (e.g., !@#$%^&*()_+-=[]{};':\"\\|,.<>/?)";
+
+                    error++;
+                }
+
+                if (password.length < 8) {
+                    error_message = "Password must be at least 8 characters long";
+
+                    error++;
+                }
+
+                if (password != confirm_password) {
+                    error_message = "Passwords do not match";
+
+                    error++;
+                }
+
+                if (error > 0) {
+                    password_error_label.html(error_message);
+                    password_error_label.removeClass("hidden");
+
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function verify_mobile_number(mobile_number, mobile_number_error_label) {
+                var error_message = null;
+
+                error = 0;
+
+                mobile_number = mobile_number.replace(/[^\d]/g, '');
+
+                var validPrefix = ['09'];
+                var prefix = mobile_number.substr(0, 2);
+
+                if (mobile_number.length !== 11) {
+                    error_message = "Mobile Number must be 11 digits long";
+
+                    error++;
+                }
+
+                if (!validPrefix.includes(prefix)) {
+                    error_message = "Mobile Number must start with '09'";
+
+                    error++;
+                }
+
+                if (error == 0) {
+                    return true;
+                } else {
+                    mobile_number_error_label.removeClass("hidden");
+                    mobile_number_error_label.html(error_message);
+
+                    return false;
+                }
+            }
         });
     </script>
 

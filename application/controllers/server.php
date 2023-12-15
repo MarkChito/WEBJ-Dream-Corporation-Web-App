@@ -22,14 +22,16 @@ class server extends CI_Controller
                 $db_id = $useraccount_details->id;
                 $db_name = $useraccount_details->name;
                 $db_password = $useraccount_details->password;
+                $db_user_type = $useraccount_details->user_type;
             }
 
             if (password_verify($password, $db_password)) {
                 $this->session->set_userdata("id", $db_id);
+                $this->session->set_userdata("user_type", $db_user_type);
 
                 $this->session->set_userdata("login_message", "Welcome, " . $db_name . "!");
 
-                echo json_encode(true);
+                echo json_encode($db_user_type);
             } else {
                 $this->session->set_userdata("alert", array(
                     "title" => "Oops...",
@@ -151,12 +153,14 @@ class server extends CI_Controller
         $email = $this->input->post("email");
         $house_number = $this->input->post("house_number");
         $subdivision_zone_purok = $this->input->post("subdivision_zone_purok");
+        $city = $this->input->post("city");
         $province = $this->input->post("province");
         $country = $this->input->post("country");
         $zip_code = $this->input->post("zip_code");
+        $image = isset($_FILES["image"]) ? $_FILES["image"] : null;
+
         $username = $this->input->post("username");
         $password = $this->input->post("password");
-        $image = $this->input->post("image") ? $this->input->post("image") : "default_user_image.png";
 
         if (!empty($middle_name)) {
             $middle_initial = substr($middle_name, 0, 1) . ".";
@@ -165,15 +169,174 @@ class server extends CI_Controller
             $name = $first_name . " " . $last_name;
         }
 
-        $this->model->MOD_ADD_USER_ACCOUNT($name, $username, password_hash($password, PASSWORD_BCRYPT), $image);
+        $username_exists = $this->model->MOD_CHECK_USERNAME($username);
+
+        if ($username_exists) {
+            echo json_encode(false);
+        } else {
+            $errors = 0;
+
+            if (!$this->upload_image($image)) {
+                $errors++;
+            }
+
+            if ($errors == 0) {
+                if ($image) {
+                    $image = basename($image["name"]);
+                } else {
+                    $image = "default_user_image.png";
+                }
+
+                $this->model->MOD_ADD_USER_ACCOUNT($name, $username, password_hash($password, PASSWORD_BCRYPT), $image);
+
+                $useraccount = $this->model->MOD_CHECK_USERNAME($username);
+
+                $useraccount_id = $useraccount[0]->id;
+
+                $this->model->MOD_ADD_CUSTOMER($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
+
+                $this->session->set_userdata("alert", array(
+                    "title" => "Success",
+                    "message" => "Account is successfully registered!",
+                    "type" => "success"
+                ));
+            } else {
+                $this->session->set_userdata("alert", array(
+                    "title" => "Oops...",
+                    "message" => "There is an error while processing your request!",
+                    "type" => "error"
+                ));
+            }
+
+            echo json_encode(true);
+        }
+    }
+
+    public function new_supplier()
+    {
+        $name = $this->input->post("name");
+        $contact_person = $this->input->post("contact_person");
+        $email = $this->input->post("email");
+        $mobile_number = $this->input->post("mobile_number");
+        $house_number = $this->input->post("house_number");
+        $subdivision_zone_purok = $this->input->post("subdivision_zone_purok");
+        $city = $this->input->post("city");
+        $province = $this->input->post("province");
+        $country = $this->input->post("country");
+        $zip_code = $this->input->post("zip_code");
+
+        $this->model->MOD_NEW_SUPPLIER($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
 
         $this->session->set_userdata("alert", array(
             "title" => "Success",
-            "message" => "Account is successfully registered!",
+            "message" => "A supplier is successfully added.",
             "type" => "success"
         ));
 
         echo json_encode(true);
+    }
+
+    public function update_supplier()
+    {
+        $id = $this->input->post("id");
+        $name = $this->input->post("name");
+        $contact_person = $this->input->post("contact_person");
+        $email = $this->input->post("email");
+        $mobile_number = $this->input->post("mobile_number");
+        $house_number = $this->input->post("house_number");
+        $subdivision_zone_purok = $this->input->post("subdivision_zone_purok");
+        $city = $this->input->post("city");
+        $province = $this->input->post("province");
+        $country = $this->input->post("country");
+        $zip_code = $this->input->post("zip_code");
+
+        $this->model->MOD_UPDATE_SUPPLIER($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "A supplier is successfully updated.",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
+    public function delete_supplier()
+    {
+        $id = $this->input->post("id");
+
+        $this->model->MOD_DELETE_SUPPLIER($id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "A supplier is successfully deleted.",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
+    public function get_user_data()
+    {
+        $id = $this->input->post("id");
+
+        $user_data = $this->model->MOD_GET_ADMINISTRATOR_DATA($id);
+
+        echo json_encode($user_data);
+    }
+
+    public function update_account()
+    {
+        $id = $this->input->post("id");
+        $name = $this->input->post("name");
+        $username = $this->input->post("username");
+        $old_username = $this->input->post("old_username");
+        $password = $this->input->post("password");
+        $old_password = $this->input->post("old_password");
+        $old_image = $this->input->post("old_image");
+        $image = isset($_FILES["image"]) ? $_FILES["image"] : null;
+
+        $username_exists = $this->model->MOD_CHECK_USERNAME($username);
+
+        if ($username_exists && ($username != $old_username)) {
+            echo json_encode(false);
+        } else {
+            $errors = 0;
+
+            if ($password) {
+                $password = password_hash($password, PASSWORD_BCRYPT);
+            } else {
+                $password = $old_password;
+            }
+
+            if ($image) {
+                if (!$this->upload_image($image)) {
+                    $errors++;
+                }
+
+                $image = basename($image["name"]);
+            } else {
+                $image = $old_image;
+            }
+
+            if ($errors == 0) {
+                $this->model->MOD_UPDATE_ACCOUNT($name, $username, $password, $image, $id);
+
+                $this->session->set_userdata("alert", array(
+                    "title" => "Success",
+                    "message" => "Your account has been updated!",
+                    "type" => "success"
+                ));
+            } else {
+                $this->session->set_userdata("alert", array(
+                    "title" => "Oops...",
+                    "message" => "There is an error while processing your request.",
+                    "type" => "error"
+                ));
+            }
+
+            echo json_encode(true);
+        }
     }
 
     public function logout()
@@ -187,5 +350,37 @@ class server extends CI_Controller
         ));
 
         echo json_encode(true);
+    }
+
+    private function upload_image($image)
+    {
+        $targetDirectory = "dist/images/uploads/";
+        $targetFile = $targetDirectory . basename($image["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        $check = getimagesize($image["tmp_name"]);
+
+        if ($check) {
+            $uploadOk = 1;
+        } else {
+            $uploadOk = 0;
+        }
+
+        $allowedExtensions = array("jpg", "jpeg", "png");
+
+        if (!in_array($imageFileType, $allowedExtensions)) {
+            $uploadOk = 0;
+        }
+
+        if ($uploadOk == 0) {
+            return false;
+        } else {
+            if (move_uploaded_file($image["tmp_name"], $targetFile)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

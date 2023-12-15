@@ -10,6 +10,14 @@ class model extends CI_Model
 
         return $query->result();
     }
+    
+    public function MOD_GET_SUPPLIERS()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_suppliers` ORDER BY `name` ASC";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
 
     public function MOD_GET_PRODUCT_CATEGORY($category_id)
     {
@@ -55,6 +63,22 @@ class model extends CI_Model
 
         return $query->result();
     }
+    
+    public function MOD_GET_CUSTOMERS()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_customers` ORDER BY `id` DESC LIMIT 8";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_ALL_CUSTOMERS()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_customers` ORDER BY `id` DESC";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
 
     public function MOD_CHECK_USERNAME($username)
     {
@@ -71,10 +95,18 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_NEWSLETTER_EMAIL($email)
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_newsletter` WHERE `email` = '" . $email . "'";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_ALL_PRODUCTS()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_products`";
         $query = $this->db->query($sql);
 
         return $query->result();
@@ -86,6 +118,13 @@ class model extends CI_Model
         $sql = "INSERT INTO `tbl_webjdreamcorp_categories` (`id`, `name`, `description`) VALUES (NULL, ?, ?)";
 
         $this->db->query($sql, array($name, $description));
+    }
+    
+    public function MOD_NEW_SUPPLIER($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_suppliers` (`id`, `name`, `contact_person`, `email`, `mobile_number`, `house_number`, `subdivision_zone_purok`, `city`, `province`, `country`, `zip_code`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $this->db->query($sql, array($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code));
     }
 
     public function MOD_ADD_NEWSLETTER_EMAIL($email)
@@ -101,26 +140,54 @@ class model extends CI_Model
 
         $this->db->query($sql, array($name, $mobile_number, $email, $subject, $message));
     }
-    
+
     public function MOD_ADD_USER_ACCOUNT($name, $username, $password, $image)
     {
-        $sql = "INSERT INTO `tbl_webjdreamcorp_messages` (`id`, `name`, `username`, `password`, `image`, `user_type`) VALUES (NULL, ?, ?, ?, ?, 'customer')";
+        $sql = "INSERT INTO `tbl_webjdreamcorp_useraccounts` (`id`, `name`, `username`, `password`, `image`, `user_type`) VALUES (NULL, ?, ?, ?, ?, 'customer')";
 
         $this->db->query($sql, array($name, $username, $password, $image));
     }
 
+    public function MOD_ADD_CUSTOMER($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_customers` (`id`, `useraccount_id`, `first_name`, `middle_name`, `last_name`, `email`, `mobile_number`, `house_number`, `subdivision_zone_purok`, `city`, `province`, `country`, `zip_code`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $this->db->query($sql, array($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code));
+    }
+
     /*============================== UPDATE QUERIES ==============================*/
+    public function MOD_UPDATE_ACCOUNT($name, $username, $password, $image, $id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_useraccounts` SET `name` = ?, `username` = ?, `password` = ?, `image` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($name, $username, $password, $image, $id));
+    }
+    
     public function MOD_UPDATE_CATEGORY($name, $description, $id)
     {
         $sql = "UPDATE `tbl_webjdreamcorp_categories` SET `name` = ?, `description` = ? WHERE `id` = ?";
 
         $this->db->query($sql, array($name, $description, $id));
     }
+    
+    public function MOD_UPDATE_SUPPLIER($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_suppliers` SET `name` = ?, `contact_person` = ?, `email` = ?, `mobile_number` = ?, `house_number` = ?, `subdivision_zone_purok` = ?, `city` = ?, `province` = ?, `country` = ?, `zip_code` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $id));
+    }
 
     /*============================== DELETE QUERIES ==============================*/
     public function MOD_DELETE_CATEGORY($id)
     {
         $sql = "DELETE FROM `tbl_webjdreamcorp_categories` WHERE `id` = ?";
+
+        $this->db->query($sql, array($id));
+    }
+    
+    public function MOD_DELETE_SUPPLIER($id)
+    {
+        $sql = "DELETE FROM `tbl_webjdreamcorp_suppliers` WHERE `id` = ?";
 
         $this->db->query($sql, array($id));
     }

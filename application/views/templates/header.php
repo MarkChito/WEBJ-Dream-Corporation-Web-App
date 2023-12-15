@@ -69,7 +69,7 @@
         <!-- Login or Register -->
         <div class="w3l_header_right1">
             <?php if ($this->session->userdata("id")) : ?>
-                <h2><a href="admin/dashboard">Go to Dashboard</a></h2>
+                <h2><a href="<?= $this->session->userdata("user_type") ?>/dashboard">Go to Dashboard</a></h2>
             <?php else : ?>
                 <h2><a href="#" data-toggle="modal" data-target="#login">Login or Register</a></h2>
             <?php endif ?>
@@ -461,7 +461,7 @@
                 <div class="mail">
                     <h3>Contact Us</h3>
                     <div class="agileinfo_mail_grids">
-                        <div class="col-md-4 agileinfo_mail_grid_left">
+                        <div class="col-md-5 agileinfo_mail_grid_left">
                             <ul>
                                 <li><i class="fa fa-home" aria-hidden="true"></i></li>
                                 <li>address<span>Tinambac, Camarines Sur</span></li>
@@ -475,7 +475,7 @@
                                 <li>call to us<span>(+63) 912 345 6789</span></li>
                             </ul>
                         </div>
-                        <div class="col-md-8 agileinfo_mail_grid_right">
+                        <div class="col-md-7 agileinfo_mail_grid_right">
                             <form action="javascript:void(0)" id="contact_us_form">
                                 <div class="col-md-6 wthree_contact_left_grid">
                                     <input type="text" id="contact_us_name" placeholder="Name" required>
@@ -531,7 +531,7 @@
                                     <div class="form-group col-lg-6 col-12">
                                         <label for="register_mobile_number">Mobile Number: <span style="color: red;">*</span></label>
                                         <input type="number" class="form-control" id="register_mobile_number" required>
-                                        <small class="hidden" style="color: red;">Invalid Mobile Number</small>
+                                        <small class="hidden" style="color: red;" id="error_register_mobile_number"></small>
                                     </div>
                                     <div class="form-group col-lg-6 col-12">
                                         <label for="register_email">Email: <span style="color: red;">*</span></label>
@@ -550,7 +550,7 @@
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_city">City/Municipality: <span style="color: red;">*</span></label>
                                         <select class="form-control" id="register_city" required>
-                                            <option value="" selected disabled>-- Select One --</option>
+                                            <option value="" selected disabled>Choose...</option>
                                             <option value="Baao">Baao</option>
                                             <option value="Balatan">Balatan</option>
                                             <option value="Bato">Bato</option>
@@ -595,14 +595,14 @@
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_province">Province: <span style="color: red;">*</span></label>
                                         <select class="form-control" id="register_province" required disabled>
-                                            <option value="" selected disabled>-- Select One --</option>
+                                            <option value="" selected disabled>Choose...</option>
                                             <option value="Camarines Sur">Camarines Sur</option>
                                         </select>
                                     </div>
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_country">Country: <span style="color: red;">*</span></label>
                                         <select class="form-control" id="register_country" required disabled>
-                                            <option value="" selected disabled>-- Select One --</option>
+                                            <option value="" selected disabled>Choose...</option>
                                             <option value="Philippines">Philippines</option>
                                         </select>
                                     </div>
@@ -615,10 +615,12 @@
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_username">Username: <span style="color: red;">*</span></label>
                                         <input type="text" class="form-control" id="register_username" required>
+                                        <small class="hidden" style="color: red;" id="error_register_username"></small>
                                     </div>
                                     <div class="form-group col-lg-4 col-12">
-                                        <label for="register_psssword">Password: <span style="color: red;">*</span></label>
-                                        <input type="password" class="form-control" id="register_psssword" required>
+                                        <label for="register_password">Password: <span style="color: red;">*</span></label>
+                                        <input type="password" class="form-control" id="register_password" required>
+                                        <small class="hidden" style="color: red;" id="error_register_password"></small>
                                     </div>
                                     <div class="form-group col-lg-4 col-12">
                                         <label for="register_confirm_password">Confirm Password: <span style="color: red;">*</span></label>
