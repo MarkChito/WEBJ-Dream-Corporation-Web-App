@@ -142,7 +142,7 @@
                                         <?php $customers_useraccount = $this->model->MOD_GET_ADMINISTRATOR_DATA($customer->useraccount_id) ?>
                                         <li>
                                             <img src="<?= base_url() ?>dist/images/uploads/<?= $customers_useraccount[0]->image ? $customers_useraccount[0]->image : "default_user_image.png" ?>" style="width: 91.75px; height: 91.75px;" alt="User Image">
-                                            <a class="users-list-name" href="#"><?= $customer->first_name ?></a>
+                                            <a class="users-list-name" href="#"><?= $customer->first_name." ".$customer->last_name[0]."." ?></a>
                                             <?php
                                             $dateToCompare = $customer->date_registered;
 
@@ -177,7 +177,6 @@
                                     </div>
                                 <?php endif ?>
                             </ul>
-                            <!-- /.users-list -->
                         </div>
                         <div class="card-footer text-center">
                             <a href="admin/customers">View All Customers</a>

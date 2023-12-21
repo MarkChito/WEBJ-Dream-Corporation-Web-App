@@ -58,25 +58,12 @@
                     <article style="position: absolute; width: 100%; opacity: 0;">
                         <div class="banner-wrap">
                             <div class="col-md-6 w3_testimonials_grid">
-                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>I absolutely love shopping at your store! The variety of fresh produce and organic options is impressive. The staff is always friendly and helpful. It's my go-to place for quality groceries.</p>
-                                <h4>Emily Rodriguez <span>Customer</span></h4>
+                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Mahal na mahal ko ang pag-sho-shopping sa inyong tindahan! Ang iba't ibang uri ng sariwang produkto at organic options ay kamangha-mangha. Ang mga staff ay laging magiliw at matulungin. Ito ang aking paboritong lugar para sa kalidad na mga grocery.</p>
+                                <h4>Isabela Santos <span>Customer</span></h4>
                             </div>
                             <div class="col-md-6 w3_testimonials_grid">
-                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Your store provides top-notch service and a fantastic selection. I appreciate the cleanliness and organization, making my shopping experience smooth and enjoyable. Keep up the great work!</p>
-                                <h4>John Smith <span>Customer</span></h4>
-                            </div>
-                            <div class="clearfix"> </div>
-                        </div>
-                    </article>
-                    <article style="position: absolute; width: 100%; opacity: 0;">
-                        <div class="banner-wrap">
-                            <div class="col-md-6 w3_testimonials_grid">
-                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>I've been a loyal customer for years because of the amazing deals and specials your store offers. The prices are competitive, and the quality is unbeatable. Thank you for being my preferred grocery destination!</p>
-                                <h4>Samantha Chen <span>Customer</span></h4>
-                            </div>
-                            <div class="col-md-6 w3_testimonials_grid">
-                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>The convenience your store offers is unmatched. From online ordering to speedy delivery, it's a lifesaver for someone with a busy schedule like mine. The freshness of the products always exceeds my expectations.</p>
-                                <h4>Michael Johnson <span>Customer</span></h4>
+                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Ang inyong tindahan ay nagbibigay ng napakagandang serbisyo at napakagandang pagpilian. Pinahahalagahan ko ang kalinisan at organisasyon, na nagpapadali sa aking karanasan sa pamimili. Patuloy na gawin ang magandang trabaho!</p>
+                                <h4>Juan dela Cruz <span>Customer</span></h4>
                             </div>
                             <div class="clearfix"> </div>
                         </div>
@@ -84,12 +71,25 @@
                     <article style="position: absolute; width: 100%; opacity: 0;">
                         <div class="banner-wrap">
                             <div class="col-md-6 w3_testimonials_grid">
-                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Your commitment to sustainability and locally sourced products is admirable. It's comforting to know that I can support ethical practices while shopping for my groceries. Your store has become a cornerstone in our community.</p>
-                                <h4>Amanda Thompson <span>Customer</span></h4>
+                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Ang inyong dedikasyon sa pangangalaga sa kalikasan at lokal na pinagmulang mga produkto ay nakahahanga. Nakakagaan ng loob na alam kong natutulungan ko ang mga etikal na pamamaraan habang namimili ng aking mga grocery. Ang inyong tindahan ay naging pundasyon sa aming komunidad.</p>
+                                <h4>Mateo Cruz <span>Customer</span></h4>
                             </div>
                             <div class="col-md-6 w3_testimonials_grid">
-                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>I'm impressed by the diverse range of international foods available. Your store caters to various cultural tastes, making it a hub for culinary exploration. I've discovered so many unique ingredients here that I couldn't find elsewhere.</p>
-                                <h4>David Martinez <span>Customer</span></h4>
+                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Na-impress ako sa iba't ibang uri ng internasyonal na pagkain na available. Ang inyong tindahan ay nagbibigay serbisyo sa iba't ibang kulturang panlasa, kaya't ito ang sentro ng pagsasalin-salin sa kultura sa kusina. Dito ko natuklasan ang maraming kakaibang sangkap na hindi ko mahanap sa ibang lugar.</p>
+                                <h4>Luzviminda Reyes <span>Customer</span></h4>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </article>
+                    <article style="position: absolute; width: 100%; opacity: 0;">
+                        <div class="banner-wrap">
+                            <div class="col-md-6 w3_testimonials_grid">
+                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Ikaw ay nagbibigay ng kahanga-hangang serbisyo. Ang iyong mga espesyal na alok ay napakaganda. Ang presyo ay maganda at ang kalidad ay hindi maipantatalo. Maraming salamat sa pagiging aking pinipiling destinasyon sa grocery!</p>
+                                <h4>José Rizal <span>Customer</span></h4>
+                            </div>
+                            <div class="col-md-6 w3_testimonials_grid">
+                                <p><i class="fa fa-quote-right" aria-hidden="true"></i>Ang kaginhawaan na inaalok ng iyong tindahan ay hindi maikakaila. Mula sa online na pag-order hanggang sa mabilis na paghahatid, ito ay isang malaking tulong para sa isang tulad ko na may abalang iskedyul. Ang sariwang produkto ay laging lumalampas sa aking mga asahan.</p>
+                                <h4>Maria Clara <span>Customer</span></h4>
                             </div>
                             <div class="clearfix"> </div>
                         </div>

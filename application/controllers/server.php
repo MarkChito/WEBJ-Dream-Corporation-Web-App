@@ -176,8 +176,10 @@ class server extends CI_Controller
         } else {
             $errors = 0;
 
-            if (!$this->upload_image($image)) {
-                $errors++;
+            if ($image) {
+                if (!$this->upload_image($image)) {
+                    $errors++;
+                }
             }
 
             if ($errors == 0) {
@@ -236,6 +238,40 @@ class server extends CI_Controller
         echo json_encode(true);
     }
 
+    public function new_product()
+    {
+        $name = $this->input->post("name");
+        $category_id = $this->input->post("category_id");
+        $supplier_id = $this->input->post("supplier_id");
+        $price = $this->input->post("price");
+        $cost_price = $this->input->post("cost_price");
+        $quantity = $this->input->post("quantity");
+        $description = $this->input->post("description");
+        $image = isset($_FILES["image"]) ? $_FILES["image"] : null;
+
+        $errors = 0;
+
+        if ($image) {
+            if (!$this->upload_image($image)) {
+                $errors++;
+            }
+
+            $image = basename($image["name"]);
+        } else {
+            $image = "default_item_image.png";
+        }
+
+        $this->model->MOD_NEW_PRODUCT($name, $category_id, $supplier_id, $price, $cost_price, $quantity, $description, $image);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "A product is successfully added.",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
     public function update_supplier()
     {
         $id = $this->input->post("id");
@@ -270,6 +306,21 @@ class server extends CI_Controller
         $this->session->set_userdata("alert", array(
             "title" => "Success",
             "message" => "A supplier is successfully deleted.",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
+    public function delete_product()
+    {
+        $id = $this->input->post("id");
+
+        $this->model->MOD_DELETE_PRODUCT($id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "A product is successfully deleted.",
             "type" => "success"
         ));
 

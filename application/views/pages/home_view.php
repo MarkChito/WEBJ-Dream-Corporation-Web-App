@@ -14,7 +14,7 @@
                                             <div class="snipcart-item block">
                                                 <div class="snipcart-thumb">
                                                     <a href="product?item_id=<?= $product->id ?>" title="View Product Details">
-                                                        <img src="./dist/images/products/<?= $product->image ?>" style="width: 140px; height: 140px;" />
+                                                        <img src="./dist/images/uploads/<?= $product->image ?>" style="width: 140px; height: 140px;" />
                                                     </a>
                                                     <p class="text-truncate"><?= $product->name ?></p>
                                                     <strong>Price:</strong> <span>₱<?= $product->price ?></span>

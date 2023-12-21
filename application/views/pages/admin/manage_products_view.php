@@ -54,8 +54,8 @@
                                                 <td class="d-none supplier_id"><?= $product->supplier_id ?></td>
                                                 <td class="d-none image"><?= $product->image ?></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0)" class="update_supplier"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
-                                                    <a href="javascript:void(0)" class="delete_supplier"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                    <a href="javascript:void(0)" class="update_product"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
+                                                    <a href="javascript:void(0)" class="delete_product"><i class="fas fa-trash-alt text-danger"></i></a>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>

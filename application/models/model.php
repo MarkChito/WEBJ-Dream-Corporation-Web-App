@@ -154,6 +154,13 @@ class model extends CI_Model
 
         $this->db->query($sql, array($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code));
     }
+    
+    public function MOD_NEW_PRODUCT($name, $category_id, $supplier_id, $price, $cost_price, $quantity, $description, $image)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_products` (`id`, `name`, `category_id`, `supplier_id`, `price`, `cost_price`, `quantity`, `description`, `image`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $this->db->query($sql, array($name, $category_id, $supplier_id, $price, $cost_price, $quantity, $description, $image));
+    }
 
     /*============================== UPDATE QUERIES ==============================*/
     public function MOD_UPDATE_ACCOUNT($name, $username, $password, $image, $id)
@@ -188,6 +195,13 @@ class model extends CI_Model
     public function MOD_DELETE_SUPPLIER($id)
     {
         $sql = "DELETE FROM `tbl_webjdreamcorp_suppliers` WHERE `id` = ?";
+
+        $this->db->query($sql, array($id));
+    }
+    
+    public function MOD_DELETE_PRODUCT($id)
+    {
+        $sql = "DELETE FROM `tbl_webjdreamcorp_products` WHERE `id` = ?";
 
         $this->db->query($sql, array($id));
     }

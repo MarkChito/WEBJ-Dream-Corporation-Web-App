@@ -176,7 +176,7 @@
                 </div>
                 <div class="agileinfo_single">
                     <h5><?= $product_name ?></h5>
-                    <div class="col-md-4 agileinfo_single_left"><img src="./dist/images/products/<?= $product_image ?>" style="width: 320px; height: 320px" class="img-responsive" /></div>
+                    <div class="col-md-4 agileinfo_single_left"><img src="./dist/images/uploads/<?= $product_image ?>" style="width: 320px; height: 320px" class="img-responsive" /></div>
                     <div class="col-md-8 agileinfo_single_right">
                         <div class="w3agile_description">
                             <h4>Description :</h4>

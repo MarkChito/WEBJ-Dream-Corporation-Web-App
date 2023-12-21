@@ -457,6 +457,17 @@
                 </div>
                 <form action="javascript:void(0)" id="new_product_form">
                     <div class="modal-body">
+                        <div class="text-center">
+                            <img id="new_product_image_display" class="rounded-circle img-bordered-sm" width="200" height="200" src="<?= base_url() ?>dist/images/uploads/default_user_image.png">
+                        </div>
+                        <div class="form-group mt-3">
+                            <div class="input-group">
+                                <div class="custom-file" style="width: 400px;">
+                                    <input type="file" class="custom-file-input" id="new_product_image" accept=".jpg, .jpeg, .png">
+                                    <label class="custom-file-label" for="new_product_image" id="new_product_image_label">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -471,7 +482,7 @@
                                     <label for="new_product_category_id" class="form-label">Category <span class="text-danger">*</span></label>
                                     <select id="new_product_category_id" class="custom-select">
                                         <option value selected disabled>Choose...</option>
-                                        <?php $categories = $this->model->MOD_GET_SUPPLIERS() ?>
+                                        <?php $categories = $this->model->MOD_GET_PRODUCT_CATEGORIES() ?>
                                         <?php if ($categories) : ?>
                                             <?php foreach ($categories as $category) : ?>
                                                 <option value="<?= $category->id ?>"><?= $category->name ?></option>
@@ -510,8 +521,8 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="new_product_cost_quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
-                                    <input type="number" id="new_product_cost_quantity" class="form-control" required>
+                                    <label for="new_product_quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" id="new_product_quantity" class="form-control" required>
                                 </div>
                             </div>
                         </div>
@@ -1030,6 +1041,11 @@
                 $('#edit_login_account_image_label').text(this.files[0].name);
                 $('#edit_login_account_image_display').attr('src', window.URL.createObjectURL(this.files[0]));
             })
+            
+            $("#new_product_image").change(function() {
+                $('#new_product_image_label').text(this.files[0].name);
+                $('#new_product_image_display').attr('src', window.URL.createObjectURL(this.files[0]));
+            })
 
             $("#btn_edit_login_account").click(function() {
                 var id = user_id;
@@ -1149,13 +1165,90 @@
 
             $("#new_product_form").submit(function() {
                 var name = $("#new_product_name");
+                var category_id = $("#new_product_category_id");
+                var supplier_id = $("#new_product_supplier_id");
                 var description = $("#new_product_description");
                 var price = $("#new_product_price");
                 var cost_price = $("#new_product_cost_price");
+                var quantity = $("#new_product_quantity");
                 var description = $("#new_product_description");
-                var supplier_id = $("#new_product_supplier_id");
+                var image = $("#new_product_image")[0].files[0];
 
+                $("#new_product_submit").text("Processing Request...");
+                $("#new_product_submit").attr("disabled", true);
 
+                $("#new_product_name").attr("disabled", true);
+                $("#new_product_category_id").attr("disabled", true);
+                $("#new_product_supplier_id").attr("disabled", true);
+                $("#new_product_description").attr("disabled", true);
+                $("#new_product_price").attr("disabled", true);
+                $("#new_product_cost_price").attr("disabled", true);
+                $("#new_product_quantity").attr("disabled", true);
+                $("#new_product_descrition").attr("disabled", true);
+                $("#new_product_image").attr("disabled", true);
+
+                var formData = new FormData();
+
+                formData.append('name', name.val());
+                formData.append('category_id', category_id.val());
+                formData.append('supplier_id', supplier_id.val());
+                formData.append('description', description.val());
+                formData.append('price', price.val());
+                formData.append('cost_price', cost_price.val());
+                formData.append('quantity', quantity.val());
+                formData.append('description', description.val());
+                formData.append('image', image);
+
+                $.ajax({
+                    url: base_url + 'server/new_product',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $(document).on('click', '.delete_product', function() {
+                var parent_tr = $(this).parent("td.text-center").parent("tr");
+                var id = parent_tr.children("td.id").text();
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var formData = new FormData();
+
+                        formData.append('id', id);
+
+                        $.ajax({
+                            url: base_url + 'server/delete_product',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                location.href = base_url + current_tab;
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
             })
 
             function verify_password(password, confirm_password, password_error_label) {
