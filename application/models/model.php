@@ -106,7 +106,7 @@ class model extends CI_Model
     
     public function MOD_GET_ALL_PRODUCTS()
     {
-        $sql = "SELECT * FROM `tbl_webjdreamcorp_products`";
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_products` ORDER BY `id` DESC";
         $query = $this->db->query($sql);
 
         return $query->result();
@@ -182,6 +182,13 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_suppliers` SET `name` = ?, `contact_person` = ?, `email` = ?, `mobile_number` = ?, `house_number` = ?, `subdivision_zone_purok` = ?, `city` = ?, `province` = ?, `country` = ?, `zip_code` = ? WHERE `id` = ?";
 
         $this->db->query($sql, array($name, $contact_person, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $id));
+    }
+    
+    public function MOD_UPDATE_PRODUCT($name, $description, $price, $cost_price, $quantity, $category_id, $supplier_id, $image, $id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_products` SET `name` = ?, `description` = ?, `price` = ?, `cost_price` = ?, `quantity` = ?, `category_id` = ?, `supplier_id` = ?, `image` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($name, $description, $price, $cost_price, $quantity, $category_id, $supplier_id, $image, $id));
     }
 
     /*============================== DELETE QUERIES ==============================*/

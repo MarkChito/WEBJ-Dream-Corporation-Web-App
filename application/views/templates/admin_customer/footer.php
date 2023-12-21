@@ -544,6 +544,108 @@
         </div>
     </div>
 
+    <!-- Update Product Modal -->
+    <div class="modal fade" id="update_product" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="exampleModalLongTitle">Update Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="javascript:void(0)" id="update_product_form">
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img id="update_product_image_display" class="rounded-circle img-bordered-sm" width="200" height="200" src="<?= base_url() ?>dist/images/uploads/default_user_image.png">
+                        </div>
+                        <div class="form-group mt-3">
+                            <div class="input-group">
+                                <div class="custom-file" style="width: 400px;">
+                                    <input type="file" class="custom-file-input" id="update_product_image" accept=".jpg, .jpeg, .png">
+                                    <label class="custom-file-label" for="update_product_image" id="update_product_image_label">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="update_product_name" class="form-label">Product Name <span class="text-danger">*</span></label>
+                                    <input type="text" id="update_product_name" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="update_product_category_id" class="form-label">Category <span class="text-danger">*</span></label>
+                                    <select id="update_product_category_id" class="custom-select">
+                                        <option value selected disabled>Choose...</option>
+                                        <?php $categories = $this->model->MOD_GET_PRODUCT_CATEGORIES() ?>
+                                        <?php if ($categories) : ?>
+                                            <?php foreach ($categories as $category) : ?>
+                                                <option value="<?= $category->id ?>"><?= $category->name ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="update_product_supplier_id" class="form-label">Supplier <span class="text-danger">*</span></label>
+                                    <select id="update_product_supplier_id" class="custom-select">
+                                        <option value selected disabled>Choose...</option>
+                                        <?php $suppliers = $this->model->MOD_GET_SUPPLIERS() ?>
+                                        <?php if ($suppliers) : ?>
+                                            <?php foreach ($suppliers as $supplier) : ?>
+                                                <option value="<?= $supplier->id ?>"><?= $supplier->name ?></option>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="update_product_price" class="form-label">Price <span class="text-danger">*</span></label>
+                                    <input type="number" step="any" id="update_product_price" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="update_product_cost_price" class="form-label">Cost Price <span class="text-danger">*</span></label>
+                                    <input type="number" step="any" id="update_product_cost_price" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="update_product_quantity" class="form-label">Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" id="update_product_quantity" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="update_product_description" class="form-label">Description <span class="text-danger">*</span></label>
+                                    <textarea id="update_product_description" class="form-control" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="update_product_id">
+                        <input type="hidden" id="update_product_old_image">
+
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success" id="update_product_submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -1041,7 +1143,7 @@
                 $('#edit_login_account_image_label').text(this.files[0].name);
                 $('#edit_login_account_image_display').attr('src', window.URL.createObjectURL(this.files[0]));
             })
-            
+
             $("#new_product_image").change(function() {
                 $('#new_product_image_label').text(this.files[0].name);
                 $('#new_product_image_display').attr('src', window.URL.createObjectURL(this.files[0]));
@@ -1247,6 +1349,94 @@
                                 console.error(error);
                             }
                         });
+                    }
+                });
+            })
+
+            $(document).on('click', '.update_product', function() {
+                var parent_tr = $(this).parent("td.text-center").parent("tr");
+                var id = parent_tr.children("td.id").text();
+                var name = parent_tr.children("td.name").text();
+                var category_id = parent_tr.children("td.category_id").text();
+                var supplier_id = parent_tr.children("td.supplier_id").text();
+                var description = parent_tr.children("td.description").text();
+                var price = parent_tr.children("td.price").text();
+                var cost_price = parent_tr.children("td.cost_price").text();
+                var quantity = parent_tr.children("td.quantity").text();
+                var image = parent_tr.children("td.image").text();
+
+                $("#update_product_id").val(id);
+                $("#update_product_name").val(name);
+                $("#update_product_category_id").val(category_id);
+                $("#update_product_supplier_id").val(supplier_id);
+                $("#update_product_description").val(description);
+                $("#update_product_price").val(price);
+                $("#update_product_cost_price").val(cost_price);
+                $("#update_product_quantity").val(quantity);
+                $("#update_product_image_display").attr("src", base_url + "dist/images/uploads/" + image);
+                $("#update_product_image_label").text(image);
+                $("#update_product_old_image").val(image);
+
+                $("#update_product").modal().show();
+            })
+
+            $("#update_product_image").change(function() {
+                $('#update_product_image_label').text(this.files[0].name);
+                $('#update_product_image_display').attr('src', window.URL.createObjectURL(this.files[0]));
+            })
+
+            $("#update_product_form").submit(function() {
+                var id = $("#update_product_id");
+                var name = $("#update_product_name");
+                var category_id = $("#update_product_category_id");
+                var supplier_id = $("#update_product_supplier_id");
+                var description = $("#update_product_description");
+                var price = $("#update_product_price");
+                var cost_price = $("#update_product_cost_price");
+                var quantity = $("#update_product_quantity");
+                var description = $("#update_product_description");
+                var old_image = $("#update_product_old_image");
+                var image = $("#update_product_image")[0].files[0];
+                
+                $("#update_product_submit").text("Processing Request...");
+                $("#update_product_submit").attr("disabled", true);
+
+                $("#update_product_name").attr("disabled", true);
+                $("#update_product_category_id").attr("disabled", true);
+                $("#update_product_supplier_id").attr("disabled", true);
+                $("#update_product_description").attr("disabled", true);
+                $("#update_product_price").attr("disabled", true);
+                $("#update_product_cost_price").attr("disabled", true);
+                $("#update_product_quantity").attr("disabled", true);
+                $("#update_product_descrition").attr("disabled", true);
+                $("#update_product_image").attr("disabled", true);
+
+                var formData = new FormData();
+
+                formData.append('id', id.val());
+                formData.append('name', name.val());
+                formData.append('category_id', category_id.val());
+                formData.append('supplier_id', supplier_id.val());
+                formData.append('description', description.val());
+                formData.append('price', price.val());
+                formData.append('cost_price', cost_price.val());
+                formData.append('quantity', quantity.val());
+                formData.append('description', description.val());
+                formData.append('image', image);
+                formData.append('old_image', old_image.val());
+
+                $.ajax({
+                    url: base_url + 'server/update_product',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
                     }
                 });
             })

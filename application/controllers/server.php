@@ -271,6 +271,42 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
+    
+    public function update_product()
+    {
+        $id = $this->input->post("id");
+        $name = $this->input->post("name");
+        $category_id = $this->input->post("category_id");
+        $supplier_id = $this->input->post("supplier_id");
+        $price = $this->input->post("price");
+        $cost_price = $this->input->post("cost_price");
+        $quantity = $this->input->post("quantity");
+        $description = $this->input->post("description");
+        $old_image = $this->input->post("old_image");
+        $image = isset($_FILES["image"]) ? $_FILES["image"] : null;
+
+        $errors = 0;
+
+        if ($image) {
+            if (!$this->upload_image($image)) {
+                $errors++;
+            }
+
+            $image = basename($image["name"]);
+        } else {
+            $image = $old_image;
+        }
+
+        $this->model->MOD_UPDATE_PRODUCT($name, $description, $price, $cost_price, $quantity, $category_id, $supplier_id, $image, $id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "A product is successfully updated.",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
 
     public function update_supplier()
     {
