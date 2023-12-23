@@ -177,14 +177,16 @@ class server extends CI_Controller
             $errors = 0;
 
             if ($image) {
-                if (!$this->upload_image($image)) {
+                $uniqueImageName = $this->generate_unique_image_name($image);
+                if (!$this->upload_image($image, $uniqueImageName)) {
                     $errors++;
                 }
+                $image = $uniqueImageName;
             }
 
             if ($errors == 0) {
                 if ($image) {
-                    $image = basename($image["name"]);
+                    $image = basename($image);
                 } else {
                     $image = "default_user_image.png";
                 }
@@ -192,7 +194,6 @@ class server extends CI_Controller
                 $this->model->MOD_ADD_USER_ACCOUNT($name, $username, password_hash($password, PASSWORD_BCRYPT), $image);
 
                 $useraccount = $this->model->MOD_CHECK_USERNAME($username);
-
                 $useraccount_id = $useraccount[0]->id;
 
                 $this->model->MOD_ADD_CUSTOMER($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
@@ -252,11 +253,12 @@ class server extends CI_Controller
         $errors = 0;
 
         if ($image) {
-            if (!$this->upload_image($image)) {
+            $uniqueImageName = $this->generate_unique_image_name($image);
+            if (!$this->upload_image($image, $uniqueImageName)) {
                 $errors++;
             }
 
-            $image = basename($image["name"]);
+            $image = $uniqueImageName;
         } else {
             $image = "default_item_image.png";
         }
@@ -271,7 +273,7 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
-    
+
     public function update_product()
     {
         $id = $this->input->post("id");
@@ -288,11 +290,12 @@ class server extends CI_Controller
         $errors = 0;
 
         if ($image) {
-            if (!$this->upload_image($image)) {
+            $uniqueImageName = $this->generate_unique_image_name($image);
+            if (!$this->upload_image($image, $uniqueImageName)) {
                 $errors++;
             }
 
-            $image = basename($image["name"]);
+            $image = $uniqueImageName;
         } else {
             $image = $old_image;
         }
@@ -397,11 +400,12 @@ class server extends CI_Controller
             }
 
             if ($image) {
-                if (!$this->upload_image($image)) {
+                $uniqueImageName = $this->generate_unique_image_name($image);
+                if (!$this->upload_image($image, $uniqueImageName)) {
                     $errors++;
                 }
 
-                $image = basename($image["name"]);
+                $image = $uniqueImageName;
             } else {
                 $image = $old_image;
             }
@@ -439,16 +443,34 @@ class server extends CI_Controller
         echo json_encode(true);
     }
 
-    private function upload_image($image)
+    private function generate_unique_image_name($image)
     {
         $targetDirectory = "dist/images/uploads/";
-        $targetFile = $targetDirectory . basename($image["name"]);
+        $originalFileName = basename($image["name"]);
+        $targetFile = $targetDirectory . $originalFileName;
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        // Check if file already exists, if so, rename it
+        $counter = 1;
+        while (file_exists($targetFile)) {
+            $fileNameWithoutExt = pathinfo($originalFileName, PATHINFO_FILENAME);
+            $targetFile = $targetDirectory . $fileNameWithoutExt . '_' . $counter . '.' . $imageFileType;
+            $counter++;
+        }
+
+        return basename($targetFile);
+    }
+
+    private function upload_image($image, $uniqueImageName)
+    {
+        $targetDirectory = "dist/images/uploads/";
+        $targetFile = $targetDirectory . $uniqueImageName;
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
         $check = getimagesize($image["tmp_name"]);
 
-        if ($check) {
+        if ($check !== false) {
             $uploadOk = 1;
         } else {
             $uploadOk = 0;
