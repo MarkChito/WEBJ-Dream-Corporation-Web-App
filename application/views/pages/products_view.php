@@ -7,8 +7,8 @@
             <?php if ($categories) : ?>
                 <?php foreach ($categories as $category) : ?>
                     <div class="agile_top_brands_grids">
-                        <div class="col-md-12">
-                            <h4><?= $category->name ?></h4>
+                        <div class="col-md-6">
+                            <a href="products?category=<?= $category->id ?>"><?= $category->name ?></a> 
                         </div>
                         <div style="height: 30px;"></div>
                         <?php $products = $this->model->MOD_GET_PRODUCTS($category->id) ?>
@@ -21,7 +21,7 @@
                                                 <figure>
                                                     <div class="snipcart-item block">
                                                         <div class="snipcart-thumb">
-                                                            <a href="product?item_id=<?= $product->id ?>" title="View Product Details">
+                                                            <a href="product?category=<?= $category->id ?>&item_id=<?= $product->id ?>" title="View Product Details">
                                                                 <img src="./dist/images/uploads/<?= $product->image ?>" style="width: 140px; height: 140px;" />
                                                             </a>
                                                             <p class="text-truncate"><?= $product->name ?></p>
@@ -46,7 +46,7 @@
             <?php endif ?>
         <?php else : ?>
             <h3><?= $category_name ?></h3>
-            
+
             <div class="agile_top_brands_grids">
                 <?php $products = $this->model->MOD_GET_ALL_PRODUCTS_BY_CATEGORY($category_id) ?>
                 <?php if ($products) : ?>
@@ -58,7 +58,7 @@
                                         <figure>
                                             <div class="snipcart-item block">
                                                 <div class="snipcart-thumb">
-                                                    <a href="product?item_id=<?= $product->id ?>" title="View Product Details">
+                                                    <a href="product?category=<?= $category_id ?>&item_id=<?= $product->id ?>" title="View Product Details">
                                                         <img src="./dist/images/uploads/<?= $product->image ?>" style="width: 140px; height: 140px;" />
                                                     </a>
                                                     <p class="text-truncate"><?= $product->name ?></p>

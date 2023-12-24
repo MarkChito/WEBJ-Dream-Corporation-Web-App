@@ -47,6 +47,14 @@ class model extends CI_Model
 
         return $query->result();
     }
+    
+    public function MOD_GET_ALL_PRODUCTS_BY_SUPPLIER($supplier_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_products` WHERE `supplier_id` = '" . $supplier_id . "'";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
 
     public function MOD_GET_PRODUCT($item_id)
     {
@@ -148,11 +156,11 @@ class model extends CI_Model
         $this->db->query($sql, array($name, $username, $password, $image));
     }
 
-    public function MOD_ADD_CUSTOMER($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code)
+    public function MOD_ADD_CUSTOMER($useraccount_id, $current_date, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code)
     {
-        $sql = "INSERT INTO `tbl_webjdreamcorp_customers` (`id`, `useraccount_id`, `first_name`, `middle_name`, `last_name`, `email`, `mobile_number`, `house_number`, `subdivision_zone_purok`, `city`, `province`, `country`, `zip_code`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `tbl_webjdreamcorp_customers` (`id`, `useraccount_id`, `date_registered`, `first_name`, `middle_name`, `last_name`, `email`, `mobile_number`, `house_number`, `subdivision_zone_purok`, `city`, `province`, `country`, `zip_code`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $this->db->query($sql, array($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code));
+        $this->db->query($sql, array($useraccount_id, $current_date, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code));
     }
     
     public function MOD_NEW_PRODUCT($name, $category_id, $supplier_id, $price, $cost_price, $quantity, $description, $image)

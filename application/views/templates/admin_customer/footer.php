@@ -7,6 +7,32 @@
         </div>
     </footer>
 
+    <!-- Check Delete Status -->
+    <div class="modal fade" id="check_delete_status" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="check_delete_status_title">Checking category items</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="loading text-center py-5">
+                        <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                        <h5 class="text-muted">Please Wait...</h5>
+                    </div>
+                    <div class="error-message py-5 text-center d-none">
+                        <h3 class="text-muted">This category is not empty!</h3>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- About the Developers Modal-->
     <div class="modal fade" id="about_the_developers_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -859,36 +885,70 @@
                 var parent_tr = $(this).parent("td.text-center").parent("tr");
                 var id = parent_tr.children("td.id").text();
 
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var formData = new FormData();
+                $("#check_delete_status_title").text("Checking category items");
+                $(".loading").removeClass("d-none");
+                $(".error-message").addClass("d-none");
 
-                        formData.append('id', id);
+                $("#check_delete_status").modal('show');
 
-                        $.ajax({
-                            url: base_url + 'server/delete_category',
-                            data: formData,
-                            type: 'POST',
-                            dataType: 'JSON',
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                location.href = base_url + current_tab;
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(error);
+                setTimeout(function() {
+                    var formData = new FormData();
+
+                    formData.append('id', id);
+
+                    $.ajax({
+                        url: base_url + 'server/check_category_items',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response) {
+                                $("#check_delete_status_title").text("Category cannot be deleted");
+                                $(".loading").addClass("d-none");
+                                $(".error-message").removeClass("d-none");
+                                $(".error-message").children("h3").text("This category is not empty!");
+                            } else {
+                                $("#check_delete_status").modal('hide');
+
+                                Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes, delete it!"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        var formData = new FormData();
+
+                                        formData.append('id', id);
+
+                                        $.ajax({
+                                            url: base_url + 'server/delete_category',
+                                            data: formData,
+                                            type: 'POST',
+                                            dataType: 'JSON',
+                                            processData: false,
+                                            contentType: false,
+                                            success: function(response) {
+                                                location.href = base_url + current_tab;
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.error(error);
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                        });
-                    }
-                });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }, 1000);
             })
 
             $("#new_supplier_city").change(function() {
@@ -1107,36 +1167,70 @@
                 var parent_tr = $(this).parent("td.text-center").parent("tr");
                 var id = parent_tr.children("td.id").text();
 
-                Swal.fire({
-                    title: "Are you sure?",
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var formData = new FormData();
+                $("#check_delete_status_title").text("Checking supplier items");
+                $(".loading").removeClass("d-none");
+                $(".error-message").addClass("d-none");
 
-                        formData.append('id', id);
+                $("#check_delete_status").modal('show');
 
-                        $.ajax({
-                            url: base_url + 'server/delete_supplier',
-                            data: formData,
-                            type: 'POST',
-                            dataType: 'JSON',
-                            processData: false,
-                            contentType: false,
-                            success: function(response) {
-                                location.href = base_url + current_tab;
-                            },
-                            error: function(xhr, status, error) {
-                                console.error(error);
+                setTimeout(function() {
+                    var formData = new FormData();
+
+                    formData.append('id', id);
+
+                    $.ajax({
+                        url: base_url + 'server/check_supplier_items',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response) {
+                                $("#check_delete_status_title").text("Supplier cannot be deleted");
+                                $(".loading").addClass("d-none");
+                                $(".error-message").removeClass("d-none");
+                                $(".error-message").children("h3").text("This supplier is not empty!");
+                            } else {
+                                $("#check_delete_status").modal('hide');
+
+                                Swal.fire({
+                                    title: "Are you sure?",
+                                    text: "You won't be able to revert this!",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonColor: "#3085d6",
+                                    cancelButtonColor: "#d33",
+                                    confirmButtonText: "Yes, delete it!"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        var formData = new FormData();
+
+                                        formData.append('id', id);
+
+                                        $.ajax({
+                                            url: base_url + 'server/delete_supplier',
+                                            data: formData,
+                                            type: 'POST',
+                                            dataType: 'JSON',
+                                            processData: false,
+                                            contentType: false,
+                                            success: function(response) {
+                                                location.href = base_url + current_tab;
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.error(error);
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                        });
-                    }
-                });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }, 1000);
             })
 
             $("#edit_login_account_image").change(function() {
@@ -1397,7 +1491,7 @@
                 var description = $("#update_product_description");
                 var old_image = $("#update_product_old_image");
                 var image = $("#update_product_image")[0].files[0];
-                
+
                 $("#update_product_submit").text("Processing Request...");
                 $("#update_product_submit").attr("disabled", true);
 

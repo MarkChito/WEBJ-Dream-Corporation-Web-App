@@ -13,8 +13,10 @@ class product extends CI_Controller
     public function index()
     {
         $item_id = $this->input->get("item_id");
+        $categor_id = $this->input->get("category");
 
         $product =  $this->model->MOD_GET_PRODUCT($item_id);
+        $category =  $this->model->MOD_GET_PRODUCT_CATEGORY($categor_id);
 
         if ($product) {
             $data["product_id"] = $product[0]->id;
@@ -24,6 +26,8 @@ class product extends CI_Controller
             $data["product_category_id"] = $product[0]->category_id;
             $data["product_image"] = $product[0]->image;
         }
+
+        $data["category_name"] = $category[0]->name;
 
         $this->session->set_userdata("current_tab", "product");
         $this->session->set_userdata("current_page", $data["product_name"]);

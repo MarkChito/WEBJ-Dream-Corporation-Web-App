@@ -32,7 +32,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>0</h3>
+                            <h3><?= count($this->model->MOD_GET_ALL_PRODUCTS()) ?></h3>
 
                             <p>All Products</p>
                         </div>

@@ -146,6 +146,8 @@ class server extends CI_Controller
 
     public function register()
     {
+        $currentDate = date("Y-m-d");
+
         $first_name = $this->input->post("first_name");
         $middle_name = $this->input->post("middle_name");
         $last_name = $this->input->post("last_name");
@@ -196,7 +198,7 @@ class server extends CI_Controller
                 $useraccount = $this->model->MOD_CHECK_USERNAME($username);
                 $useraccount_id = $useraccount[0]->id;
 
-                $this->model->MOD_ADD_CUSTOMER($useraccount_id, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
+                $this->model->MOD_ADD_CUSTOMER($useraccount_id, $currentDate, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
 
                 $this->session->set_userdata("alert", array(
                     "title" => "Success",
@@ -427,6 +429,32 @@ class server extends CI_Controller
             }
 
             echo json_encode(true);
+        }
+    }
+
+    public function check_category_items()
+    {
+        $id = $this->input->post("id");
+
+        $category = $this->model->MOD_GET_PRODUCTS($id);
+
+        if ($category) {
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
+    
+    public function check_supplier_items()
+    {
+        $id = $this->input->post("id");
+
+        $category = $this->model->MOD_GET_ALL_PRODUCTS_BY_SUPPLIER($id);
+
+        if ($category) {
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
         }
     }
 

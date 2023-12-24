@@ -106,6 +106,12 @@
             <div class="container">
                 <ul>
                     <li><i class="fa fa-home" aria-hidden="true"></i><a href="<?= base_url() ?>">Home</a><span>|</span></li>
+                    <?php if ($this->input->get("category") || $this->input->get("item_id")) : ?>
+                        <li><a href="<?= base_url() ?>products">All Products</a><span>|</span></li>
+                        <?php if ($this->input->get("item_id")) : ?>
+                            <li><a href="<?= base_url() ?>products?category=<?= $this->input->get("category") ?>"><?= $category_name ?></a><span>|</span></li>
+                        <?php endif ?>
+                    <?php endif ?>
                     <li><?= $this->session->userdata("current_page") ?></li>
                 </ul>
             </div>
