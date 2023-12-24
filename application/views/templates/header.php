@@ -57,21 +57,21 @@
         </div>
         <!-- Search -->
         <div class="w3l_search">
-            <form action="#" method="post">
+            <form action="javascript:void(0)" method="post">
                 <input type="text" name="Product" placeholder="Search a product..." required>
                 <input type="submit" value=" ">
             </form>
         </div>
         <!-- Cart -->
         <div class="product_list_header">
-            <input type="button" value="View your cart" class="button" />
+            <input type="button" value="View your cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" />
         </div>
         <!-- Login or Register -->
         <div class="w3l_header_right1">
             <?php if ($this->session->userdata("id")) : ?>
                 <h2><a href="<?= $this->session->userdata("user_type") ?>/dashboard">Go to Dashboard</a></h2>
             <?php else : ?>
-                <h2><a href="#" data-toggle="modal" data-target="#login">Login or Register</a></h2>
+                <h2><a href="#" class="login_or_register">Login or Register</a></h2>
             <?php endif ?>
         </div>
         <div class="clearfix"></div>
@@ -187,7 +187,7 @@
                                 <strong>Price:</strong> <span>₱<?= $product_price ?></span>
                             </div>
                             <div class="snipcart-details agileinfo_single_right_details">
-                                <input type="submit" value="Add to cart" class="button" />
+                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" />
                             </div>
                         </div>
                     </div>

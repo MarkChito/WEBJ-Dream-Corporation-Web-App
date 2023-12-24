@@ -187,6 +187,10 @@
                 $("#alert").modal().show();
             }
 
+            $(".login_or_register").click(function(){
+                $("#login").modal().show();
+            })
+
             $(".testimonial").wmuSlider();
 
             $().UItoTop({

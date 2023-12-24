@@ -21,7 +21,7 @@
                                                     <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                                 </div>
                                                 <div class="snipcart-details">
-                                                    <input type="submit" value="Add to cart" class="button" />
+                                                    <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" />
                                                 </div>
                                             </div>
                                         </figure>
