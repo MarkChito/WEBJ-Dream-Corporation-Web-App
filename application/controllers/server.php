@@ -444,7 +444,7 @@ class server extends CI_Controller
             echo json_encode(false);
         }
     }
-    
+
     public function check_supplier_items()
     {
         $id = $this->input->post("id");

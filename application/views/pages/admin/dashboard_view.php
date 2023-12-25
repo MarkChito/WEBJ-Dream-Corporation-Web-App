@@ -115,7 +115,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="admin/customers">View All Orders</a>
+                            <a href="sales">View All Orders</a>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                             </ul>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="admin/customers">View All Customers</a>
+                            <a href="customers">View All Customers</a>
                         </div>
                     </div>
                 </div>
