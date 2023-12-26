@@ -20,17 +20,6 @@
                             <table class="table table-hover datatable">
                                 <thead>
                                     <tr>
-                                        <th class="d-none">ID</th>
-                                        <th class="d-none">User Account ID</th>
-                                        <th class="d-none">First Name</th>
-                                        <th class="d-none">Middle Name</th>
-                                        <th class="d-none">Last Name</th>
-                                        <th class="d-none">House Number</th>
-                                        <th class="d-none">Subdivision/Zone/Purok</th>
-                                        <th class="d-none">City</th>
-                                        <th class="d-none">Province</th>
-                                        <th class="d-none">Country</th>
-                                        <th class="d-none">Zip Code</th>
                                         <th>Name</th>
                                         <th>Mobile Number</th>
                                         <th>Email</th>
@@ -63,17 +52,9 @@
                                         <?php foreach ($customers as $customer) : ?>
                                             <tr>
                                                 <?php
-                                                $first_name = $customer->first_name;
-                                                $middle_name = $customer->middle_name;
-                                                $last_name = $customer->last_name;
+                                                $useraccounts = $this->model->MOD_GET_ADMINISTRATOR_DATA($customer->useraccount_id);
 
-                                                $name = $first_name;
-
-                                                if (!empty($middle_name)) {
-                                                    $name .= " " . $middle_name[0]. ". ";
-                                                }
-
-                                                $name .= " " . $last_name;
+                                                $name = $useraccounts[0]->name;
 
                                                 $house_number = $customer->house_number;
                                                 $subdivision_zone_purok = $customer->subdivision_zone_purok;
@@ -84,21 +65,14 @@
 
                                                 $address = concatenateAddress($house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
                                                 ?>
-                                                <td class="d-none id"><?= $customer->id ?></td>
-                                                <td class="d-none useraccount_id"><?= $customer->useraccount_id ?></td>
-                                                <td class="d-none first_name"><?= $customer->first_name ?></td>
-                                                <td class="d-none middle_name"><?= $customer->middle_name ?></td>
-                                                <td class="d-none last_name"><?= $customer->last_name ?></td>
-                                                <td class="d-none house_number"><?= $customer->house_number ?></td>
-                                                <td class="d-none subdivision_zone_purok"><?= $customer->subdivision_zone_purok ?></td>
-                                                <td class="d-none city"><?= $customer->city ?></td>
-                                                <td class="d-none province"><?= $customer->province ?></td>
-                                                <td class="d-none country"><?= $customer->country ?></td>
-                                                <td class="d-none zip_code"><?= $customer->zip_code ?></td>
-                                                <td class="name"><?= $name ?></td>
-                                                <td class="mobile_number"><?= $customer->mobile_number ?></td>
-                                                <td class="email"><?= $customer->email ?></td>
-                                                <td class="address"><?= $address ?></td>
+                                                <td class="name">
+                                                    <a href="javascript:void(0)" class="view_customer" is_update="false" useraccount_id="<?= $customer->useraccount_id ?>">
+                                                        <?= $name ?>
+                                                    </a>
+                                                </td>
+                                                <td><?= $customer->mobile_number ?></td>
+                                                <td><?= $customer->email ?></td>
+                                                <td><?= $address ?></td>
                                             </tr>
                                         <?php endforeach ?>
                                     <?php endif ?>

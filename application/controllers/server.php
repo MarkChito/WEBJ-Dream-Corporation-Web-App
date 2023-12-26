@@ -458,6 +458,24 @@ class server extends CI_Controller
         }
     }
 
+    public function get_userdata()
+    {
+        $id = $this->input->post("id");
+
+        $useraccount = $this->model->MOD_GET_ADMINISTRATOR_DATA($id);
+
+        echo json_encode($useraccount);
+    }
+    
+    public function get_customer_data()
+    {
+        $id = $this->input->post("id");
+
+        $customer_data = $this->model->MOD_GET_CUSTOMER_BY_ID($id);
+
+        echo json_encode($customer_data);
+    }
+
     public function logout()
     {
         $this->session->unset_userdata("id");

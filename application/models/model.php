@@ -80,6 +80,14 @@ class model extends CI_Model
         return $query->result();
     }
     
+    public function MOD_GET_CUSTOMER_BY_ID($id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_customers` WHERE `useraccount_id` = ?";
+        $query = $this->db->query($sql, array($id));
+
+        return $query->result();
+    }
+    
     public function MOD_GET_ALL_CUSTOMERS()
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_customers` ORDER BY `id` DESC";

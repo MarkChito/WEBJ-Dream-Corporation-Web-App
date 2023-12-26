@@ -672,6 +672,186 @@
         </div>
     </div>
 
+    <!-- Customer Details Modal -->
+    <div class="modal fade" id="customer_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="customer_details_title">Customer Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="customer_details_form">
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <img id="customer_details_image_display" class="rounded-circle img-bordered-sm" width="200" height="200" src="<?= base_url() ?>dist/images/uploads/default_user_image.png">
+                            </div>
+                            <div class="form-group mt-3">
+                                <div class="input-group d-none">
+                                    <input type="file" class="custom-file-input" id="customer_details_image" accept=".jpg, .jpeg, .png">
+                                    <label class="custom-file-label" for="customer_details_image" id="customer_details_image_label">Choose file</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_first_name" class="form-label">First Name <span class="text-danger required d-none">*</span></label>
+                                        <input type="text" id="customer_details_first_name" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_middle_name" class="form-label">Middle Name <span class="text-danger required d-none">*</span></label>
+                                        <input type="text" id="customer_details_middle_name" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_last_name" class="form-label">Last Name <span class="text-danger required d-none">*</span></label>
+                                        <input type="text" id="customer_details_last_name" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="customer_details_mobile_number" class="form-label">Mobile Number <span class="text-danger required d-none">*</span></label>
+                                        <input type="number" id="customer_details_mobile_number" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="customer_details_email" class="form-label">Email <span class="text-danger required d-none">*</span></label>
+                                        <input type="email" id="customer_details_email" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_house_number" class="form-label">House Number <span class="text-danger required d-none">*</span></label>
+                                        <input type="number" id="customer_details_house_number" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_subdivision_zone_purok" class="form-label">Subdivision/Zone/Purok <span class="text-danger required d-none">*</span></label>
+                                        <input type="email" id="customer_details_subdivision_zone_purok" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_city" class="form-label">City/Municipality <span class="text-danger required d-none">*</span></label>
+                                        <select class="custom-select" id="customer_details_city" required disabled>
+                                            <option value="" selected="" disabled="">Choose...</option>
+                                            <option value="Baao">Baao</option>
+                                            <option value="Balatan">Balatan</option>
+                                            <option value="Bato">Bato</option>
+                                            <option value="Bombon">Bombon</option>
+                                            <option value="Buhi">Buhi</option>
+                                            <option value="Bula">Bula</option>
+                                            <option value="Cabusao">Cabusao</option>
+                                            <option value="Calabanga">Calabanga</option>
+                                            <option value="Camaligan">Camaligan</option>
+                                            <option value="Canaman">Canaman</option>
+                                            <option value="Caramoan">Caramoan</option>
+                                            <option value="Del Gallego">Del Gallego</option>
+                                            <option value="Gainza">Gainza</option>
+                                            <option value="Garchitorena">Garchitorena</option>
+                                            <option value="Goa">Goa</option>
+                                            <option value="Iriga City">Iriga City</option>
+                                            <option value="Lagonoy">Lagonoy</option>
+                                            <option value="Libmanan">Libmanan</option>
+                                            <option value="Lupi">Lupi</option>
+                                            <option value="Magarao">Magarao</option>
+                                            <option value="Milaor">Milaor</option>
+                                            <option value="Minalabac">Minalabac</option>
+                                            <option value="Nabua">Nabua</option>
+                                            <option value="Naga City">Naga City</option>
+                                            <option value="Ocampo">Ocampo</option>
+                                            <option value="Pamplona">Pamplona</option>
+                                            <option value="Pasacao">Pasacao</option>
+                                            <option value="Pili">Pili</option>
+                                            <option value="Presentacion">Presentacion</option>
+                                            <option value="Ragay">Ragay</option>
+                                            <option value="Sagnay">Sagnay</option>
+                                            <option value="San Fernando">San Fernando</option>
+                                            <option value="San Jose">San Jose</option>
+                                            <option value="Sipocot">Sipocot</option>
+                                            <option value="Siruma">Siruma</option>
+                                            <option value="Tigaon">Tigaon</option>
+                                            <option value="Tinambac">Tinambac</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_province" class="form-label">Province <span class="text-danger required d-none">*</span></label>
+                                        <select class="custom-select" id="customer_details_province" required disabled>
+                                            <option value="" selected="" disabled="">Choose...</option>
+                                            <option value="Camarines Sur">Camarines Sur</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_country" class="form-label">Country <span class="text-danger required d-none">*</span></label>
+                                        <select class="custom-select" id="customer_details_country" required disabled>
+                                            <option value="" selected="" disabled="">Choose...</option>
+                                            <option value="Philippines">Philippines</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_zip_code" class="form-label">Zip Code <span class="text-danger required d-none">*</span></label>
+                                        <input type="email" id="customer_details_zip_code" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row d-none">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_username" class="form-label">Username <span class="text-danger required d-none">*</span></label>
+                                        <input type="text" id="customer_details_username" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_password" class="form-label">Password <span class="text-danger required d-none">*</span></label>
+                                        <input type="password" id="customer_details_password" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="customer_details_confirm_password" class="form-label">Confirm Password <span class="text-danger required d-none">*</span></label>
+                                        <input type="password" id="customer_details_confirm_password" class="form-control" required readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="customer_details_id">
+                            <input type="hidden" id="customer_details_old_password">
+                            <input type="hidden" id="customer_details_old_image">
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success d-none" id="customer_details_submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -1528,6 +1708,81 @@
                     contentType: false,
                     success: function(response) {
                         location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $(document).on('click', '.view_customer', function() {
+                var id = $(this).attr("useraccount_id");
+
+                $("#customer_details").modal("show");
+
+                var formData = new FormData();
+
+                formData.append('id', id);
+
+                $.ajax({
+                    url: base_url + 'server/get_userdata',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var username = response[0].username;
+                        var password = response[0].password;
+                        var image = response[0].image;
+
+                        $("#customer_details_image_display").attr("src", base_url + "dist/images/uploads/" + image);
+                        $("#customer_details_username").val(username);
+                        $("#customer_details_id").val(id);
+                        $("#customer_details_old_password").val(password);
+                        $("#customer_details_old_image").val(image);
+
+                        formData.append("id", id);
+
+                        $.ajax({
+                            url: base_url + 'server/get_customer_data',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response_2) {
+                                var first_name = response_2[0].first_name;
+                                var middle_name = response_2[0].middle_name;
+                                var last_name = response_2[0].last_name;
+                                var mobile_number = response_2[0].mobile_number;
+                                var email = response_2[0].email;
+                                var house_number = response_2[0].house_number;
+                                var subdivision_zone_purok = response_2[0].subdivision_zone_purok;
+                                var city = response_2[0].city;
+                                var province = response_2[0].province;
+                                var country = response_2[0].country;
+                                var zip_code = response_2[0].zip_code;
+
+                                $("#customer_details_first_name").val(first_name);
+                                $("#customer_details_middle_name").val(middle_name);
+                                $("#customer_details_last_name").val(last_name);
+                                $("#customer_details_mobile_number").val(mobile_number);
+                                $("#customer_details_email").val(email);
+                                $("#customer_details_house_number").val(house_number);
+                                $("#customer_details_subdivision_zone_purok").val(subdivision_zone_purok);
+                                $("#customer_details_city").val(city);
+                                $("#customer_details_province").val(province);
+                                $("#customer_details_country").val(country);
+                                $("#customer_details_zip_code").val(zip_code);
+
+                                $(".actual-form").removeClass("d-none");
+                                $(".loading").addClass("d-none");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
