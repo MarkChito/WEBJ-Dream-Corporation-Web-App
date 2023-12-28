@@ -100,7 +100,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label class="col-form-label" for="edit_login_account_name">Name</label>
-                                <input type="text" class="form-control" id="edit_login_account_name" placeholder="Enter Name" required>
+                                <input type="text" class="form-control" id="edit_login_account_name" placeholder="Enter Name" required <?= $this->session->userdata("user_type") == "customer" ? "readonly" : null ?>>
                             </div>
                             <div class="form-group mb-3">
                                 <label class="col-form-label" for="edit_login_account_username">Username</label>

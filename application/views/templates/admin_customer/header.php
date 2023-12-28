@@ -43,7 +43,7 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button" id="btn_pushmenu"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="javascript:void(0)" role="button" id="btn_pushmenu"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
 
@@ -55,7 +55,10 @@
                         &nbsp;<?= $name ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#edit_login_account" id="btn_edit_login_account"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
+                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#edit_login_account" id="btn_edit_login_account"><i class="fas fa-user-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
+                        <?php if ($this->session->userdata("user_type") == "customer") : ?>
+                            <a class="dropdown-item" href="profile"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Profile</a>
+                        <?php endif ?>
                         <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#about_the_developers_modal"><i class="fas fa-info-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Developers</a>
                         <a class="dropdown-item btn_logout" href="javascript:void(0)"><i class="fas fa-sign-out-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Log Out</a>
                     </div>
@@ -77,63 +80,91 @@
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Dashboard Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "admin/dashboard" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-chart-bar"></i>
-                                <p>Dashboard</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Manage Orders Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/manage_orders" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_orders" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>Manage Orders</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Manage Products Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/manage_products" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_products" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-cubes"></i>
-                                <p>Manage Products</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Manage Categories Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/manage_categories" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_categories" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-folder-open"></i>
-                                <p>Manage Categories</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Manage Suppliers Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/manage_suppliers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_suppliers" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-truck"></i>
-                                <p>Manage Suppliers</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Customers Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/customers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/customers" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-users"></i>
-                                <p>Customers</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Sales Tab -->
-                        <li class="nav-item">
-                            <a href="<?= base_url() ?>admin/sales" class="nav-link <?= $this->session->userdata("current_tab") == "admin/sales" ? "active" : null ?>">
-                                <i class="nav-icon fas fa-chart-line"></i>
-                                <p>Sales</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
-                            </a>
-                        </li>
-                        <!-- Inventory Tab -->
+                        <?php if ($this->session->userdata("user_type") == "admin") : ?>
+                            <!-- Dashboard Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "admin/dashboard" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <p>Dashboard</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Manage Orders Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/manage_orders" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_orders" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>Manage Orders</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Manage Products Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/manage_products" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_products" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-cubes"></i>
+                                    <p>Manage Products</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Manage Categories Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/manage_categories" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_categories" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-folder-open"></i>
+                                    <p>Manage Categories</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Manage Suppliers Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/manage_suppliers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_suppliers" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-truck"></i>
+                                    <p>Manage Suppliers</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Customers Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/customers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/customers" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-users"></i>
+                                    <p>Customers</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Sales Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/sales" class="nav-link <?= $this->session->userdata("current_tab") == "admin/sales" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-chart-line"></i>
+                                    <p>Sales</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                        <?php else : ?>
+                            <!-- Dashboard Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>customer/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "customer/dashboard" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <p>Dashboard</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Shopping Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>" class="nav-link <?= $this->session->userdata("current_tab") == "" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>Shopping</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Shopping Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>customer/my_orders" class="nav-link <?= $this->session->userdata("current_tab") == "customer/my_orders" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-list-alt"></i>
+                                    <p>My Orders</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                        <?php endif ?>
+
+                        <!-- Logout Tab -->
                         <li class="nav-item">
                             <a href="javascript:void(0)" class="nav-link btn_logout">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>

@@ -71,7 +71,7 @@
             <?php if ($this->session->userdata("id")) : ?>
                 <h2><a href="<?= $this->session->userdata("user_type") ?>/dashboard">Go to Dashboard</a></h2>
             <?php else : ?>
-                <h2><a href="#" class="login_or_register">Login or Register</a></h2>
+                <h2><a href="javascript:void(0)" class="login_or_register">Login or Register</a></h2>
             <?php endif ?>
         </div>
         <div class="clearfix"></div>
