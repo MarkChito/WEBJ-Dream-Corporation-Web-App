@@ -23,6 +23,31 @@
         </div>
     </div>
 
+    <!-- Added to Cart Modal -->
+    <div class="modal fade" id="added_to_cart" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="loginModalLabel">
+                        Success!
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div style="height: 50px;">
+                        <h3 style="margin-top: 25px;" class="text-center text-success">
+                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                            Your item has been Added to Cart
+                        </h3>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Login Modal -->
     <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
@@ -140,6 +165,7 @@
     <script>
         $(document).ready(function() {
             var alert = <?= $this->session->userdata("alert") ? json_encode($this->session->userdata("alert")) : json_encode(array()) ?>;
+            var id = "<?= $this->session->userdata("id") ?>";
             var current_tab = "<?= $this->session->userdata("current_tab") ?>";
             var base_url = "<?= base_url() ?>";
 
@@ -187,7 +213,11 @@
                 $("#alert").modal().show();
             }
 
-            $(".login_or_register").click(function(){
+            if (id) {
+                get_cart_count(id);
+            }
+
+            $(".login_or_register").click(function() {
                 $("#login").modal().show();
             })
 
@@ -434,6 +464,66 @@
                 $("#error_register_username").addClass("hidden");
             })
 
+            $("#search_form").submit(function() {
+                var search_query = $("#search_query").val();
+
+                var formData = new FormData();
+
+                formData.append('search_query', search_query);
+
+                $.ajax({
+                    url: 'server/search_product',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + "search_results";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $("#view_cart").click(function() {
+                location.href = base_url + "customer/my_orders";
+            })
+
+            $(".add_to_cart").click(function() {
+                var customer_id = id;
+                var product_id = $(this).attr("product_id");
+
+                $(this).val("Processing...");
+                $(".add_to_cart").attr("disabled", true);
+
+                var formData = new FormData();
+
+                formData.append('customer_id', id);
+                formData.append('product_id', product_id);
+
+                $.ajax({
+                    url: 'server/add_to_cart',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        get_cart_count(customer_id);
+
+                        $(".add_to_cart").val("Add to Cart");
+                        $(".add_to_cart").removeAttr("disabled");
+
+                        $("#added_to_cart").modal().show();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
             function verify_password(password, confirm_password, password_error_label) {
                 var error = 0;
                 var error_message = null;
@@ -515,10 +605,35 @@
                     return false;
                 }
             }
+
+            function get_cart_count(id) {
+                var formData = new FormData();
+
+                formData.append('id', id);
+
+                $.ajax({
+                    url: 'server/get_cart_count',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response) {
+                            $("#cart_count").text(response);
+                            $("#cart_count").removeClass("hidden");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
         });
     </script>
 
     <?php $this->session->unset_userdata("alert"); ?>
+    <?php $this->session->unset_userdata("search_query"); ?>
 
     </body>
 

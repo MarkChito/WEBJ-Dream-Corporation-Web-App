@@ -6520,3 +6520,27 @@ input.checkbox:checked:after {
 	border: 1px solid #343A40;
 	border-radius: 50%;
 }
+
+.product_list_header {
+	position: relative;
+}
+
+.cart-button-wrapper {
+	position: relative;
+	display: inline-block;
+}
+
+.badge-on-button {
+	position: absolute;
+	top: 0 !important;
+	right: -8px;
+	/* Adjust this value to align the badge properly */
+	background-color: red;
+	font-size: 11px !important;
+	width: 18px !important;
+	height: 18px !important;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

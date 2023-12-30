@@ -57,14 +57,17 @@
         </div>
         <!-- Search -->
         <div class="w3l_search">
-            <form action="javascript:void(0)" method="post">
-                <input type="text" name="Product" placeholder="Search a product..." required>
+            <form action="javascript:void(0)" method="post" id="search_form">
+                <input type="text" id="search_query" placeholder="Search a product..." required>
                 <input type="submit" value=" ">
             </form>
         </div>
         <!-- Cart -->
         <div class="product_list_header">
-            <input type="button" value="View your cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" />
+            <div class="cart-button-wrapper">
+                <input type="button" value="View your cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" id="<?= $this->session->userdata("id") && $this->session->userdata("user_type") == "customer" ? "view_cart" : null ?>" />
+                <span class="badge-on-button hidden" id="cart_count">0</span>
+            </div>
         </div>
         <!-- Login or Register -->
         <div class="w3l_header_right1">
@@ -106,12 +109,18 @@
             <div class="container">
                 <ul>
                     <li><i class="fa fa-home" aria-hidden="true"></i><a href="<?= base_url() ?>">Home</a><span>|</span></li>
+
                     <?php if ($this->input->get("category") || $this->input->get("item_id")) : ?>
                         <li><a href="<?= base_url() ?>products">All Products</a><span>|</span></li>
                         <?php if ($this->input->get("item_id")) : ?>
                             <li><a href="<?= base_url() ?>products?category=<?= $this->input->get("category") ?>"><?= $category_name ?></a><span>|</span></li>
                         <?php endif ?>
                     <?php endif ?>
+
+                    <?php if ($this->session->userdata("search_query")) : ?>
+                        <li><a href="<?= base_url() ?>products">All Products</a><span>|</span></li>
+                    <?php endif ?>
+
                     <li><?= $this->session->userdata("current_page") ?></li>
                 </ul>
             </div>
@@ -193,7 +202,7 @@
                                 <strong>Price:</strong> <span>₱<?= $product_price ?></span>
                             </div>
                             <div class="snipcart-details agileinfo_single_right_details">
-                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" />
+                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product_id ?>" />
                             </div>
                         </div>
                     </div>

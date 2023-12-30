@@ -511,6 +511,54 @@ class server extends CI_Controller
         echo json_encode(true);
     }
 
+    public function search_product()
+    {
+        $search_query = $this->input->post("search_query");
+
+        $this->session->set_userdata("search_query", $search_query);
+
+        echo json_encode(true);
+    }
+
+    public function get_cart_count()
+    {
+        $id = $this->input->post("id");
+
+        $cart = $this->model->MOD_GET_ORDERS("Cart", $id);
+
+        if ($cart) {
+            echo json_encode(count($cart));
+        } else {
+            echo json_encode(false);
+        }
+    }
+
+    public function add_to_cart()
+    {
+        $transaction_date = date("Y-m-d");
+        $customer_id = $this->input->post("customer_id");
+        $item_id = $this->input->post("product_id");
+        $quantity = "1";
+        $status = "Cart";
+
+        $product = $this->model->MOD_GET_PRODUCT($item_id);
+
+        $total_amount = $product[0]->price;
+
+        $order_exists = $this->model->MOD_CHECK_ORDER($customer_id, $item_id, $status);
+
+        if ($order_exists) {
+            $quantity = floatval($quantity) + floatval($order_exists[0]->quantity);
+            $total_amount = floatval($total_amount) + floatval($order_exists[0]->total_amount);
+
+            $this->model->MOD_UPDATE_CART($transaction_date, $quantity, $total_amount, $customer_id, $item_id, $status);
+        } else {
+            $this->model->MOD_ADD_TO_CART($transaction_date, $customer_id, $item_id, $quantity, $total_amount, $status);
+        }
+
+        echo json_encode(true);
+    }
+
     public function logout()
     {
         $this->session->unset_userdata("id");
