@@ -3,8 +3,14 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-12">
+                <div class="col-sm-8">
                     <h1 class="m-0">Customers</h1>
+                </div>
+                <div class="col-4">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="<?= base_url() ?>admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Customers</li>
+                    </ol>
                 </div>
             </div>
         </div>

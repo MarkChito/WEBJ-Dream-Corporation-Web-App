@@ -688,12 +688,7 @@
                             <div class="text-center">
                                 <img id="customer_details_image_display" class="rounded-circle img-bordered-sm" width="200" height="200" src="<?= base_url() ?>dist/images/uploads/default_user_image.png">
                             </div>
-                            <div class="form-group mt-3">
-                                <div class="input-group d-none">
-                                    <input type="file" class="custom-file-input" id="customer_details_image" accept=".jpg, .jpeg, .png">
-                                    <label class="custom-file-label" for="customer_details_image" id="customer_details_image_label">Choose file</label>
-                                </div>
-                            </div>
+                            <div class="form-group mt-3"></div>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -719,6 +714,7 @@
                                     <div class="form-group">
                                         <label for="customer_details_mobile_number" class="form-label">Mobile Number <span class="text-danger required d-none">*</span></label>
                                         <input type="number" id="customer_details_mobile_number" class="form-control" required readonly>
+                                        <small class="text-danger d-none" id="error_customer_details_mobile_number"></small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -738,7 +734,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="customer_details_subdivision_zone_purok" class="form-label">Subdivision/Zone/Purok <span class="text-danger required d-none">*</span></label>
-                                        <input type="email" id="customer_details_subdivision_zone_purok" class="form-control" required readonly>
+                                        <input type="text" id="customer_details_subdivision_zone_purok" class="form-control" required readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -813,31 +809,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row d-none">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="customer_details_username" class="form-label">Username <span class="text-danger required d-none">*</span></label>
-                                        <input type="text" id="customer_details_username" class="form-control" required readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="customer_details_password" class="form-label">Password <span class="text-danger required d-none">*</span></label>
-                                        <input type="password" id="customer_details_password" class="form-control" required readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label for="customer_details_confirm_password" class="form-label">Confirm Password <span class="text-danger required d-none">*</span></label>
-                                        <input type="password" id="customer_details_confirm_password" class="form-control" required readonly>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="hidden" id="customer_details_id">
-                            <input type="hidden" id="customer_details_old_password">
-                            <input type="hidden" id="customer_details_old_image">
+                            <input type="hidden" id="customer_details_useraccount_id">
 
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-success d-none" id="customer_details_submit">Submit</button>
@@ -848,6 +822,15 @@
                     <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
                     <h5 class="text-muted">Please Wait...</h5>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Profile Picture Modal-->
+    <div class="modal fade" id="view_profile_picture" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content" style="background-color: transparent !important;">
+                <img src="" id="proof_img_container" alt="" style="text-align: center; width: 100%">
             </div>
         </div>
     </div>
@@ -1423,7 +1406,7 @@
                 $('#new_product_image_display').attr('src', window.URL.createObjectURL(this.files[0]));
             })
 
-            $("#btn_edit_login_account").click(function() {
+            $(".btn_edit_login_account").click(function() {
                 var id = user_id;
 
                 var formData = new FormData();
@@ -1717,6 +1700,22 @@
 
             $(document).on('click', '.view_customer', function() {
                 var id = $(this).attr("useraccount_id");
+                var is_update = $(this).attr("is_update");
+
+                if (is_update == "true") {
+                    $("#customer_details_title").text("Edit Personal Information");
+                    $("#customer_details_first_name").removeAttr("readonly");
+                    $("#customer_details_middle_name").removeAttr("readonly");
+                    $("#customer_details_last_name").removeAttr("readonly");
+                    $("#customer_details_mobile_number").removeAttr("readonly");
+                    $("#customer_details_email").removeAttr("readonly");
+                    $("#customer_details_house_number").removeAttr("readonly");
+                    $("#customer_details_subdivision_zone_purok").removeAttr("readonly");
+                    $("#customer_details_city").removeAttr("disabled");
+                    $("#customer_details_province").removeAttr("disabled");
+                    $("#customer_details_country").removeAttr("disabled");
+                    $("#customer_details_submit").removeClass("d-none");
+                }
 
                 $("#customer_details").modal("show");
 
@@ -1737,10 +1736,6 @@
                         var image = response[0].image;
 
                         $("#customer_details_image_display").attr("src", base_url + "dist/images/uploads/" + image);
-                        $("#customer_details_username").val(username);
-                        $("#customer_details_id").val(id);
-                        $("#customer_details_old_password").val(password);
-                        $("#customer_details_old_image").val(image);
 
                         formData.append("id", id);
 
@@ -1752,6 +1747,7 @@
                             processData: false,
                             contentType: false,
                             success: function(response_2) {
+                                var useraccount_id = response_2[0].useraccount_id;
                                 var first_name = response_2[0].first_name;
                                 var middle_name = response_2[0].middle_name;
                                 var last_name = response_2[0].last_name;
@@ -1764,6 +1760,7 @@
                                 var country = response_2[0].country;
                                 var zip_code = response_2[0].zip_code;
 
+                                $("#customer_details_useraccount_id").val(useraccount_id);
                                 $("#customer_details_first_name").val(first_name);
                                 $("#customer_details_middle_name").val(middle_name);
                                 $("#customer_details_last_name").val(last_name);
@@ -1788,6 +1785,104 @@
                         console.error(error);
                     }
                 });
+            })
+
+            $("#customer_details_city").change(function() {
+                var city = $(this).val();
+                var province = $("#customer_details_province").val();
+                var country = $("#customer_details_country").val();
+                var zipCode = zipCodes[city];
+
+                if (province && country) {
+                    $("#customer_details_zip_code").val(zipCode);
+                }
+
+                $("#customer_details_province").removeAttr("disabled");
+            })
+
+            $("#customer_details_province").change(function() {
+                $("#customer_details_country").removeAttr("disabled");
+            })
+
+            $("#customer_details_country").change(function() {
+                var city = $("#customer_details_city").val();
+                var zipCode = zipCodes[city];
+
+                $("#customer_details_zip_code").val(zipCode);
+            })
+
+            $("#customer_details_form").submit(function() {
+                var useraccount_id = $("#customer_details_useraccount_id");
+                var first_name = $("#customer_details_first_name");
+                var middle_name = $("#customer_details_middle_name");
+                var last_name = $("#customer_details_last_name");
+                var mobile_number = $("#customer_details_mobile_number");
+                var email = $("#customer_details_email");
+                var house_number = $("#customer_details_house_number");
+                var subdivision_zone_purok = $("#customer_details_subdivision_zone_purok");
+                var city = $("#customer_details_city");
+                var province = $("#customer_details_province");
+                var country = $("#customer_details_country");
+                var zip_code = $("#customer_details_zip_code");
+                var mobile_number_error_label = $("#error_customer_details_mobile_number");
+
+                if (verify_mobile_number(mobile_number, mobile_number_error_label)) {
+                    $("#customer_details_submit").text("Processing Request...");
+                    $("#customer_details_submit").attr("disabled", true);
+
+                    first_name.attr("disabled", true);
+                    middle_name.attr("disabled", true);
+                    last_name.attr("disabled", true);
+                    mobile_number.attr("disabled", true);
+                    email.attr("disabled", true);
+                    house_number.attr("disabled", true);
+                    subdivision_zone_purok.attr("disabled", true);
+                    city.attr("disabled", true);
+                    province.attr("disabled", true);
+                    country.attr("disabled", true);
+                    zip_code.attr("disabled", true);
+
+                    var formData = new FormData();
+
+                    formData.append("useraccount_id", useraccount_id.val());
+                    formData.append("first_name", first_name.val());
+                    formData.append("middle_name", middle_name.val());
+                    formData.append("last_name", last_name.val());
+                    formData.append("mobile_number", mobile_number.val());
+                    formData.append("email", email.val());
+                    formData.append("house_number", house_number.val());
+                    formData.append("subdivision_zone_purok", subdivision_zone_purok.val());
+                    formData.append("city", city.val());
+                    formData.append("province", province.val());
+                    formData.append("country", country.val());
+                    formData.append("zip_code", zip_code.val());
+
+                    $.ajax({
+                        url: base_url + 'server/update_customer',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            location.href = base_url + current_tab;
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            })
+
+            $("#customer_details_mobile_number").keypress(function() {
+                $("#customer_details_mobile_number").removeClass("is-invalid");
+                $("#error_customer_details_mobile_number").addClass("d-none");
+            })
+
+            $(".view_image").click(function() {
+                src = $(this).attr("src");
+
+                $("#proof_img_container").attr("src", src);
             })
 
             function verify_password(password, confirm_password, password_error_label) {

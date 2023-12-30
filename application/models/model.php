@@ -88,6 +88,14 @@ class model extends CI_Model
         return $query->result();
     }
     
+    public function MOD_GET_MY_ORDERS($customer_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? ORDER BY CASE WHEN `status` = 'Cart' THEN 0 ELSE 1 END, `status`";
+        $query = $this->db->query($sql, array($customer_id));
+
+        return $query->result();
+    }
+    
     public function MOD_GET_ALL_CUSTOMERS()
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_customers` ORDER BY `id` DESC";
@@ -205,6 +213,20 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_products` SET `name` = ?, `description` = ?, `price` = ?, `cost_price` = ?, `quantity` = ?, `category_id` = ?, `supplier_id` = ?, `image` = ? WHERE `id` = ?";
 
         $this->db->query($sql, array($name, $description, $price, $cost_price, $quantity, $category_id, $supplier_id, $image, $id));
+    }
+    
+    public function MOD_UPDATE_CUSTOMER($first_name, $middle_name, $last_name, $mobile_number, $email, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $useraccount_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_customers` SET `first_name` = ?, `middle_name` = ?, `last_name` = ?, `mobile_number` = ?, `email` = ?, `house_number` = ?, `subdivision_zone_purok` = ?, `city` = ?, `province` = ?, `country` = ?, `zip_code` = ? WHERE `useraccount_id` = ?";
+
+        $this->db->query($sql, array($first_name, $middle_name, $last_name, $mobile_number, $email, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $useraccount_id));
+    }
+    
+    public function MOD_UPDATE_USERACCOUNT_NAME($name, $useraccount_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_useraccounts` SET `name` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($name, $useraccount_id));
     }
 
     /*============================== DELETE QUERIES ==============================*/

@@ -75,7 +75,7 @@
                 <!-- Latest Orders -->
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header border-transparent">
+                        <div class="card-header">
                             <h3 class="card-title">My Orders</h3>
 
                             <div class="card-tools">
@@ -87,29 +87,34 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table m-0">
+                                <table class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>Order ID</th>
+                                            <th>Transaction Date</th>
                                             <th>Product Name</th>
                                             <th class="text-center">Quantity</th>
+                                            <th class="text-center">Amount</th>
                                             <th class="text-center">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr> -->
-                                        <tr>
-                                            <td colspan="4" class="text-center text-muted">
-                                                <h1 class="py-3">No Recent Orders</h1>
-                                            </td>
-                                        </tr>
+                                        <?php $my_orders = $this->model->MOD_GET_MY_ORDERS($this->session->userdata("id")) ?>
+
+                                        <?php if ($my_orders) : ?>
+                                            <?php foreach ($my_orders as $my_order) : ?>
+                                                <tr>
+                                                    <td><a href="#">OR9842</a></td>
+                                                    <td>December 23, 2023 12:32 PM</td>
+                                                    <td>Call of Duty IV</td>
+                                                    <td>0</td>
+                                                    <td>₱0.00</td>
+                                                    <td><span class="badge badge-success">Shipped</span></td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
                                     </tbody>
                                 </table>
                             </div>

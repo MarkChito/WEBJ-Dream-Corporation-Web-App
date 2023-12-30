@@ -141,7 +141,7 @@
                                     <?php foreach ($customers as $customer) : ?>
                                         <?php $customers_useraccount = $this->model->MOD_GET_ADMINISTRATOR_DATA($customer->useraccount_id) ?>
                                         <li>
-                                            <img src="<?= base_url() ?>dist/images/uploads/<?= $customers_useraccount[0]->image ? $customers_useraccount[0]->image : "default_user_image.png" ?>" style="width: 91.75px; height: 91.75px;" alt="User Image">
+                                            <img class="rounded-circle img-bordered-sm view_image" data-toggle="modal" data-target="#view_profile_picture" style="cursor: pointer; width: 91.75px; height: 91.75px;" src="<?= base_url() ?>dist/images/uploads/<?= $customers_useraccount[0]->image ?>" alt="User profile picture">
                                             <a class="users-list-name view_customer" href="javascript:void(0)" is_update="false" useraccount_id="<?= $customer->useraccount_id ?>"><?= $customer->first_name . " " . $customer->last_name[0] . "." ?></a>
                                             <?php
                                             $dateToCompare = $customer->date_registered;

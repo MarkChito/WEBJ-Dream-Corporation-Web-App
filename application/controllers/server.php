@@ -466,7 +466,7 @@ class server extends CI_Controller
 
         echo json_encode($useraccount);
     }
-    
+
     public function get_customer_data()
     {
         $id = $this->input->post("id");
@@ -474,6 +474,41 @@ class server extends CI_Controller
         $customer_data = $this->model->MOD_GET_CUSTOMER_BY_ID($id);
 
         echo json_encode($customer_data);
+    }
+
+    public function update_customer()
+    {
+        $useraccount_id = $this->input->post("useraccount_id");
+        $first_name = $this->input->post("first_name");
+        $middle_name = $this->input->post("middle_name");
+        $last_name = $this->input->post("last_name");
+        $mobile_number = $this->input->post("mobile_number");
+        $email = $this->input->post("email");
+        $house_number = $this->input->post("house_number");
+        $subdivision_zone_purok = $this->input->post("subdivision_zone_purok");
+        $city = $this->input->post("city");
+        $province = $this->input->post("province");
+        $country = $this->input->post("country");
+        $zip_code = $this->input->post("zip_code");
+
+        if (!empty($middle_name)) {
+            $middle_initial = substr($middle_name, 0, 1) . ".";
+            $name = $first_name . " " . $middle_initial . " " . $last_name;
+        } else {
+            $name = $first_name . " " . $last_name;
+        }
+
+        $this->model->MOD_UPDATE_CUSTOMER($first_name, $middle_name, $last_name, $mobile_number, $email, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $useraccount_id);
+
+        $this->model->MOD_UPDATE_USERACCOUNT_NAME($name, $useraccount_id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Your profile has been updated!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
     }
 
     public function logout()

@@ -55,7 +55,7 @@
                         &nbsp;<?= $name ?>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#edit_login_account" id="btn_edit_login_account"><i class="fas fa-user-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
+                        <a class="dropdown-item btn_edit_login_account" href="javascript:void(0)" data-toggle="modal" data-target="#edit_login_account"><i class="fas fa-user-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
                         <?php if ($this->session->userdata("user_type") == "customer") : ?>
                             <a class="dropdown-item" href="profile"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Profile</a>
                         <?php endif ?>
