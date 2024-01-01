@@ -70,6 +70,8 @@
                         <span>Don't have an account? </span><a href="register">Register Now!</a>
                     </div>
                     <div class="modal-footer">
+                        <input type="hidden" id="login_location">
+
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary" id="login_btn">Login</button>
                     </div>
@@ -167,6 +169,7 @@
             var alert = <?= $this->session->userdata("alert") ? json_encode($this->session->userdata("alert")) : json_encode(array()) ?>;
             var id = "<?= $this->session->userdata("id") ?>";
             var current_tab = "<?= $this->session->userdata("current_tab") ?>";
+            var search_query = "<?= $this->session->userdata("search_query") ?>";
             var base_url = "<?= base_url() ?>";
 
             const zipCodes = {
@@ -218,6 +221,10 @@
             }
 
             $(".login_or_register").click(function() {
+                var login_location = $(this).attr("login_location");
+
+                $("#login_location").val(login_location);
+
                 $("#login").modal().show();
             })
 
@@ -230,6 +237,7 @@
             $("#login_form").submit(function() {
                 var username = $("#login_username").val();
                 var password = $("#login_password").val();
+                var login_location = $("#login_location").val();
 
                 $("#login_username").attr("disabled", true);
                 $("#login_password").attr("disabled", true);
@@ -254,10 +262,38 @@
                             if (response == "admin") {
                                 location.href = base_url + "admin/dashboard";
                             } else {
-                                location.href = base_url + "customer/dashboard";
+                                if (login_location != "search_result") {
+                                    location.href = base_url + login_location;
+                                } else {
+                                    var my_search_query = search_query;
+
+                                    var formData = new FormData();
+
+                                    formData.append('search_query', my_search_query);
+                                    formData.append('is_login', true);
+
+                                    $.ajax({
+                                        url: 'server/search_product',
+                                        data: formData,
+                                        type: 'POST',
+                                        dataType: 'JSON',
+                                        processData: false,
+                                        contentType: false,
+                                        success: function(response) {
+                                            location.href = base_url + "search_results";
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                        }
+                                    });
+                                }
                             }
                         } else {
-                            location.href = base_url + current_tab;
+                            if (login_location != "search_result") {
+                                location.href = base_url + current_tab;
+                            } else {
+                                location.href = base_url + "home";
+                            }
                         }
                     },
                     error: function(xhr, status, error) {
@@ -470,6 +506,7 @@
                 var formData = new FormData();
 
                 formData.append('search_query', search_query);
+                formData.append('is_login', false);
 
                 $.ajax({
                     url: 'server/search_product',

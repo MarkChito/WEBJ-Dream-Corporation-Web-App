@@ -1,7 +1,7 @@
 <!-- Latest Brands -->
 <div class="top-brands">
     <div class="container">
-        <h3>Search results: "<?= $this->session->userdata("search_query") ?>"</h3>
+        <h3>Search Results: "<?= $this->session->userdata("search_query") ?>"</h3>
 
         <div class="agile_top_brands_grids">
             <?php $products = $this->model->MOD_GET_SEARCH_PRODUCTS($this->session->userdata("search_query")) ?>
@@ -21,7 +21,7 @@
                                                 <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                             </div>
                                             <div class="snipcart-details top_brand_home_details">
-                                                <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" />
+                                                <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" login_location="search_result"/>
                                             </div>
                                         </div>
                                     </figure>

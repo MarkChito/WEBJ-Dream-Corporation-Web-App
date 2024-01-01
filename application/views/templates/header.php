@@ -65,7 +65,7 @@
         <!-- Cart -->
         <div class="product_list_header">
             <div class="cart-button-wrapper">
-                <input type="button" value="View your cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" id="<?= $this->session->userdata("id") && $this->session->userdata("user_type") == "customer" ? "view_cart" : null ?>" />
+                <input type="button" value="View your cart" class="button <?= $this->session->userdata("id") ? null : "login_or_register" ?>" id="<?= $this->session->userdata("id") && $this->session->userdata("user_type") == "customer" ? "view_cart" : null ?>" login_location="customer/my_orders" />
                 <span class="badge-on-button hidden" id="cart_count">0</span>
             </div>
         </div>
@@ -74,7 +74,7 @@
             <?php if ($this->session->userdata("id")) : ?>
                 <h2><a href="<?= $this->session->userdata("user_type") ?>/dashboard">Go to Dashboard</a></h2>
             <?php else : ?>
-                <h2><a href="javascript:void(0)" class="login_or_register">Login or Register</a></h2>
+                <h2><a href="javascript:void(0)" class="login_or_register" login_location="customer/dashboard">Login or Register</a></h2>
             <?php endif ?>
         </div>
         <div class="clearfix"></div>
@@ -202,7 +202,7 @@
                                 <strong>Price:</strong> <span>₱<?= $product_price ?></span>
                             </div>
                             <div class="snipcart-details agileinfo_single_right_details">
-                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product_id ?>" />
+                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product_id ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
                             </div>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
                 <?php foreach ($categories as $category) : ?>
                     <div class="agile_top_brands_grids">
                         <div class="col-md-6">
-                            <a href="products?category=<?= $category->id ?>"><?= $category->name ?></a> 
+                            <a href="products?category=<?= $category->id ?>"><?= $category->name ?></a>
                         </div>
                         <div style="height: 30px;"></div>
                         <?php $products = $this->model->MOD_GET_PRODUCTS($category->id) ?>
@@ -28,7 +28,7 @@
                                                             <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                                         </div>
                                                         <div class="snipcart-details top_brand_home_details">
-                                                            <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" />
+                                                            <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -65,7 +65,7 @@
                                                     <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                                 </div>
                                                 <div class="snipcart-details top_brand_home_details">
-                                                    <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" />
+                                                    <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
                                                 </div>
                                             </div>
                                         </figure>
