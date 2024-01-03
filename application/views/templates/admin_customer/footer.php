@@ -835,6 +835,51 @@
         </div>
     </div>
 
+    <!-- View Order Modal -->
+    <div class="modal fade" id="view_order" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel">View Order Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="actual-form d-none">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <img id="view_order_image" src="<?= base_url() ?>dist/images/uploads/1_1.png" class="img-fluid img-bordered" style="width: 100%; height: 100%;" alt="Product Image">
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>Order Details</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Order ID:</strong> <span id="view_order_id">123456</span></p>
+                                        <p><strong>Transaction Date:</strong> <span id="view_order_transaction_date">January 1, 2024 12:02 AM</span></p>
+                                        <p><strong>Product Name:</strong> <span id="view_order_product_name">Product Name</span></p>
+                                        <p><strong>Quantity:</strong> <span id="view_order_quantity">0</span></p>
+                                        <p><strong>Amount:</strong> ₱<span id="view_order_total_amount">0.00</span></p>
+                                        <p><strong>Status:</strong> <span id="view_order_status">Cart</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loading text-center py-5">
+                        <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                        <h5 class="text-muted">Please Wait...</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -1885,6 +1930,74 @@
                 $("#proof_img_container").attr("src", src);
             })
 
+            $(".order_details").click(function() {
+                var id = $(this).attr("order_id");
+
+                var formData = new FormData();
+
+                formData.append('id', id);
+
+                $.ajax({
+                    url: base_url + 'server/get_order_details',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var order_id = "OR" + addZeros(response[0].id);
+                        var transaction_date = formatDate(response[0].transaction_date);
+                        var quantity = response[0].quantity;
+                        var total_amount = response[0].total_amount;
+                        var status = response[0].status;
+                        var item_id = response[0].item_id;
+
+                        var formData = new FormData();
+
+                        formData.append('id', item_id);
+
+                        $.ajax({
+                            url: base_url + 'server/get_item_info',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                var product_name = response[0].name;
+                                var image = response[0].image;
+
+                                $("#view_order_image").attr("src", base_url + "dist/images/uploads/" + image);
+                                $("#view_order_id").text(order_id);
+                                $("#view_order_transaction_date").text(transaction_date);
+                                $("#view_order_product_name").text(product_name);
+                                $("#view_order_quantity").text(quantity);
+                                $("#view_order_total_amount").text(total_amount);
+                                $("#view_order_status").text(status);
+
+                                $(".loading").addClass("d-none");
+                                $(".actual-form").removeClass("d-none");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            function addZeros(str) {
+                const zerosToAdd = 5 - str.length;
+                if (zerosToAdd > 0) {
+                    const zeros = '0'.repeat(zerosToAdd);
+                    return zeros + str;
+                }
+                return str;
+            }
+
             function verify_password(password, confirm_password, password_error_label) {
                 var error = 0;
                 var error_message = null;
@@ -1998,6 +2111,28 @@
                         title: '' + login_message
                     });
                 }
+            }
+
+            function formatDate(inputDate) {
+                const months = [
+                    'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December'
+                ];
+
+                const dateObj = new Date(inputDate);
+                const month = months[dateObj.getMonth()];
+                const day = dateObj.getDate();
+                const year = dateObj.getFullYear();
+                let hours = dateObj.getHours();
+                const minutes = (dateObj.getMinutes() < 10 ? '0' : '') + dateObj.getMinutes();
+                const meridiem = hours >= 12 ? 'PM' : 'AM';
+
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+
+                const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${meridiem}`;
+
+                return formattedDate;
             }
         })
     </script>

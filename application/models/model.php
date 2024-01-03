@@ -151,11 +151,19 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_CHECK_ORDER($customer_id, $item_id, $status)
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? AND `item_id` = ? AND `status` = ? ";
         $query = $this->db->query($sql, array($customer_id, $item_id, $status));
+
+        return $query->result();
+    }
+
+    public function MOD_GET_ORDER_DETAILS($id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `id` = ?";
+        $query = $this->db->query($sql, array($id));
 
         return $query->result();
     }
@@ -209,7 +217,7 @@ class model extends CI_Model
 
         $this->db->query($sql, array($name, $category_id, $supplier_id, $price, $cost_price, $quantity, $description, $image));
     }
-    
+
     public function MOD_ADD_TO_CART($transaction_date, $customer_id, $item_id, $quantity, $total_amount, $status)
     {
         $sql = "INSERT INTO `tbl_webjdreamcorp_orders` (`id`, `transaction_date`, `customer_id`, `item_id`, `quantity`, `total_amount`, `status`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
@@ -259,7 +267,7 @@ class model extends CI_Model
 
         $this->db->query($sql, array($name, $useraccount_id));
     }
-    
+
     public function MOD_UPDATE_CART($transaction_date, $quantity, $total_amount, $customer_id, $item_id, $status)
     {
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = ?, `quantity` = ?, `total_amount` = ? WHERE `customer_id` = ? AND `item_id` = ? AND `status` = ?";

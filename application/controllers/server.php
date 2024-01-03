@@ -535,7 +535,7 @@ class server extends CI_Controller
 
     public function add_to_cart()
     {
-        $transaction_date = date("Y-m-d");
+        $transaction_date = date("Y-m-d H:i");
         $customer_id = $this->input->post("customer_id");
         $item_id = $this->input->post("product_id");
         $quantity = "1";
@@ -557,6 +557,24 @@ class server extends CI_Controller
         }
 
         echo json_encode(true);
+    }
+
+    public function get_order_details()
+    {
+        $id = $this->input->post("id");
+
+        $order_details = $this->model->MOD_GET_ORDER_DETAILS($id);
+
+        echo json_encode($order_details);
+    }
+    
+    public function get_item_info()
+    {
+        $id = $this->input->post("id");
+
+        $item_info = $this->model->MOD_GET_PRODUCT($id);
+
+        echo json_encode($item_info);
     }
 
     public function logout()

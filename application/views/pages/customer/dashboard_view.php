@@ -16,9 +16,11 @@
             <div class="row">
                 <!-- My Cart -->
                 <div class="col-lg-3 col-6">
-                    <div class="small-box bg-info">
+                    <div class="small-box bg-primary">
                         <div class="inner">
-                            <h3>0</h3>
+                            <?php $cart = $this->model->MOD_GET_ORDERS("Cart", $this->session->userdata("id")) ?>
+
+                            <h3><?= count($cart) ?></h3>
 
                             <p>My Cart</p>
                         </div>
@@ -32,7 +34,9 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <h3>0</h3>
+                            <?php $to_ship = $this->model->MOD_GET_ORDERS("To Ship", $this->session->userdata("id")) ?>
+
+                            <h3><?= count($to_ship) ?></h3>
 
                             <p>To Ship</p>
                         </div>
@@ -46,7 +50,9 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-warning">
                         <div class="inner">
-                            <h3>0</h3>
+                            <?php $to_receive = $this->model->MOD_GET_ORDERS("To Receive", $this->session->userdata("id")) ?>
+
+                            <h3><?= count($to_receive) ?></h3>
 
                             <p>To Receive</p>
                         </div>
@@ -58,9 +64,11 @@
                 </div>
                 <!-- Total Sales -->
                 <div class="col-lg-3 col-6">
-                    <div class="small-box bg-danger">
+                    <div class="small-box bg-info">
                         <div class="inner">
-                            <h3>0</h3>
+                            <?php $to_rate = $this->model->MOD_GET_ORDERS("To Rate", $this->session->userdata("id")) ?>
+
+                            <h3><?= count($to_rate) ?></h3>
 
                             <p>To Rate</p>
                         </div>
@@ -106,12 +114,34 @@
                                         <?php if ($my_orders) : ?>
                                             <?php foreach ($my_orders as $my_order) : ?>
                                                 <tr>
-                                                    <td><a href="#">OR9842</a></td>
-                                                    <td>December 23, 2023 12:32 PM</td>
-                                                    <td>Call of Duty IV</td>
-                                                    <td>0</td>
-                                                    <td>₱0.00</td>
-                                                    <td><span class="badge badge-success">Shipped</span></td>
+                                                    <td><a class="order_details" href="javascript:void(0)" data-toggle="modal" data-target="#view_order" order_id="<?= $my_order->id ?>">OR<?= str_pad($my_order->id, 5, '0', STR_PAD_LEFT); ?></a></td>
+                                                    <td><?= date("F j, Y g:i A", strtotime($my_order->transaction_date)) ?></td>
+                                                    <?php $product = $this->model->MOD_GET_PRODUCT($my_order->item_id) ?>
+
+                                                    <td><?= $product[0]->name ?></td>
+                                                    <td class="text-center"><?= $my_order->quantity ?></td>
+                                                    <td class="text-center">₱<?= $my_order->total_amount ?></td>
+                                                    <?php
+                                                    $badge_color = "";
+
+                                                    if ($my_order->status == "Cart") {
+                                                        $badge_color = "primary";
+                                                    }
+
+                                                    if ($my_order->status == "To Ship") {
+                                                        $badge_color = "success";
+                                                    }
+
+                                                    if ($my_order->status == "To Receive") {
+                                                        $badge_color = "warning";
+                                                    }
+
+                                                    if ($my_order->status == "To Rate") {
+                                                        $badge_color = "info";
+                                                    }
+                                                    ?>
+
+                                                    <td class="text-center"><span class="badge badge-<?= $badge_color ?>"><?= $my_order->status ?></span></td>
                                                 </tr>
                                             <?php endforeach ?>
                                         <?php endif ?>
