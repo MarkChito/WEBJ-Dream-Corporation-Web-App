@@ -1933,6 +1933,9 @@
             $(".order_details").click(function() {
                 var id = $(this).attr("order_id");
 
+                $(".loading").removeClass("d-none");
+                $(".actual-form").addClass("d-none");
+
                 var formData = new FormData();
 
                 formData.append('id', id);
