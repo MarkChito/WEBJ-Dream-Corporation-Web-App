@@ -159,7 +159,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="new_category_submit">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="new_category_submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -190,7 +190,7 @@
                     <div class="modal-footer">
                         <input type="hidden" id="update_category_id">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="update_category_submit">Update</button>
+                        <button type="submit" class="btn btn-primary" id="update_category_submit">Update</button>
                     </div>
                 </form>
             </div>
@@ -326,7 +326,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="new_supplier_submit">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="new_supplier_submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -464,7 +464,7 @@
                         <input type="hidden" id="update_supplier_id">
 
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="update_supplier_submit">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="update_supplier_submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -563,7 +563,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="new_product_submit">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="new_product_submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -665,7 +665,7 @@
                         <input type="hidden" id="update_product_old_image">
 
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-success" id="update_product_submit">Submit</button>
+                        <button type="submit" class="btn btn-primary" id="update_product_submit">Submit</button>
                     </div>
                 </form>
             </div>
@@ -814,7 +814,7 @@
                             <input type="hidden" id="customer_details_useraccount_id">
 
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success d-none" id="customer_details_submit">Submit</button>
+                            <button type="submit" class="btn btn-primary d-none" id="customer_details_submit">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -848,8 +848,12 @@
                 <div class="modal-body">
                     <div class="actual-form d-none">
                         <div class="row">
-                            <div class="col-md-5">
-                                <img id="view_order_image" src="<?= base_url() ?>dist/images/uploads/1_1.png" class="img-fluid img-bordered" style="width: 100%; height: 100%;" alt="Product Image">
+                            <div class="col-md-5 d-flex align-items-center">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <img id="view_order_image" src="<?= base_url() ?>dist/images/uploads/1_1.png" class="img-fluid" alt="Product Image">
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-7">
                                 <div class="card">
@@ -858,6 +862,7 @@
                                     </div>
                                     <div class="card-body">
                                         <p><strong>Order ID:</strong> <span id="view_order_id">123456</span></p>
+                                        <p><strong>Tracking ID:</strong> <span id="view_order_tracking_id">123456</span></p>
                                         <p><strong>Transaction Date:</strong> <span id="view_order_transaction_date">January 1, 2024 12:02 AM</span></p>
                                         <p><strong>Product Name:</strong> <span id="view_order_product_name">Product Name</span></p>
                                         <p><strong>Quantity:</strong> <span id="view_order_quantity">0</span></p>
@@ -875,6 +880,56 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Order Modal -->
+    <div class="modal fade" id="edit_order" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel">Edit Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="edit_order_form">
+                        <div class="modal-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <p id="edit_order_name">Product Name</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" id="edit_order_quantity" style="height: 25px !important;">
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="float-right">₱<span id="edit_order_total_amount">0.00</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="edit_order_id">
+                            <input type="hidden" id="edit_order_price">
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="edit_order_submit">Update</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
                 </div>
             </div>
         </div>
@@ -1949,6 +2004,7 @@
                     contentType: false,
                     success: function(response) {
                         var order_id = "OR" + addZeros(response[0].id);
+                        var tracking_id = response[0].tracking_id ? tracking_id : "N/A";
                         var transaction_date = formatDate(response[0].transaction_date);
                         var quantity = response[0].quantity;
                         var total_amount = response[0].total_amount;
@@ -1972,6 +2028,7 @@
 
                                 $("#view_order_image").attr("src", base_url + "dist/images/uploads/" + image);
                                 $("#view_order_id").text(order_id);
+                                $("#view_order_tracking_id").text(tracking_id);
                                 $("#view_order_transaction_date").text(transaction_date);
                                 $("#view_order_product_name").text(product_name);
                                 $("#view_order_quantity").text(quantity);
@@ -1988,6 +2045,179 @@
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
+                    }
+                });
+            })
+
+            $('#checkAll').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('.selected_item').prop('checked', true);
+
+                    $("#btn_place_order").removeClass("d-none");
+                } else {
+                    $('.selected_item').prop('checked', false);
+
+                    $("#btn_place_order").addClass("d-none");
+                }
+            })
+
+            $('.selected_item').on('change', function() {
+                var isChecked = $('.selected_item:checked').length > 0;
+
+                if (isChecked) {
+                    $("#btn_place_order").removeClass("d-none");
+                } else {
+                    $("#btn_place_order").addClass("d-none");
+                }
+            });
+
+            $(document).on('click', '.update_order', function() {
+                var order_id = $(this).attr("order_id");
+
+                $(".loading").removeClass("d-none");
+                $(".actual-form").addClass("d-none");
+                $("#edit_order_quantity").removeClass("border-danger");
+
+                var formData = new FormData();
+
+                formData.append('id', order_id);
+
+                $.ajax({
+                    url: base_url + 'server/get_order_details',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var quantity = response[0].quantity;
+                        var total_amount = response[0].total_amount;
+                        var item_id = response[0].item_id;
+
+                        var formData = new FormData();
+
+                        formData.append('id', item_id);
+
+                        $.ajax({
+                            url: base_url + 'server/get_item_info',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                var product_name = response[0].name;
+                                var product_price = response[0].price;
+
+                                $("#edit_order_id").val(order_id);
+                                $("#edit_order_name").text(product_name);
+                                $("#edit_order_quantity").val(quantity);
+                                $("#edit_order_total_amount").text(total_amount);
+                                $("#edit_order_price").val(product_price);
+
+                                $(".loading").addClass("d-none");
+                                $(".actual-form").removeClass("d-none");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+
+                $("#edit_order").modal().show();
+            })
+
+            $('#edit_order_quantity').on('keypress', function(event) {
+                var keyCode = event.which ? event.which : event.keyCode;
+
+                if (keyCode < 48 || keyCode > 57) {
+                    event.preventDefault();
+                }
+            })
+
+            $('#edit_order_quantity').on('keyup', function(event) {
+                var quantity = $(this).val();
+                var price = $('#edit_order_price').val();
+                var total_amount = 0;
+
+                if (quantity) {
+                    total_amount = price * quantity;
+
+                    $(this).removeClass("border-danger");
+                } else {
+                    $(this).addClass("border-danger");
+                }
+
+                $("#edit_order_total_amount").text(total_amount.toFixed(2));
+            })
+
+            $("#edit_order_form").submit(function() {
+                var id = $("#edit_order_id").val();
+                var quantity = $("#edit_order_quantity").val();
+                var total_amount = $("#edit_order_total_amount").text();
+
+                if (quantity) {
+                    $("#edit_order_submit").attr("disabled", true);
+                    $("#edit_order_submit").text("Processing Request...");
+
+                    var formData = new FormData();
+
+                    formData.append('id', id);
+                    formData.append('quantity', quantity);
+                    formData.append('total_amount', total_amount);
+
+                    $.ajax({
+                        url: base_url + 'server/update_order',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            location.href = base_url + current_tab;
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            })
+
+            $(document).on('click', '.delete_order', function() {
+                var order_id = $(this).attr("order_id");
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var formData = new FormData();
+
+                        formData.append('id', order_id);
+
+                        $.ajax({
+                            url: base_url + 'server/delete_order',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                location.href = base_url + current_tab;
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
                     }
                 });
             })

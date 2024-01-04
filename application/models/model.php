@@ -275,6 +275,13 @@ class model extends CI_Model
         $this->db->query($sql, array($transaction_date, $quantity, $total_amount, $customer_id, $item_id, $status));
     }
 
+    public function MOD_UPDATE_ORDER($quantity, $total_amount, $id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `quantity` = ?, `total_amount` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($quantity, $total_amount, $id));
+    }
+
     /*============================== DELETE QUERIES ==============================*/
     public function MOD_DELETE_CATEGORY($id)
     {
@@ -293,6 +300,13 @@ class model extends CI_Model
     public function MOD_DELETE_PRODUCT($id)
     {
         $sql = "DELETE FROM `tbl_webjdreamcorp_products` WHERE `id` = ?";
+
+        $this->db->query($sql, array($id));
+    }
+    
+    public function MOD_DELETE_ORDER($id)
+    {
+        $sql = "DELETE FROM `tbl_webjdreamcorp_orders` WHERE `id` = ?";
 
         $this->db->query($sql, array($id));
     }

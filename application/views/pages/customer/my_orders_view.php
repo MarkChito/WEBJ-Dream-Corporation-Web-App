@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
+                    <h1 class="m-0">My Orders</h1>
                 </div>
             </div>
         </div>
@@ -14,92 +14,14 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- My Cart -->
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-primary">
-                        <div class="inner">
-                            <?php $cart = $this->model->MOD_GET_ORDERS("Cart", $this->session->userdata("id")) ?>
-
-                            <h3><?= count($cart) ?></h3>
-
-                            <p>My Cart</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- To Ship -->
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-success">
-                        <div class="inner">
-                            <?php $to_ship = $this->model->MOD_GET_ORDERS("To Ship", $this->session->userdata("id")) ?>
-
-                            <h3><?= count($to_ship) ?></h3>
-
-                            <p>To Ship</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-truck"></i>
-                        </div>
-                        <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- To Receive -->
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-warning">
-                        <div class="inner">
-                            <?php $to_receive = $this->model->MOD_GET_ORDERS("To Receive", $this->session->userdata("id")) ?>
-
-                            <h3><?= count($to_receive) ?></h3>
-
-                            <p>To Receive</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-box-open"></i>
-                        </div>
-                        <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-                <!-- Total Sales -->
-                <div class="col-lg-3 col-6">
-                    <div class="small-box bg-info">
-                        <div class="inner">
-                            <?php $to_rate = $this->model->MOD_GET_ORDERS("To Rate", $this->session->userdata("id")) ?>
-
-                            <h3><?= count($to_rate) ?></h3>
-
-                            <p>To Rate</p>
-                        </div>
-                        <div class="icon">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <!-- Latest Orders -->
                 <div class="col-lg-12">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">My Orders</h3>
-
-                            <div class="card-tools">
-                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover datatable">
                                     <thead>
                                         <tr>
+                                            <th class="text-center"><input type="checkbox" id="checkAll"></th>
                                             <th>Order ID</th>
                                             <th>Tracking ID</th>
                                             <th>Transaction Date</th>
@@ -107,6 +29,7 @@
                                             <th class="text-center">Quantity</th>
                                             <th class="text-center">Amount</th>
                                             <th class="text-center">Status</th>
+                                            <th class="text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -115,8 +38,13 @@
                                         <?php if ($my_orders) : ?>
                                             <?php foreach ($my_orders as $my_order) : ?>
                                                 <tr>
+                                                    <td class="text-center">
+                                                        <?php if ($my_order->status == "Cart") : ?>
+                                                            <input type="checkbox" class="selected_item" order_id="<?= $my_order->id ?>">
+                                                        <?php endif ?>
+                                                    </td>
                                                     <td><a class="order_details" href="javascript:void(0)" data-toggle="modal" data-target="#view_order" order_id="<?= $my_order->id ?>">OR<?= str_pad($my_order->id, 5, '0', STR_PAD_LEFT); ?></a></td>
-                                                    <td><?= $my_order->tracking_id ? $my_order->tracking_id : "N/A"  ?></td>
+                                                    <td><?= $my_order->tracking_id ? $my_order->tracking_id : "Not Yet Available"  ?></td>
                                                     <td><?= date("F j, Y g:i A", strtotime($my_order->transaction_date)) ?></td>
                                                     <?php $product = $this->model->MOD_GET_PRODUCT($my_order->item_id) ?>
 
@@ -144,6 +72,10 @@
                                                     ?>
 
                                                     <td class="text-center"><span class="badge badge-<?= $badge_color ?>"><?= $my_order->status ?></span></td>
+                                                    <td class="text-center">
+                                                        <a href="javascript:void(0)" class="update_order" order_id="<?= $my_order->id ?>"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
+                                                        <a href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach ?>
                                         <?php endif ?>
@@ -151,10 +83,15 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="card-footer text-center">
-                            <a href="sales">View All Orders</a>
-                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-success float-right d-none px-3" id="btn_place_order">
+                        <i class="fas fa-shopping-cart mr-1"></i>
+                        Place Order
+                    </button>
                 </div>
             </div>
         </div>

@@ -567,7 +567,7 @@ class server extends CI_Controller
 
         echo json_encode($order_details);
     }
-    
+
     public function get_item_info()
     {
         $id = $this->input->post("id");
@@ -575,6 +575,38 @@ class server extends CI_Controller
         $item_info = $this->model->MOD_GET_PRODUCT($id);
 
         echo json_encode($item_info);
+    }
+
+    public function update_order()
+    {
+        $id = $this->input->post("id");
+        $quantity = $this->input->post("quantity");
+        $total_amount = $this->input->post("total_amount");
+
+        $this->model->MOD_UPDATE_ORDER($quantity, $total_amount, $id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Your order has been updated!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+    
+    public function delete_order()
+    {
+        $id = $this->input->post("id");
+
+        $this->model->MOD_DELETE_ORDER($id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Your order has been deleted!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
     }
 
     public function logout()
