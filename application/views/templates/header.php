@@ -490,24 +490,43 @@
                                 <li>call to us<span>(+63) 912 345 6789</span></li>
                             </ul>
                         </div>
-                        <div class="col-md-7 agileinfo_mail_grid_right">
-                            <form action="javascript:void(0)" id="contact_us_form">
-                                <div class="col-md-6 wthree_contact_left_grid">
-                                    <input type="text" id="contact_us_name" placeholder="Name" required>
-                                    <input type="email" id="contact_us_email" placeholder="Email" required>
+                        <div class="col-md-7 agileinfo_mail_grid_right_2">
+                            <div class="container">
+                                <div class="row">
+                                    <form action="javascript:void(0)" id="contact_us_form">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <input type="text" id="contact_us_name" class="form-control" placeholder="Name" required>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="email" id="contact_us_email" class="form-control" placeholder="Email" required>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <input type="text" id="contact_us_mobile_number" class="form-control" placeholder="Mobile Number" required>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <input type="text" id="contact_us_subject" class="form-control" placeholder="Subject" required>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <textarea id="contact_us_message" class="form-control" placeholder="Message" rows="4" required></textarea>
+                                            </div>
+                                            <div class="form-group pull-right">
+                                                <input type="reset" id="contact_us_clear" class="btn btn-default" value="Clear">
+                                                <input type="submit" id="contact_us_submit" class="btn btn-primary" value="Submit">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col-md-6 wthree_contact_left_grid">
-                                    <input type="text" id="contact_us_mobile_number" placeholder="Mobile Number" required>
-                                    <input type="text" id="contact_us_subject" placeholder="Subject" required>
-                                </div>
-
-                                <div class="clearfix"> </div>
-
-                                <textarea id="contact_us_message" placeholder="Message" required></textarea>
-
-                                <input type="submit" id="contact_us_submit" value="Submit">
-                                <input type="reset" id="contact_us_clear" value="Clear">
-                            </form>
+                            </div>
                         </div>
                         <div class="clearfix"> </div>
                     </div>

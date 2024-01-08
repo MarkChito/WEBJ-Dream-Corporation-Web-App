@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-4">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="<?= base_url() ?>admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="<?= base_url() ?>customer/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item active">Profile</li>
                     </ol>
                 </div>
@@ -56,86 +56,86 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>First Name</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $first_name ?></p>
                                 </div>
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b class="text-truncate">Date Registered</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= date('F j, Y', strtotime($date_registered)) ?></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Middle Name</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $middle_name ?></p>
                                 </div>
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b class="text-truncate">Mobile Number</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $mobile_number ?></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Last Name</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $last_name ?></p>
                                 </div>
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Email Address</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $email ?></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>House Number</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $house_number ?></p>
                                 </div>
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Subdivision/Zone/Purok</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $subdivision_zone_purok ?></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>City</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $city ?></p>
                                 </div>
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Province</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $province ?></p>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Country</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $country ?></p>
                                 </div>
-                                <div class="col-md-2 col-4">
+                                <div class="col-md-3 col-4">
                                     <b>Zip Code</b>
                                 </div>
-                                <div class="col-md-4 col-8">
+                                <div class="col-md-3 col-8">
                                     <p><?= $zip_code ?></p>
                                 </div>
                             </div>

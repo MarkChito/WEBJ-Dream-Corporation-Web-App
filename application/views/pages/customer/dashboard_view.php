@@ -116,7 +116,7 @@
                                             <?php foreach ($my_orders as $my_order) : ?>
                                                 <tr>
                                                     <td><a class="order_details" href="javascript:void(0)" data-toggle="modal" data-target="#view_order" order_id="<?= $my_order->id ?>">OR<?= str_pad($my_order->id, 5, '0', STR_PAD_LEFT); ?></a></td>
-                                                    <td><?= $my_order->tracking_id ? $my_order->tracking_id : "N/A"  ?></td>
+                                                    <td><?= $my_order->tracking_id ? $my_order->tracking_id : "Not Yet Available"  ?></td>
                                                     <td><?= date("F j, Y g:i A", strtotime($my_order->transaction_date)) ?></td>
                                                     <?php $product = $this->model->MOD_GET_PRODUCT($my_order->item_id) ?>
 
