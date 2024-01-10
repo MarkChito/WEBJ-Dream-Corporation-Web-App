@@ -608,6 +608,31 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
+    
+    public function get_order_ids()
+    {
+        $order_ids = $this->input->post("order_ids");
+
+        $orders = $this->model->MOD_GET_ORDERS_FROM_IDS($order_ids);
+
+        echo json_encode($orders);
+    }
+    
+    public function place_order()
+    {
+        $transaction_date = date("Y-m-d H:i");
+        $order_ids = $this->input->post("order_ids");
+
+        $this->model->MOD_UPDATE_ORDER_STATUS($transaction_date, $order_ids);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Your order/s has been placed!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
 
     public function logout()
     {

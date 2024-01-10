@@ -104,6 +104,14 @@ class model extends CI_Model
         return $query->result();
     }
 
+    public function MOD_GET_ORDERS_FROM_IDS($order_ids)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `id` IN (" . $order_ids . ")";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+
     public function MOD_GET_ALL_CUSTOMERS()
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_customers` ORDER BY `id` DESC";
@@ -282,6 +290,13 @@ class model extends CI_Model
         $this->db->query($sql, array($quantity, $total_amount, $id));
     }
 
+    public function MOD_UPDATE_ORDER_STATUS($transaction_date, $order_ids)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = '" . $transaction_date . "', `status` = 'To Approve' WHERE `id` IN (" . $order_ids . ")";
+
+        $this->db->query($sql);
+    }
+
     /*============================== DELETE QUERIES ==============================*/
     public function MOD_DELETE_CATEGORY($id)
     {
@@ -303,7 +318,7 @@ class model extends CI_Model
 
         $this->db->query($sql, array($id));
     }
-    
+
     public function MOD_DELETE_ORDER($id)
     {
         $sql = "DELETE FROM `tbl_webjdreamcorp_orders` WHERE `id` = ?";

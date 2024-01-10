@@ -935,6 +935,42 @@
         </div>
     </div>
 
+    <!-- Place Order Modal -->
+    <div class="modal fade" id="place_order" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel">Place Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="place_order_form">
+                        <div class="modal-body">
+                            <h5 class="mb-3">Do you want to place these order/s?</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row" id="place_order_row">
+                                        <!-- Data from AJAX -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="place_order_submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -985,6 +1021,7 @@
             var current_tab = "<?= $this->session->userdata("current_tab") ?>";
             var base_url = "<?= base_url() ?>";
             var user_id = "<?= $this->session->userdata("id") ?>";
+            var order_id_to_be_placed = null;
 
             const zipCodes = {
                 "Baao": "4432",
@@ -2221,6 +2258,114 @@
                     }
                 });
             })
+
+            $("#btn_place_order").click(function() {
+                const order_ids = getCheckedOrderIds();
+
+                order_id_to_be_placed = order_ids;
+
+                $(".loading").removeClass("d-none");
+                $(".actual-form").addClass("d-none");
+
+                var formData = new FormData();
+
+                formData.append('order_ids', order_ids);
+
+                $.ajax({
+                    url: base_url + 'server/get_order_ids',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(responses) {
+                        const row = $('#place_order_row');
+                        let content = '';
+
+                        $.each(responses, function(index, response) {
+                            var item_name = "";
+                            var formData = new FormData();
+
+                            formData.append('id', response.item_id);
+
+                            $.ajax({
+                                url: base_url + 'server/get_item_info',
+                                data: formData,
+                                type: 'POST',
+                                dataType: 'JSON',
+                                processData: false,
+                                contentType: false,
+                                success: function(response_2) {
+                                    item_name = response_2[0].name;
+
+                                    content += `
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <p id="place_order_name">` + item_name + `</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" id="place_order_quantity_` + response.id + `" style="height: 25px !important;" readonly value="` + response.quantity + `">
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="float-right">₱<span id="place_order_total_amount">` + response.total_amount + `</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+
+                                    row.html(content);
+
+                                    $(".loading").addClass("d-none");
+                                    $(".actual-form").removeClass("d-none");
+
+                                    $("#place_order").modal("show");
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $("#place_order_form").submit(function() {
+                var order_ids = order_id_to_be_placed;
+
+                $("#place_order_submit").attr("disabled", true);
+                $("#place_order_submit").text("Processing Request...");
+
+                var formData = new FormData();
+                
+                formData.append('order_ids', order_ids);
+                
+                $.ajax({
+                    url: base_url + 'server/place_order',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            function getCheckedOrderIds() {
+                const checkedOrderIds = $('.selected_item:checked').map(function() {
+                    return $(this).data('order_id');
+                }).get();
+
+                return checkedOrderIds;
+            }
 
             function addZeros(str) {
                 const zerosToAdd = 5 - str.length;

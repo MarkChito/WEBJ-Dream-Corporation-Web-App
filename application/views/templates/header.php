@@ -1,3 +1,21 @@
+<?php
+function isMobileDevice()
+{
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $mobileKeywords = array(
+        'Android', 'iPhone', 'iPad', 'Windows Phone', 'Mobile Safari', 'BlackBerry', 'Opera Mini', 'Symbian', 'Kindle', 'Mobile'
+    );
+
+    foreach ($mobileKeywords as $keyword) {
+        if (strpos($userAgent, $keyword) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -84,7 +102,7 @@
     <div class="logo_products">
         <div class="container">
             <div class="w3ls_logo_products_left">
-                <h1><a href="<?= base_url() ?>"><span>WEBJ Dream Corporation</span> Welcome</a></h1>
+                <h1><a href="<?= base_url() ?>"><span>WEBJ Dream Corporation</span> <?= isMobileDevice() ? "Hello" : "Welcome" ?></a></h1>
             </div>
             <div class="w3ls_logo_products_left1">
                 <ul class="special_items">

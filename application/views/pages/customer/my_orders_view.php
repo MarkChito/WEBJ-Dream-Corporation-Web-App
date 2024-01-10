@@ -46,7 +46,9 @@
                                                 <tr>
                                                     <td class="text-center">
                                                         <?php if ($my_order->status == "Cart") : ?>
-                                                            <input type="checkbox" class="selected_item" order_id="<?= $my_order->id ?>">
+                                                            <input type="checkbox" class="selected_item" data-order_id="<?= $my_order->id ?>">
+                                                        <?php else : ?>
+                                                            <input type="checkbox" checked disabled>
                                                         <?php endif ?>
                                                     </td>
                                                     <td><a class="order_details" href="javascript:void(0)" data-toggle="modal" data-target="#view_order" order_id="<?= $my_order->id ?>">OR<?= str_pad($my_order->id, 5, '0', STR_PAD_LEFT); ?></a></td>
@@ -64,7 +66,7 @@
                                                         $badge_color = "primary";
                                                     }
 
-                                                    if ($my_order->status == "To Ship") {
+                                                    if ($my_order->status == "To Approve") {
                                                         $badge_color = "success";
                                                     }
 
@@ -79,8 +81,14 @@
 
                                                     <td class="text-center"><span class="badge badge-<?= $badge_color ?>"><?= $my_order->status ?></span></td>
                                                     <td class="text-center">
-                                                        <a href="javascript:void(0)" class="update_order" order_id="<?= $my_order->id ?>"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
-                                                        <a href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                        <?php if ($my_order->status == "Cart") : ?>
+                                                            <a title="Edit Order Quantity" href="javascript:void(0)" class="update_order" order_id="<?= $my_order->id ?>"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
+                                                            <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                        <?php elseif ($my_order->status == "To Approve") : ?>
+                                                            <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                        <?php else : ?>
+                                                            <i class="fas fa-ellipsis-h text-muted"></i>
+                                                        <?php endif ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach ?>

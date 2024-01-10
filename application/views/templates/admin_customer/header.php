@@ -166,7 +166,7 @@
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>customer/track_my_order" class="nav-link <?= $this->session->userdata("current_tab") == "customer/track_my_order" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shipping-fast"></i>
-                                    <p>Track My Order</p>
+                                    <p>Track My Order <small class="badge badge-danger float-right">Soon</small></p>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>

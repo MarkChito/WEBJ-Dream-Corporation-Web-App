@@ -30,18 +30,18 @@
                         <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-                <!-- To Ship -->
+                <!-- To Approve -->
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-success">
                         <div class="inner">
-                            <?php $to_ship = $this->model->MOD_GET_ORDERS("To Ship", $this->session->userdata("id")) ?>
+                            <?php $to_ship = $this->model->MOD_GET_ORDERS("To Approve", $this->session->userdata("id")) ?>
 
                             <h3><?= count($to_ship) ?></h3>
 
-                            <p>To Ship</p>
+                            <p>To Approve</p>
                         </div>
                         <div class="icon">
-                            <i class="fas fa-truck"></i>
+                            <i class="fas fa-check"></i>
                         </div>
                         <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
@@ -130,7 +130,7 @@
                                                         $badge_color = "primary";
                                                     }
 
-                                                    if ($my_order->status == "To Ship") {
+                                                    if ($my_order->status == "To Approve") {
                                                         $badge_color = "success";
                                                     }
 
