@@ -90,7 +90,7 @@ class model extends CI_Model
 
     public function MOD_GET_MY_ORDERS($customer_id)
     {
-        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? ORDER BY CASE WHEN `status` = 'Cart' THEN 0 ELSE 1 END, `status`";
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ?";
         $query = $this->db->query($sql, array($customer_id));
 
         return $query->result();
@@ -100,6 +100,14 @@ class model extends CI_Model
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `status` = ? AND `customer_id` = ?";
         $query = $this->db->query($sql, array($status, $customer_id));
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_PENDING_ORDERS()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `status` = 'To Approve'";
+        $query = $this->db->query($sql);
 
         return $query->result();
     }
@@ -295,6 +303,13 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = '" . $transaction_date . "', `status` = 'To Approve' WHERE `id` IN (" . $order_ids . ")";
 
         $this->db->query($sql);
+    }
+    
+    public function MOD_UPDATE_ORDER_STATUS_AND_TRACKING_ID($transaction_date, $tracking_id, $status, $order_ids)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = ?, `tracking_id` = ?, `status` = ? WHERE `id` IN (" . $order_ids . ")";
+
+        $this->db->query($sql, array($transaction_date, $tracking_id, $status));
     }
 
     /*============================== DELETE QUERIES ==============================*/

@@ -48,7 +48,7 @@
                         <div class="inner">
                             <h3><?= count($this->model->MOD_GET_ALL_CUSTOMERS()) ?></h3>
 
-                            <p>Registered Customers</p>
+                            <p>Customers</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-users"></i>

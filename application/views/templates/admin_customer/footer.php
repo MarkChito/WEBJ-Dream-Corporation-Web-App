@@ -971,6 +971,44 @@
         </div>
     </div>
 
+    <!-- Approve/Reject Order Modal -->
+    <div class="modal fade" id="approve_reject_order" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel"><span class="approve_reject_status">Approve</span> Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="approve_reject_order_form">
+                        <div class="modal-body">
+                            <h5 class="mb-3">Do you want to <span class="approve_reject_status">Approve</span> these order/s?</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row" id="approve_reject_order_row">
+                                        <!-- Data from AJAX -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="approve_reject_order_status">
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="approve_reject_order_submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -2091,20 +2129,28 @@
                     $('.selected_item').prop('checked', true);
 
                     $("#btn_place_order").removeClass("d-none");
+                    $("#btn_approve_reject").removeClass("d-none");
                 } else {
                     $('.selected_item').prop('checked', false);
 
                     $("#btn_place_order").addClass("d-none");
+                    $("#btn_approve_reject").addClass("d-none");
                 }
             })
 
             $('.selected_item').on('change', function() {
                 var isChecked = $('.selected_item:checked').length > 0;
+                var allChecked = $('.selected_item:checked').length === $('.selected_item').length;
+
+                $('#checkAll').prop("checked", allChecked);
 
                 if (isChecked) {
                     $("#btn_place_order").removeClass("d-none");
+                    $("#btn_approve_reject").removeClass("d-none");
                 } else {
+                    $('#checkAll').prop("checked", false);
                     $("#btn_place_order").addClass("d-none");
+                    $("#btn_approve_reject").addClass("d-none");
                 }
             });
 
@@ -2340,11 +2386,123 @@
                 $("#place_order_submit").text("Processing Request...");
 
                 var formData = new FormData();
-                
+
                 formData.append('order_ids', order_ids);
-                
+
                 $.ajax({
                     url: base_url + 'server/place_order',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $(".btn_approve_reject").click(function() {
+                var is_approve = $(this).attr("is_approve");
+                const order_ids = getCheckedOrderIds();
+                var status = "";
+
+                order_id_to_be_placed = order_ids;
+
+                $(".loading").removeClass("d-none");
+                $(".actual-form").addClass("d-none");
+
+                var formData = new FormData();
+
+                formData.append('order_ids', order_ids);
+
+                $.ajax({
+                    url: base_url + 'server/get_order_ids',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(responses) {
+                        const row = $('#approve_reject_order_row');
+                        let content = '';
+
+                        $.each(responses, function(index, response) {
+                            var item_name = "";
+                            var formData = new FormData();
+
+                            formData.append('id', response.item_id);
+
+                            $.ajax({
+                                url: base_url + 'server/get_item_info',
+                                data: formData,
+                                type: 'POST',
+                                dataType: 'JSON',
+                                processData: false,
+                                contentType: false,
+                                success: function(response_2) {
+                                    item_name = response_2[0].name;
+
+                                    content += `
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-7">
+                                                    <p id="approve_reject_name">` + item_name + `</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" id="approve_reject_order_quantity_` + response.id + `" style="height: 25px !important;" readonly value="` + response.quantity + `">
+                                                </div>
+                                                <div class="col-3">
+                                                    <p class="float-right">₱<span id="approve_reject_order_total_amount">` + response.total_amount + `</span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+
+                                    row.html(content);
+
+                                    if (is_approve == "true") {
+                                        $(".approve_reject_status").text("Approve");
+                                        $("#approve_reject_order_status").val("Approved");
+                                    } else {
+                                        $(".approve_reject_status").text("Reject");
+                                        $("#approve_reject_order_status").val("Rejected");
+                                    }
+
+                                    $(".loading").addClass("d-none");
+                                    $(".actual-form").removeClass("d-none");
+
+                                    $("#approve_reject_order").modal("show");
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $("#approve_reject_order_form").submit(function() {
+                var order_ids = order_id_to_be_placed;
+                var status = $("#approve_reject_order_status").val();
+
+                $("#approve_reject_order_submit").attr("disabled", true);
+                $("#approve_reject_order_submit").text("Processing Request...");
+
+                var formData = new FormData();
+
+                formData.append('order_ids', order_ids);
+                formData.append('status', status);
+
+                $.ajax({
+                    url: base_url + 'server/approve_reject_order',
                     data: formData,
                     type: 'POST',
                     dataType: 'JSON',

@@ -141,6 +141,10 @@
                                                     if ($my_order->status == "To Rate") {
                                                         $badge_color = "info";
                                                     }
+                                                    
+                                                    if ($my_order->status == "Rejected") {
+                                                        $badge_color = "danger";
+                                                    }
                                                     ?>
 
                                                     <td class="text-center"><span class="badge badge-<?= $badge_color ?>"><?= $my_order->status ?></span></td>

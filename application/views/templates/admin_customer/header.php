@@ -133,7 +133,7 @@
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>admin/sales" class="nav-link <?= $this->session->userdata("current_tab") == "admin/sales" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-chart-line"></i>
-                                    <p>Sales</p>
+                                    <p>Sales <small class="badge badge-danger float-right">Soon</small></p>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>

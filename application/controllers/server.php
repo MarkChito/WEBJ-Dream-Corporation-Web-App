@@ -593,7 +593,7 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
-    
+
     public function delete_order()
     {
         $id = $this->input->post("id");
@@ -608,7 +608,7 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
-    
+
     public function get_order_ids()
     {
         $order_ids = $this->input->post("order_ids");
@@ -617,7 +617,7 @@ class server extends CI_Controller
 
         echo json_encode($orders);
     }
-    
+
     public function place_order()
     {
         $transaction_date = date("Y-m-d H:i");
@@ -628,6 +628,31 @@ class server extends CI_Controller
         $this->session->set_userdata("alert", array(
             "title" => "Success",
             "message" => "Your order/s has been placed!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
+    public function approve_reject_order()
+    {
+        $transaction_date = date("Y-m-d H:i");
+        $tracking_id = "";
+        $order_ids = $this->input->post("order_ids");
+        $status = $this->input->post("status");
+        
+        $notification_status = $status;
+
+        if ($status == "Approved") {
+            $tracking_id = date("YmdHis");
+            $status = "To Receive";
+        }
+
+        $this->model->MOD_UPDATE_ORDER_STATUS_AND_TRACKING_ID($transaction_date, $tracking_id, $status, $order_ids);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Order/s has been " . $notification_status . "!",
             "type" => "success"
         ));
 
