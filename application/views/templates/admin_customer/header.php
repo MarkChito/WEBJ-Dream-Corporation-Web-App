@@ -1,3 +1,27 @@
+<?php
+function isMobileDevice()
+{
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $mobileKeywords = array(
+        'Android', 'iPhone', 'iPad', 'Windows Phone', 'Mobile Safari', 'BlackBerry', 'Opera Mini', 'Symbian', 'Kindle', 'Mobile'
+    );
+
+    foreach ($mobileKeywords as $keyword) {
+        if (strpos($userAgent, $keyword) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
+    header("location: no_access");
+
+    exit;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

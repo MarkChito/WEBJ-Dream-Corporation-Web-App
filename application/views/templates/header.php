@@ -515,18 +515,17 @@ function isMobileDevice()
                                         <div class="col-lg-6">
                                             <div class="form-group">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-6 mb-sm-3">
                                                         <input type="text" id="contact_us_name" class="form-control" placeholder="Name" required>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="email" id="contact_us_email" class="form-control" placeholder="Email" required>
                                                     </div>
                                                 </div>
-
                                             </div>
                                             <div class="form-group">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-6 mb-sm-3">
                                                         <input type="text" id="contact_us_mobile_number" class="form-control" placeholder="Mobile Number" required>
                                                     </div>
                                                     <div class="col-lg-6">

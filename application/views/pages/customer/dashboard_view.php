@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="sales">View All Orders</a>
+                            <a href="my_orders">View All Orders</a>
                         </div>
                     </div>
                 </div>

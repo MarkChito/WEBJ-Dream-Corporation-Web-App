@@ -6,7 +6,7 @@
                 <div class="col-sm-8">
                     <h1 class="m-0">My Orders</h1>
                 </div>
-                <div class="col-4">
+                <div class="col-sm-4">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url() ?>customer/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item active">My Orders</li>
@@ -112,6 +112,7 @@
                     </button>
                 </div>
             </div>
+            <div class="row" style="background-color: transparent; height: 16px;"></div>
         </div>
     </section>
 </div>
