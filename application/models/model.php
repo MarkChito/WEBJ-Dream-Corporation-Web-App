@@ -327,6 +327,13 @@ class model extends CI_Model
 
         $this->db->query($sql, array($transaction_date, $tracking_id, $status));
     }
+    
+    public function MOD_UPDATE_DELIVERY_STATUS($status, $description, $tracking_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `delivery_status` = ?, `delivery_description` = ? WHERE `tracking_id` = ? ";
+
+        $this->db->query($sql, array($status, $description, $tracking_id));
+    }
 
     /*============================== DELETE QUERIES ==============================*/
     public function MOD_DELETE_CATEGORY($id)

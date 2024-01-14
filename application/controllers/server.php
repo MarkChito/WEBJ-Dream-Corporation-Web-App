@@ -667,6 +667,23 @@ class server extends CI_Controller
     
         echo json_encode($delivery_orders);
     }
+    
+    public function update_delivery_status()
+    {
+        $status = $this->input->post("status");
+        $description = $this->input->post("description");
+        $tracking_id = $this->input->post("tracking_id");
+    
+        $this->model->MOD_UPDATE_DELIVERY_STATUS($status, $description, $tracking_id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Order/s has been set to " . $status . "!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
 
     public function logout()
     {

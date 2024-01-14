@@ -1011,7 +1011,7 @@
 
     <!-- View Delivery Order Modal -->
     <div class="modal fade" id="view_delivery_order" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewOrderModalLabel">Order Details</h5>
@@ -1022,20 +1022,212 @@
                 <div class="actual-form d-none">
                     <form action="javascript:void(0)" id="view_delivery_order_form">
                         <div class="modal-body">
-                            
                             <div class="card">
+                                <div class="card-header">
+                                    Customer Details
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Customer Name:</strong>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span id="view_delivery_order_customer_name"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Mobile Number:</strong>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span id="view_delivery_order_mobile_number"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Email:</strong>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span id="view_delivery_order_email"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Address:</strong>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span id="view_delivery_order_address"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        Ordered Items
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="row" id="view_delivery_order_row">
                                         <!-- Data from AJAX -->
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <strong class="float-right">Subtotal</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="float-right">₱<span id="view_delivery_order_subtotal">1234.00</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <strong class="float-right">Tax</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="float-right">₱<span id="view_delivery_order_tax">34.00</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <strong class="float-right">Total</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="float-right">₱<span id="view_delivery_order_total">1268.00</span></span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <input type="hidden" id="view_delivery_order_status">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Set Delivery Status Modal -->
+    <div class="modal fade" id="set_delivery_status" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel">Set Delivery Status</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="set_delivery_status_form">
+                        <div class="modal-body">
+                            <div class="card">
+                                <div class="card-header">
+                                    Customer Details
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Tracking ID:</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <span id="set_delivery_status_tracking_id"></span>
+                                                </div>
+                                                <div class="col-3">
+                                                    <strong>Customer Name:</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <span id="set_delivery_status_name"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Mobile Number:</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <span id="set_delivery_status_mobile_number"></span>
+                                                </div>
+                                                <div class="col-3">
+                                                    <strong>Email:</strong>
+                                                </div>
+                                                <div class="col-3">
+                                                    <span id="set_delivery_status_email"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Address:</strong>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span id="set_delivery_status_address"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <strong>Status:</strong>
+                                                </div>
+                                                <div class="col-9">
+                                                    <span id="set_delivery_status_delivery_status"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    Delivery Status
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="set_delivery_status_set_status">Status <span class="text-danger">*</span></label>
+                                        <select id="set_delivery_status_set_status" class="custom-select" required>
+                                            <option value disabled selected>Choose...</option>
+                                            <option value="Processing">Processing</option>
+                                            <option value="Shipped/Dispatched">Shipped/Dispatched</option>
+                                            <option value="In Transit">In Transit</option>
+                                            <option value="Out for Delivery">Out for Delivery</option>
+                                            <option value="Delivered">Delivered</option>
+                                            <option value="Failed Delivery Attempt">Failed Delivery Attempt</option>
+                                            <option value="Returned to Sender">Returned to Sender</option>
+                                            <option value="Awaiting Pickup">Awaiting Pickup</option>
+                                            <option value="On Hold">On Hold</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="set_delivery_status_description">Description <span class="text-danger">*</span></label>
+                                        <textarea id="set_delivery_status_description" rows="5" class="form-control" required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="set_delivery_status_set_tracking_id">
 
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" id="view_delivery_order_submit">Submit</button>
+                            <button type="submit" class="btn btn-primary" id="set_delivery_status_submit">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -1141,6 +1333,160 @@
 
             login_alert(login_message);
             sweetalert(alert);
+
+            function getCheckedOrderIds() {
+                const checkedOrderIds = $('.selected_item:checked').map(function() {
+                    return $(this).data('order_id');
+                }).get();
+
+                return checkedOrderIds;
+            }
+
+            function addZeros(str) {
+                const zerosToAdd = 5 - str.length;
+                if (zerosToAdd > 0) {
+                    const zeros = '0'.repeat(zerosToAdd);
+                    return zeros + str;
+                }
+                return str;
+            }
+
+            function verify_password(password, confirm_password, password_error_label) {
+                var error = 0;
+                var error_message = null;
+
+                if (password.val() || confirm_password.val()) {
+                    if (!/[A-Z]/.test(password.val())) {
+                        error_message = "Password must have at least one uppercase letter (A-Z)";
+
+                        error++;
+                    }
+
+                    if (!/[a-z]/.test(password.val())) {
+                        error_message = "Password must have at least one lowercase letter (a-z)";
+
+                        error++;
+                    }
+
+                    if (!/[0-9]/.test(password.val())) {
+                        error_message = "Password must have at least one digit (0-9)";
+
+                        error++;
+                    }
+
+                    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password.val())) {
+                        error_message = "Password must have at least one special character (e.g., !@#$%^&*()_+-=[]{};':\"\\|,.<>/?)";
+
+                        error++;
+                    }
+
+                    if (password.val().length < 8) {
+                        error_message = "Password must be at least 8 characters long";
+
+                        error++;
+                    }
+
+                    if (password.val() != confirm_password.val()) {
+                        error_message = "Passwords do not match";
+
+                        error++;
+                    }
+                }
+
+                if (error > 0) {
+                    password_error_label.html(error_message);
+                    password_error_label.removeClass("d-none");
+
+                    password.addClass("is-invalid");
+                    confirm_password.addClass("is-invalid");
+
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function verify_mobile_number(mobile_number, mobile_number_error_label) {
+                var error_message = null;
+
+                error = 0;
+
+                mobile_number_input = mobile_number;
+                mobile_number = mobile_number.val().replace(/[^\d]/g, '');
+
+                var validPrefix = ['09'];
+                var prefix = mobile_number.substr(0, 2);
+
+                if (mobile_number.length !== 11) {
+                    error_message = "Mobile Number must be 11 digits long";
+
+                    error++;
+                }
+
+                if (!validPrefix.includes(prefix)) {
+                    error_message = "Mobile Number must start with '09'";
+
+                    error++;
+                }
+
+                if (error == 0) {
+                    return true;
+                } else {
+                    mobile_number_input.addClass("is-invalid");
+                    mobile_number_error_label.removeClass("d-none");
+                    mobile_number_error_label.html(error_message);
+
+                    return false;
+                }
+            }
+
+            function sweetalert(alert) {
+                if (alert.length != 0) {
+                    Swal.fire(
+                        alert["title"],
+                        alert["message"],
+                        alert["type"]
+                    );
+                }
+            }
+
+            function login_alert(login_message) {
+                if (login_message) {
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
+                    Toast.fire({
+                        icon: 'info',
+                        title: '' + login_message
+                    });
+                }
+            }
+
+            function formatDate(inputDate) {
+                const months = [
+                    'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December'
+                ];
+
+                const dateObj = new Date(inputDate);
+                const month = months[dateObj.getMonth()];
+                const day = dateObj.getDate();
+                const year = dateObj.getFullYear();
+                let hours = dateObj.getHours();
+                const minutes = (dateObj.getMinutes() < 10 ? '0' : '') + dateObj.getMinutes();
+                const meridiem = hours >= 12 ? 'PM' : 'AM';
+
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+
+                const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${meridiem}`;
+
+                return formattedDate;
+            }
 
             $(".datatable").DataTable({
                 "responsive": true,
@@ -2351,6 +2697,8 @@
                 $(".loading").removeClass("d-none");
                 $(".actual-form").addClass("d-none");
 
+                $("#place_order").modal("show");
+
                 var formData = new FormData();
 
                 formData.append('order_ids', order_ids);
@@ -2402,8 +2750,6 @@
 
                                     $(".loading").addClass("d-none");
                                     $(".actual-form").removeClass("d-none");
-
-                                    $("#place_order").modal("show");
                                 },
                                 error: function(xhr, status, error) {
                                     console.error(error);
@@ -2452,6 +2798,8 @@
 
                 $(".loading").removeClass("d-none");
                 $(".actual-form").addClass("d-none");
+
+                $("#approve_reject_order").modal("show");
 
                 var formData = new FormData();
 
@@ -2512,8 +2860,6 @@
 
                                     $(".loading").addClass("d-none");
                                     $(".actual-form").removeClass("d-none");
-
-                                    $("#approve_reject_order").modal("show");
                                 },
                                 error: function(xhr, status, error) {
                                     console.error(error);
@@ -2558,10 +2904,15 @@
             $(document).on('click', '.view_delivery_order', function() {
                 var tracking_id = $(this).attr("tracking_id");
 
+                $(".actual-form").addClass("d-none");
+                $(".loading").removeClass("d-none");
+
+                $("#view_delivery_order").modal("show");
+
                 var formData = new FormData();
-                
+
                 formData.append('tracking_id', tracking_id);
-                
+
                 $.ajax({
                     url: base_url + 'server/get_delivery_orders',
                     data: formData,
@@ -2570,171 +2921,212 @@
                     processData: false,
                     contentType: false,
                     success: function(responses) {
-                        $.each(responses, function(index, response) {
-                            // var 
+                        var customer_id = responses[0].customer_id;
+                        const row = $('#view_delivery_order_row');
+                        let content = '';
+                        var sub_total = 0;
+                        var tax = 0;
+                        var total = 0;
+
+                        $.each(responses, function(_, response) {
+                            sub_total = sub_total + parseFloat(response.total_amount);
+                            tax = sub_total * 0.12;
+                            total = sub_total + tax;
+
+                            var formData = new FormData();
+
+                            formData.append('id', customer_id);
+
+                            $.ajax({
+                                url: base_url + 'server/get_customer_data',
+                                data: formData,
+                                type: 'POST',
+                                dataType: 'JSON',
+                                processData: false,
+                                contentType: false,
+                                success: function(response_2) {
+                                    var first_name = response_2[0].first_name;
+                                    var middle_name = response_2[0].middle_name;
+                                    var last_name = response_2[0].last_name;
+                                    var middle_initial = middle_name ? middle_name[0] + ". " : null;
+                                    var name = first_name + " " + middle_initial + last_name;
+                                    var mobile_number = response_2[0].mobile_number;
+                                    var email = response_2[0].email;
+                                    var house_number = response_2[0].house_number ? response_2[0].house_number + ", " : null;
+                                    var subdivision_zone_purok = response_2[0].subdivision_zone_purok ? response_2[0].subdivision_zone_purok + ", " : null;
+                                    var city = response_2[0].city;
+                                    var province = response_2[0].province;
+                                    var country = response_2[0].country;
+                                    var zip_code = response_2[0].zip_code;
+                                    var address = house_number + subdivision_zone_purok + city + ", " + province + ", " + country + ", " + zip_code;
+
+                                    var formData = new FormData();
+
+                                    formData.append('id', response.item_id);
+
+                                    $.ajax({
+                                        url: base_url + 'server/get_item_info',
+                                        data: formData,
+                                        type: 'POST',
+                                        dataType: 'JSON',
+                                        processData: false,
+                                        contentType: false,
+                                        success: function(response_3) {
+                                            item_name = response_3[0].name;
+
+                                            content += `
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <div class="col-7">
+                                                            <p id="view_delivery_order_name">` + item_name + `</p>
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <input type="text" class="form-control text-center" id="view_delivery_order_quantity_` + response.id + `" style="height: 25px !important;" readonly value="` + response.quantity + `">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <p class="float-right">₱<span id="view_delivery_order_total_amount">` + response.total_amount + `</span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            `;
+
+                                            row.html(content);
+
+                                            $("#view_delivery_order_customer_name").text(name);
+                                            $("#view_delivery_order_mobile_number").text(mobile_number);
+                                            $("#view_delivery_order_email").text(email);
+                                            $("#view_delivery_order_address").text(address);
+
+                                            $("#view_delivery_order_subtotal").text(sub_total.toFixed(2));
+                                            $("#view_delivery_order_tax").text(tax.toFixed(2));
+                                            $("#view_delivery_order_total").text(total.toFixed(2));
+
+                                            $(".actual-form").removeClass("d-none");
+                                            $(".loading").addClass("d-none");
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                        }
+                                    });
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error);
+                                }
+                            });
                         });
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
                     }
                 });
-
-                $("#view_delivery_order").modal("show");
             })
 
-            function getCheckedOrderIds() {
-                const checkedOrderIds = $('.selected_item:checked').map(function() {
-                    return $(this).data('order_id');
-                }).get();
+            $(document).on('click', '.view_delivery_order_set_status', function() {
+                var tracking_id = $(this).attr("tracking_id");
 
-                return checkedOrderIds;
-            }
+                $(".actual-form").addClass("d-none");
+                $(".loading").removeClass("d-none");
 
-            function addZeros(str) {
-                const zerosToAdd = 5 - str.length;
-                if (zerosToAdd > 0) {
-                    const zeros = '0'.repeat(zerosToAdd);
-                    return zeros + str;
-                }
-                return str;
-            }
+                $("#set_delivery_status").modal("show");
 
-            function verify_password(password, confirm_password, password_error_label) {
-                var error = 0;
-                var error_message = null;
+                var formData = new FormData();
 
-                if (password.val() || confirm_password.val()) {
-                    if (!/[A-Z]/.test(password.val())) {
-                        error_message = "Password must have at least one uppercase letter (A-Z)";
+                formData.append('tracking_id', tracking_id);
 
-                        error++;
+                $.ajax({
+                    url: base_url + 'server/get_delivery_orders',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var customer_id = response[0].customer_id;
+                        var delivery_status = response[0].delivery_status ? response[0].delivery_status : "Not Yet Available";
+
+                        var formData = new FormData();
+
+                        formData.append('id', customer_id);
+
+                        $.ajax({
+                            url: base_url + 'server/get_customer_data',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response_2) {
+                                var first_name = response_2[0].first_name;
+                                var middle_name = response_2[0].middle_name;
+                                var last_name = response_2[0].last_name;
+                                var middle_initial = middle_name ? middle_name[0] + ". " : null;
+                                var name = first_name + " " + middle_initial + last_name;
+                                var mobile_number = response_2[0].mobile_number;
+                                var email = response_2[0].email;
+                                var house_number = response_2[0].house_number ? response_2[0].house_number + ", " : null;
+                                var subdivision_zone_purok = response_2[0].subdivision_zone_purok ? response_2[0].subdivision_zone_purok + ", " : null;
+                                var city = response_2[0].city;
+                                var province = response_2[0].province;
+                                var country = response_2[0].country;
+                                var zip_code = response_2[0].zip_code;
+                                var address = house_number + subdivision_zone_purok + city + ", " + province + ", " + country + ", " + zip_code;
+
+                                $("#set_delivery_status_tracking_id").text(tracking_id);
+                                $("#set_delivery_status_name").text(name);
+                                $("#set_delivery_status_mobile_number").text(mobile_number);
+                                $("#set_delivery_status_email").text(email);
+                                $("#set_delivery_status_address").text(address);
+                                $("#set_delivery_status_delivery_status").text(delivery_status);
+
+                                $("#set_delivery_status_set_tracking_id").val(tracking_id);
+                                $("#set_delivery_status_set_status").val(delivery_status != "Not Yet Available" ? delivery_status : null);
+
+                                $(".actual-form").removeClass("d-none");
+                                $(".loading").addClass("d-none");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
                     }
+                });
+            })
 
-                    if (!/[a-z]/.test(password.val())) {
-                        error_message = "Password must have at least one lowercase letter (a-z)";
+            $("#set_delivery_status_form").submit(function() {
+                var status = $("#set_delivery_status_set_status").val();
+                var description = $("#set_delivery_status_description").val();
+                var tracking_id = $("#set_delivery_status_set_tracking_id").val();
 
-                        error++;
+                $("#set_delivery_status_submit").text("Processing Request...");
+                $("#set_delivery_status_submit").attr("disabled", true);
+
+                $("#set_delivery_status_set_status").attr("disabled", true);
+                $("#set_delivery_status_description").attr("disabled", true);
+
+                var formData = new FormData();
+                
+                formData.append('status', status);
+                formData.append('description', description);
+                formData.append('tracking_id', tracking_id);
+                
+                $.ajax({
+                    url: base_url + 'server/update_delivery_status',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
                     }
-
-                    if (!/[0-9]/.test(password.val())) {
-                        error_message = "Password must have at least one digit (0-9)";
-
-                        error++;
-                    }
-
-                    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password.val())) {
-                        error_message = "Password must have at least one special character (e.g., !@#$%^&*()_+-=[]{};':\"\\|,.<>/?)";
-
-                        error++;
-                    }
-
-                    if (password.val().length < 8) {
-                        error_message = "Password must be at least 8 characters long";
-
-                        error++;
-                    }
-
-                    if (password.val() != confirm_password.val()) {
-                        error_message = "Passwords do not match";
-
-                        error++;
-                    }
-                }
-
-                if (error > 0) {
-                    password_error_label.html(error_message);
-                    password_error_label.removeClass("d-none");
-
-                    password.addClass("is-invalid");
-                    confirm_password.addClass("is-invalid");
-
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            function verify_mobile_number(mobile_number, mobile_number_error_label) {
-                var error_message = null;
-
-                error = 0;
-
-                mobile_number_input = mobile_number;
-                mobile_number = mobile_number.val().replace(/[^\d]/g, '');
-
-                var validPrefix = ['09'];
-                var prefix = mobile_number.substr(0, 2);
-
-                if (mobile_number.length !== 11) {
-                    error_message = "Mobile Number must be 11 digits long";
-
-                    error++;
-                }
-
-                if (!validPrefix.includes(prefix)) {
-                    error_message = "Mobile Number must start with '09'";
-
-                    error++;
-                }
-
-                if (error == 0) {
-                    return true;
-                } else {
-                    mobile_number_input.addClass("is-invalid");
-                    mobile_number_error_label.removeClass("d-none");
-                    mobile_number_error_label.html(error_message);
-
-                    return false;
-                }
-            }
-
-            function sweetalert(alert) {
-                if (alert.length != 0) {
-                    Swal.fire(
-                        alert["title"],
-                        alert["message"],
-                        alert["type"]
-                    );
-                }
-            }
-
-            function login_alert(login_message) {
-                if (login_message) {
-                    var Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-
-                    Toast.fire({
-                        icon: 'info',
-                        title: '' + login_message
-                    });
-                }
-            }
-
-            function formatDate(inputDate) {
-                const months = [
-                    'January', 'February', 'March', 'April', 'May', 'June', 'July',
-                    'August', 'September', 'October', 'November', 'December'
-                ];
-
-                const dateObj = new Date(inputDate);
-                const month = months[dateObj.getMonth()];
-                const day = dateObj.getDate();
-                const year = dateObj.getFullYear();
-                let hours = dateObj.getHours();
-                const minutes = (dateObj.getMinutes() < 10 ? '0' : '') + dateObj.getMinutes();
-                const meridiem = hours >= 12 ? 'PM' : 'AM';
-
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-
-                const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${meridiem}`;
-
-                return formattedDate;
-            }
+                });
+            })
         })
     </script>
     </div>

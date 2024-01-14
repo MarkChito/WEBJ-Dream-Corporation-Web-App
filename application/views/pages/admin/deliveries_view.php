@@ -75,8 +75,7 @@
                                                 <td><?= $customers[0]->mobile_number ?></td>
                                                 <td><?= $address ?></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0)" class="update_category"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
-                                                    <a href="javascript:void(0)" class="delete_category"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                    <a href="javascript:void(0)" class="btn btn-success btn-sm view_delivery_order_set_status" tracking_id="<?= $delivery->tracking_id ?>">Set Status</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>
