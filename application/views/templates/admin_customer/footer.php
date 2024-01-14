@@ -1009,6 +1009,44 @@
         </div>
     </div>
 
+    <!-- View Delivery Order Modal -->
+    <div class="modal fade" id="view_delivery_order" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel">Order Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="view_delivery_order_form">
+                        <div class="modal-body">
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row" id="view_delivery_order_row">
+                                        <!-- Data from AJAX -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="view_delivery_order_status">
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="view_delivery_order_submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -2515,6 +2553,33 @@
                         console.error(error);
                     }
                 });
+            })
+
+            $(document).on('click', '.view_delivery_order', function() {
+                var tracking_id = $(this).attr("tracking_id");
+
+                var formData = new FormData();
+                
+                formData.append('tracking_id', tracking_id);
+                
+                $.ajax({
+                    url: base_url + 'server/get_delivery_orders',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(responses) {
+                        $.each(responses, function(index, response) {
+                            // var 
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+
+                $("#view_delivery_order").modal("show");
             })
 
             function getCheckedOrderIds() {

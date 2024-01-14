@@ -658,6 +658,15 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
+    
+    public function get_delivery_orders()
+    {
+        $tracking_id = $this->input->post("tracking_id");
+
+        $delivery_orders = $this->model->MOD_GET_DELIVERY_ORDERS($tracking_id);
+    
+        echo json_encode($delivery_orders);
+    }
 
     public function logout()
     {

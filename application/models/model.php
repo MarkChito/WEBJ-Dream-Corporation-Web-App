@@ -183,6 +183,22 @@ class model extends CI_Model
 
         return $query->result();
     }
+    
+    public function MOD_GET_DELIVERIES()
+    {
+        $sql = "SELECT DISTINCT `tracking_id`, `customer_id` FROM `tbl_webjdreamcorp_orders` WHERE `status` != 'Cart' AND `status` != 'To Approve' AND `status` != 'Rejected' AND `status` != 'Delivered'";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_DELIVERY_ORDERS($tracking_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `tracking_id` = ?";
+        $query = $this->db->query($sql, array($tracking_id));
+
+        return $query->result();
+    }
 
     /*============================== INSERT QUERIES ==============================*/
     public function MOD_NEW_CATEGORY($name, $description)

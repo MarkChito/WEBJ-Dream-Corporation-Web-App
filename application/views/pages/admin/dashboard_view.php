@@ -87,35 +87,41 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body p-0">
+                        <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table m-0">
+                                <?php $my_orders = $this->model->MOD_GET_PENDING_ORDERS() ?>
+
+                                <table class="table table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>Order ID</th>
+                                            <th>Customer Name</th>
                                             <th>Product Name</th>
                                             <th class="text-center">Quantity</th>
-                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- <tr>
-                                            <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                            <td>Call of Duty IV</td>
-                                            <td class="text-center">0</td>
-                                            <td class="text-center"><span class="badge badge-success">Shipped</span></td>
-                                        </tr> -->
-                                        <tr>
-                                            <td colspan="4" class="text-center text-muted">
-                                                <h1 class="py-3">No Recent Orders</h1>
-                                            </td>
-                                        </tr>
+                                        <?php if ($my_orders) : ?>
+                                            <?php foreach ($my_orders as $my_order) : ?>
+                                                <?php $product = $this->model->MOD_GET_PRODUCT($my_order->item_id) ?>
+                                                <?php $customer = $this->model->MOD_GET_ADMINISTRATOR_DATA($my_order->customer_id) ?>
+
+                                                <tr>
+                                                    <td><a class="order_details" href="javascript:void(0)" data-toggle="modal" data-target="#view_order" order_id="<?= $my_order->id ?>">OR<?= str_pad($my_order->id, 5, '0', STR_PAD_LEFT); ?></a></td>
+                                                    <td><?= $customer[0]->name ?></td>
+                                                    <td><?= $product[0]->name ?></td>
+                                                    <td class="text-center"><?= $my_order->quantity ?></td>
+                                                    <td class="text-center">₱<?= $my_order->total_amount ?></td>
+                                                </tr>
+                                            <?php endforeach ?>
+                                        <?php endif ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="card-footer text-center">
-                            <a href="sales">View All Orders</a>
+                            <a href="manage_orders">View All Orders</a>
                         </div>
                     </div>
                 </div>

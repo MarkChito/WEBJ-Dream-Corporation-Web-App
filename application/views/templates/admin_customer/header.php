@@ -147,6 +147,14 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
                             </li>
                             <!-- Customers Tab -->
                             <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/deliveries" class="nav-link <?= $this->session->userdata("current_tab") == "admin/deliveries" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-shipping-fast"></i>
+                                    <p>Deliveries</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
+                            <!-- Customers Tab -->
+                            <li class="nav-item">
                                 <a href="<?= base_url() ?>admin/customers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/customers" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>Customers</p>
