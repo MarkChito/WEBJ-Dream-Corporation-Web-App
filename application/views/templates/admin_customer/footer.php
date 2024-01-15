@@ -954,6 +954,31 @@
                                     <div class="row" id="place_order_row">
                                         <!-- Data from AJAX -->
                                     </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <strong class="float-right">Gross Amount</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="float-right">₱<span id="place_order_subtotal">1234.00</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <strong class="float-right">12% VAT</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="float-right">₱<span id="place_order_tax">34.00</span></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <strong class="float-right">Total Amount</strong>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="float-right font-weight-bold">₱<span id="place_order_total">1268.00</span></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1084,7 +1109,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-9">
-                                            <strong class="float-right">Subtotal</strong>
+                                            <strong class="float-right">Gross Amount</strong>
                                         </div>
                                         <div class="col-3">
                                             <span class="float-right">₱<span id="view_delivery_order_subtotal">1234.00</span></span>
@@ -1092,7 +1117,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-9">
-                                            <strong class="float-right">Tax</strong>
+                                            <strong class="float-right">12% VAT</strong>
                                         </div>
                                         <div class="col-3">
                                             <span class="float-right">₱<span id="view_delivery_order_tax">34.00</span></span>
@@ -1100,10 +1125,10 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-9">
-                                            <strong class="float-right">Total</strong>
+                                            <strong class="float-right">Total Amount</strong>
                                         </div>
                                         <div class="col-3">
-                                            <span class="float-right">₱<span id="view_delivery_order_total">1268.00</span></span>
+                                            <span class="float-right font-weight-bold">₱<span id="view_delivery_order_total">1268.00</span></span>
                                         </div>
                                     </div>
                                 </div>
@@ -1146,13 +1171,17 @@
                                                 <div class="col-3">
                                                     <strong>Tracking ID:</strong>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-9">
                                                     <span id="set_delivery_status_tracking_id"></span>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
                                                 <div class="col-3">
                                                     <strong>Customer Name:</strong>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-9">
                                                     <span id="set_delivery_status_name"></span>
                                                 </div>
                                             </div>
@@ -1162,13 +1191,17 @@
                                                 <div class="col-3">
                                                     <strong>Mobile Number:</strong>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-9">
                                                     <span id="set_delivery_status_mobile_number"></span>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mb-2">
+                                            <div class="row">
                                                 <div class="col-3">
                                                     <strong>Email:</strong>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-9">
                                                     <span id="set_delivery_status_email"></span>
                                                 </div>
                                             </div>
@@ -2713,9 +2746,17 @@
                     success: function(responses) {
                         const row = $('#place_order_row');
                         let content = '';
+                        var sub_total = 0;
+                        var tax = 0;
+                        var total = 0;
 
                         $.each(responses, function(index, response) {
                             var item_name = "";
+
+                            sub_total = sub_total + parseFloat(response.total_amount);
+                            tax = sub_total * 0.12;
+                            total = sub_total + tax;
+
                             var formData = new FormData();
 
                             formData.append('id', response.item_id);
@@ -2747,6 +2788,10 @@
                                     `;
 
                                     row.html(content);
+
+                                    $("#place_order_subtotal").text(sub_total.toFixed(2));
+                                    $("#place_order_tax").text(tax.toFixed(2));
+                                    $("#place_order_total").text(total.toFixed(2));
 
                                     $(".loading").addClass("d-none");
                                     $(".actual-form").removeClass("d-none");
@@ -3107,11 +3152,11 @@
                 $("#set_delivery_status_description").attr("disabled", true);
 
                 var formData = new FormData();
-                
+
                 formData.append('status', status);
                 formData.append('description', description);
                 formData.append('tracking_id', tracking_id);
-                
+
                 $.ajax({
                     url: base_url + 'server/update_delivery_status',
                     data: formData,
@@ -3126,6 +3171,121 @@
                         console.error(error);
                     }
                 });
+            })
+
+            $("#track_order_form").submit(function() {
+                var tracking_id = $("#track_order_tracking_id").val();
+
+                var errors = 0;
+
+                if (tracking_id.length != 14) {
+                    $("#track_order_tracking_id").addClass("is-invalid");
+                    $("#error_track_order_tracking_id").removeClass("d-none");
+
+                    errors++;
+                }
+
+                if (errors == 0) {
+                    $("#track_order_tracking_id").attr("disabled", true);
+                    $("#track_order_submit").attr("disabled", true);
+                    $("#track_order_submit").text("Processing Request...");
+
+                    $(".loading").removeClass("d-none");
+                    $(".no-data").addClass("d-none");
+                    $(".tracking-results").addClass("d-none");
+
+                    var content = "";
+                    var tracking_details = $(".tracking-details");
+
+                    var formData = new FormData();
+
+                    formData.append('tracking_id', tracking_id);
+
+                    $.ajax({
+                        url: base_url + 'server/get_tracking_data',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(responses) {
+                            if (responses) {
+                                $.each(responses, function(_, response) {
+                                    var status = response.status;
+                                    var iconClass;
+
+                                    switch (status) {
+                                        case "Order Confirmed":
+                                            iconClass = "fas fa-check-square";
+                                            break;
+                                        case "Processing":
+                                            iconClass = "fas fa-cog";
+                                            break;
+                                        case "Shipped/Dispatched":
+                                            iconClass = "fas fa-truck";
+                                            break;
+                                        case "In Transit":
+                                            iconClass = "fas fa-shipping-fast";
+                                            break;
+                                        case "Out for Delivery":
+                                            iconClass = "fas fa-truck-loading";
+                                            break;
+                                        case "Delivered":
+                                            iconClass = "fas fa-check-circle";
+                                            break;
+                                        case "Failed Delivery Attempt":
+                                            iconClass = "fas fa-times-circle";
+                                            break;
+                                        case "Returned to Sender":
+                                            iconClass = "fas fa-undo";
+                                            break;
+                                        case "Awaiting Pickup":
+                                            iconClass = "fas fa-hand-paper";
+                                            break;
+                                        case "On Hold":
+                                            iconClass = "fas fa-pause-circle";
+                                            break;
+                                        default:
+                                            iconClass = "fas fa-question-circle";
+                                    }
+
+                                    content += `
+                                        <li class="timeline-event">
+                                            <div class="timeline-event-icon">
+                                                <i class="` + iconClass + `"></i>
+                                            </div>
+                                            <div class="timeline-event-content ml-3">
+                                                <h3 class="timeline-event-title">` + response.status + `</h3>
+                                                <p class="timeline-event-date">` + formatDate(response.transaction_date) + `</p>
+                                                <p class="timeline-event-desc">` + response.description + `</p>
+                                            </div>
+                                        </li>
+                                    `;
+                                })
+
+                                tracking_details.html(content);
+
+                                $(".tracking-results").removeClass("d-none");
+                            } else {
+                                $(".no-data").removeClass("d-none");
+                            }
+
+                            $(".loading").addClass("d-none");
+
+                            $("#track_order_tracking_id").removeAttr("disabled");
+                            $("#track_order_submit").removeAttr("disabled");
+                            $("#track_order_submit").text("Track my Order");
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            })
+
+            $("#track_order_tracking_id").keypress(function() {
+                $("#track_order_tracking_id").removeClass("is-invalid");
+                $("#error_track_order_tracking_id").addClass("d-none");
             })
         })
     </script>

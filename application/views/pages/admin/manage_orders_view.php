@@ -74,6 +74,7 @@
                     </button>
                 </div>
             </div>
+            <div class="row" style="background-color: transparent; height: 16px;"></div>
         </div>
     </section>
 </div>

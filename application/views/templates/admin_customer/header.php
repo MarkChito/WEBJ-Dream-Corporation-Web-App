@@ -46,6 +46,8 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
     <link rel="stylesheet" href="<?= base_url() ?>plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>plugins/admin-lte/css/adminlte.min.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="<?= base_url() ?>plugins/admin-lte/css/custom_styles.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?= base_url() ?>plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
@@ -165,7 +167,7 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>admin/sales" class="nav-link <?= $this->session->userdata("current_tab") == "admin/sales" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-chart-line"></i>
-                                    <p>Sales <small class="badge badge-danger float-right">Soon</small></p>
+                                    <p>Sales</p>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
@@ -198,7 +200,7 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>customer/track_my_order" class="nav-link <?= $this->session->userdata("current_tab") == "customer/track_my_order" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shipping-fast"></i>
-                                    <p>Track My Order <small class="badge badge-danger float-right">Soon</small></p>
+                                    <p>Track My Order</p>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>

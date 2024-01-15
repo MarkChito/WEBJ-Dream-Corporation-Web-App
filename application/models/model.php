@@ -90,7 +90,7 @@ class model extends CI_Model
 
     public function MOD_GET_MY_ORDERS($customer_id)
     {
-        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ?";
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? ORDER BY `id` DESC";
         $query = $this->db->query($sql, array($customer_id));
 
         return $query->result();
@@ -98,7 +98,7 @@ class model extends CI_Model
 
     public function MOD_GET_ORDERS($status, $customer_id)
     {
-        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `status` = ? AND `customer_id` = ?";
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `status` = ? AND `customer_id` = ? ORDER BY `id` DESC";
         $query = $this->db->query($sql, array($status, $customer_id));
 
         return $query->result();
@@ -199,6 +199,14 @@ class model extends CI_Model
 
         return $query->result();
     }
+    
+    public function MOD_GET_TRACKING_DATA($tracking_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_tracker` WHERE `tracking_id` = ?";
+        $query = $this->db->query($sql, array($tracking_id));
+
+        return $query->result();
+    }
 
     /*============================== INSERT QUERIES ==============================*/
     public function MOD_NEW_CATEGORY($name, $description)
@@ -255,6 +263,13 @@ class model extends CI_Model
         $sql = "INSERT INTO `tbl_webjdreamcorp_orders` (`id`, `transaction_date`, `customer_id`, `item_id`, `quantity`, `total_amount`, `status`) VALUES (NULL, ?, ?, ?, ?, ?, ?)";
 
         $this->db->query($sql, array($transaction_date, $customer_id, $item_id, $quantity, $total_amount, $status));
+    }
+    
+    public function MOD_ADD_TRACKING_DATA($transaction_date, $tracking_id, $status, $description)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_tracker` (`id`, `transaction_date`, `tracking_id`, `status`, `description`) VALUES (NULL, ?, ?, ?, ?)";
+
+        $this->db->query($sql, array($transaction_date, $tracking_id, $status, $description));
     }
 
     /*============================== UPDATE QUERIES ==============================*/
@@ -328,11 +343,11 @@ class model extends CI_Model
         $this->db->query($sql, array($transaction_date, $tracking_id, $status));
     }
     
-    public function MOD_UPDATE_DELIVERY_STATUS($status, $description, $tracking_id)
+    public function MOD_UPDATE_DELIVERY_STATUS($status, $tracking_id)
     {
-        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `delivery_status` = ?, `delivery_description` = ? WHERE `tracking_id` = ? ";
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `delivery_status` = ? WHERE `tracking_id` = ? ";
 
-        $this->db->query($sql, array($status, $description, $tracking_id));
+        $this->db->query($sql, array($status, $tracking_id));
     }
 
     /*============================== DELETE QUERIES ==============================*/

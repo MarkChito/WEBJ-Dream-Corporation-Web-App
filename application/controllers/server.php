@@ -640,12 +640,15 @@ class server extends CI_Controller
         $tracking_id = "";
         $order_ids = $this->input->post("order_ids");
         $status = $this->input->post("status");
-        
+
         $notification_status = $status;
 
         if ($status == "Approved") {
             $tracking_id = date("YmdHis");
             $status = "To Receive";
+            $description = "Order has been approved.";
+
+            $this->model->MOD_ADD_TRACKING_DATA($transaction_date, $tracking_id, "Order Confirmed", $description);
         }
 
         $this->model->MOD_UPDATE_ORDER_STATUS_AND_TRACKING_ID($transaction_date, $tracking_id, $status, $order_ids);
@@ -658,23 +661,25 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
-    
+
     public function get_delivery_orders()
     {
         $tracking_id = $this->input->post("tracking_id");
 
         $delivery_orders = $this->model->MOD_GET_DELIVERY_ORDERS($tracking_id);
-    
+
         echo json_encode($delivery_orders);
     }
-    
+
     public function update_delivery_status()
     {
+        $transaction_date = date("Y-m-d H:i");
         $status = $this->input->post("status");
         $description = $this->input->post("description");
         $tracking_id = $this->input->post("tracking_id");
-    
-        $this->model->MOD_UPDATE_DELIVERY_STATUS($status, $description, $tracking_id);
+
+        $this->model->MOD_UPDATE_DELIVERY_STATUS($status, $tracking_id);
+        $this->model->MOD_ADD_TRACKING_DATA($transaction_date, $tracking_id, $status, $description);
 
         $this->session->set_userdata("alert", array(
             "title" => "Success",
@@ -683,6 +688,19 @@ class server extends CI_Controller
         ));
 
         echo json_encode(true);
+    }
+
+    public function get_tracking_data()
+    {
+        $tracking_id = $this->input->post("tracking_id");
+
+        $tracking_details = $this->model->MOD_GET_TRACKING_DATA($tracking_id);
+
+        if ($tracking_details) {
+            echo json_encode($tracking_details);
+        } else {
+            echo json_encode(false);
+        }
     }
 
     public function logout()
