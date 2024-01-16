@@ -200,6 +200,14 @@ class model extends CI_Model
         return $query->result();
     }
     
+    public function MOD_GET_ORDER_DATA($tracking_id, $customer_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `tracking_id` = ? AND `customer_id` = ?";
+        $query = $this->db->query($sql, array($tracking_id, $customer_id));
+
+        return $query->result();
+    }
+    
     public function MOD_GET_TRACKING_DATA($tracking_id)
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_tracker` WHERE `tracking_id` = ?";

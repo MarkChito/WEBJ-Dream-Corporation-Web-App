@@ -38,6 +38,8 @@
                                     <?php $deliveries = $this->model->MOD_GET_DELIVERIES() ?>
                                     <?php if ($deliveries) : ?>
                                         <?php foreach ($deliveries as $delivery) : ?>
+                                            <?php $orders = $this->model->MOD_GET_TRACKING_DATA($delivery->tracking_id) ?>
+
                                             <?php
                                             $customers = $this->model->MOD_GET_CUSTOMER_BY_ID($delivery->customer_id);
 
@@ -75,7 +77,11 @@
                                                 <td><?= $customers[0]->mobile_number ?></td>
                                                 <td><?= $address ?></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0)" class="btn btn-success btn-sm view_delivery_order_set_status" tracking_id="<?= $delivery->tracking_id ?>">Set Status</a>
+                                                    <?php if ($orders[0]->status != "Delivered" || $orders[0]->status != "Returned to Sender") : ?>
+                                                        <a href="javascript:void(0)" class="btn btn-success btn-sm view_delivery_order_set_status" tracking_id="<?= $delivery->tracking_id ?>">Set Status</a>
+                                                    <?php else : ?>
+                                                        <i class="fas fa-ellipsis-h text-muted"></i>
+                                                    <?php endif ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>

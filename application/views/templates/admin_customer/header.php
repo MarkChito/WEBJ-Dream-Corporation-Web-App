@@ -20,6 +20,9 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
 
     exit;
 }
+
+$my_orders = $this->model->MOD_GET_ORDERS("Cart", $this->session->userdata("id"));
+$pending_orders = $this->model->MOD_GET_PENDING_ORDERS()
 ?>
 
 <!DOCTYPE html>
@@ -120,6 +123,7 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
                                 <a href="<?= base_url() ?>admin/manage_orders" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_orders" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>Manage Orders</p>
+                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $pending_orders ? null : "d-none" ?>" role="status"><?= count($pending_orders) ?></div>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
@@ -193,6 +197,7 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
                                 <a href="<?= base_url() ?>customer/my_orders" class="nav-link <?= $this->session->userdata("current_tab") == "customer/my_orders" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-list-alt"></i>
                                     <p>My Orders</p>
+                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $my_orders ? null : "d-none" ?>"><?= count($my_orders) ?></div>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>

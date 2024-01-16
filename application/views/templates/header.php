@@ -497,7 +497,7 @@ function isMobileDevice()
                         <div class="col-md-5 agileinfo_mail_grid_left">
                             <ul>
                                 <li><i class="fa fa-home" aria-hidden="true"></i></li>
-                                <li>address<span>Tinambac, Camarines Sur</span></li>
+                                <li>address<span>Milaor, Camarines Sur</span></li>
                             </ul>
                             <ul>
                                 <li><i class="fa fa-envelope" aria-hidden="true"></i></li>

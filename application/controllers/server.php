@@ -693,14 +693,25 @@ class server extends CI_Controller
     public function get_tracking_data()
     {
         $tracking_id = $this->input->post("tracking_id");
+        $customer_id = $this->input->post("customer_id");
 
+        $is_owner = $this->model->MOD_GET_ORDER_DATA($tracking_id, $customer_id);
         $tracking_details = $this->model->MOD_GET_TRACKING_DATA($tracking_id);
 
-        if ($tracking_details) {
+        if ($tracking_details && $is_owner) {
             echo json_encode($tracking_details);
         } else {
             echo json_encode(false);
         }
+    }
+    
+    public function print_receipt()
+    {
+        $tracking_id = $this->input->post("tracking_id");
+
+        $this->session->set_userdata("tracking_id", $tracking_id);
+        
+        echo json_encode(true);
     }
 
     public function logout()

@@ -1135,7 +1135,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+                            <input type="hidden" id="view_delivery_order_tracking_id">
+
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" id="btn_print_receipt"><i class="fas fa-print"></i>&nbsp;&nbsp;Print Receipt</button>
                         </div>
                     </form>
                 </div>
@@ -1535,7 +1538,8 @@
             })
 
             $(".nav-link").click(function() {
-                $(this).children(".tab_spinner").attr("class", "spinner-border spinner-border-sm text-success float-right tab_spinner");
+                $(this).children(".counter-badge").addClass("d-none");
+                $(this).children(".tab_spinner").removeClass("d-none");
             })
 
             $(".btn_logout").click(function() {
@@ -2496,7 +2500,7 @@
                     contentType: false,
                     success: function(response) {
                         var order_id = "OR" + addZeros(response[0].id);
-                        var tracking_id = response[0].tracking_id ? tracking_id : "N/A";
+                        var tracking_id = response[0].tracking_id ? response[0].tracking_id : "Not Yet Available";
                         var transaction_date = formatDate(response[0].transaction_date);
                         var quantity = response[0].quantity;
                         var total_amount = response[0].total_amount;
@@ -2545,8 +2549,12 @@
                 if ($(this).is(':checked')) {
                     $('.selected_item').prop('checked', true);
 
-                    $("#btn_place_order").removeClass("d-none");
-                    $("#btn_approve_reject").removeClass("d-none");
+                    var isChecked = $('.selected_item:checked').length > 0;
+
+                    if (isChecked) {
+                        $("#btn_place_order").removeClass("d-none");
+                        $("#btn_approve_reject").removeClass("d-none");
+                    }
                 } else {
                     $('.selected_item').prop('checked', false);
 
@@ -3046,6 +3054,8 @@
                                             $("#view_delivery_order_tax").text(tax.toFixed(2));
                                             $("#view_delivery_order_total").text(total.toFixed(2));
 
+                                            $("#view_delivery_order_tracking_id").val(tracking_id);
+
                                             $(".actual-form").removeClass("d-none");
                                             $(".loading").addClass("d-none");
                                         },
@@ -3200,6 +3210,7 @@
                     var formData = new FormData();
 
                     formData.append('tracking_id', tracking_id);
+                    formData.append('customer_id', user_id);
 
                     $.ajax({
                         url: base_url + 'server/get_tracking_data',
@@ -3287,12 +3298,39 @@
                 $("#track_order_tracking_id").removeClass("is-invalid");
                 $("#error_track_order_tracking_id").addClass("d-none");
             })
+
+            $("#btn_print_receipt").click(function(){
+                var tracking_id =  $("#view_delivery_order_tracking_id").val();
+
+                $("#btn_print_receipt").text("Processing Request...");
+                $("#btn_print_receipt").attr("disabled", true);
+
+                var formData = new FormData();
+                
+                formData.append('tracking_id', tracking_id);
+                
+                $.ajax({
+                    url: base_url + 'server/print_receipt',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + "admin/print_receipt";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
         })
     </script>
     </div>
 
     <?php $this->session->unset_userdata("alert"); ?>
     <?php $this->session->unset_userdata("login_message"); ?>
+    <?php $this->session->unset_userdata("tracking_id"); ?>
 
     </body>
 
