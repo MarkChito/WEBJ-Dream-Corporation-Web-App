@@ -3317,7 +3317,10 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        location.href = base_url + "admin/print_receipt";
+                        $("#btn_print_receipt").html(`<i class="fas fa-print"></i>&nbsp;&nbsp;Print Receipt`);
+                        $("#btn_print_receipt").removeAttr("disabled");
+
+                        window.open(base_url + "admin/print_receipt", "_blank");
                     },
                     error: function(xhr, status, error) {
                         console.error(error);
