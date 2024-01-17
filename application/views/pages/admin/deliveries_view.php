@@ -71,13 +71,13 @@
 
                                             <tr>
                                                 <td>
-                                                    <a href="javascript:void(0)" class="view_delivery_order" tracking_id="<?= $delivery->tracking_id ?>"><?= $delivery->tracking_id ?></a>
+                                                    <a href="javascript:void(0)" class="view_delivery_order" is_view_only="false" tracking_id="<?= $delivery->tracking_id ?>"><?= $delivery->tracking_id ?></a>
                                                 </td>
                                                 <td><?= $name ?></td>
                                                 <td><?= $customers[0]->mobile_number ?></td>
                                                 <td><?= $address ?></td>
                                                 <td class="text-center">
-                                                    <?php if ($orders[0]->status != "Delivered" || $orders[0]->status != "Returned to Sender") : ?>
+                                                    <?php if ($orders[0]->status != "Delivered" && $orders[0]->status != "Returned to Sender") : ?>
                                                         <a href="javascript:void(0)" class="btn btn-success btn-sm view_delivery_order_set_status" tracking_id="<?= $delivery->tracking_id ?>">Set Status</a>
                                                     <?php else : ?>
                                                         <i class="fas fa-ellipsis-h text-muted"></i>

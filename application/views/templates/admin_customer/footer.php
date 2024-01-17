@@ -2956,6 +2956,7 @@
 
             $(document).on('click', '.view_delivery_order', function() {
                 var tracking_id = $(this).attr("tracking_id");
+                var is_view_only = $(this).attr("is_view_only");
 
                 $(".actual-form").addClass("d-none");
                 $(".loading").removeClass("d-none");
@@ -3044,6 +3045,11 @@
                                             `;
 
                                             row.html(content);
+
+                                            if (is_view_only == "true")
+                                            {
+                                                $("#btn_print_receipt").addClass("d-none");
+                                            }
 
                                             $("#view_delivery_order_customer_name").text(name);
                                             $("#view_delivery_order_mobile_number").text(mobile_number);

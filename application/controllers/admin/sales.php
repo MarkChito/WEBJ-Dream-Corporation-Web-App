@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class deliveries extends CI_Controller
+class sales extends CI_Controller
 {
     function __construct()
     {
@@ -40,11 +40,11 @@ class deliveries extends CI_Controller
             $data["image"] = $administrator[0]->image;
         }
 
-        $this->session->set_userdata("current_tab", "admin/deliveries");
-        $this->session->set_userdata("title", " - Deliveries");
+        $this->session->set_userdata("current_tab", "admin/sales");
+        $this->session->set_userdata("title", " - Sales");
 
         $this->load->view('templates/admin_customer/header.php', $data);
-        $this->load->view('pages/admin/deliveries_view.php');
+        $this->load->view('pages/admin/sales_view.php');
         $this->load->view('templates/admin_customer/footer.php');
     }
 }

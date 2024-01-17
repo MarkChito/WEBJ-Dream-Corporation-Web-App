@@ -681,6 +681,30 @@ class server extends CI_Controller
         $this->model->MOD_UPDATE_DELIVERY_STATUS($status, $tracking_id);
         $this->model->MOD_ADD_TRACKING_DATA($transaction_date, $tracking_id, $status, $description);
 
+        if ($status == "Delivered") {
+            $orders = $this->model->MOD_GET_DELIVERY_ORDERS($tracking_id);
+
+            if ($orders) {
+                foreach ($orders as $order) {
+                    $item_id = $order->item_id;
+                    $customer_id = $order->customer_id;
+                    $quantity = $order->quantity;
+                    $total_amount = $order->total_amount;
+
+                    $product = $this->model->MOD_GET_PRODUCT($item_id);
+
+                    if ($product) {
+                        $old_quantity = $product[0]->quantity;
+                    }
+
+                    $new_quantity = $old_quantity - $quantity;
+
+                    $this->model->UPDATE_PRODUCT_QUANTITY($new_quantity, $item_id);
+                    $this->model->ADD_TO_SALES($transaction_date, $tracking_id, $customer_id, $total_amount);
+                }
+            }
+        }
+
         $this->session->set_userdata("alert", array(
             "title" => "Success",
             "message" => "Order/s has been set to " . $status . "!",
@@ -704,13 +728,13 @@ class server extends CI_Controller
             echo json_encode(false);
         }
     }
-    
+
     public function print_receipt()
     {
         $tracking_id = $this->input->post("tracking_id");
 
         $this->session->set_userdata("tracking_id", $tracking_id);
-        
+
         echo json_encode(true);
     }
 

@@ -31,3 +31,17 @@
     font-size: 12px;
     color: #999;
 }
+
+.responsive-line {
+    width: 100%;
+    display: block;
+    height: 1px;
+    background-color: #000;
+    position: absolute;
+    top: 75%;
+}
+
+.underline {
+    text-decoration: underline;
+    color: #000;
+}

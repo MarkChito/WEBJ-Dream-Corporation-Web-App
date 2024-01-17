@@ -51,7 +51,7 @@
                                                     <td><?= $customer[0]->name ?></td>
                                                     <td><?= $product[0]->name ?></td>
                                                     <td class="text-center"><?= $my_order->quantity ?></td>
-                                                    <td class="text-center">₱<?= $my_order->total_amount ?></td>
+                                                    <td class="text-center">₱<?= number_format($my_order->total_amount, 2) ?></td>
                                                 </tr>
                                             <?php endforeach ?>
                                         <?php endif ?>

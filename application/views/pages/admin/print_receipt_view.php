@@ -52,6 +52,8 @@ if ($my_orders) {
     <link rel="stylesheet" href="<?= base_url() ?>plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= base_url() ?>plugins/admin-lte/css/adminlte.min.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="<?= base_url() ?>plugins/admin-lte/css/custom_styles.css">
 </head>
 
 <body>
@@ -246,15 +248,13 @@ if ($my_orders) {
                             <div class="col-6">
                                 <span class="font-weight-bold float-right">RECEIVED BY:</span>
                             </div>
-                            <div class="col-6">
-                                <!-- For Revision -->
-                                <span class="font-weight-bold">_______________________________________</span>
-                                <!-- For Revision -->
+                            <div class="col-6 under-line text-center">
+                                <span class="font-weight-bold fill-width underline"></span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <span class="d-none">&nbsp</span>
+                                <span class="d-none">&nbsp;</span>
                             </div>
                             <div class="col-6 text-center">
                                 <span>Print Name Over Signature</span>
@@ -266,6 +266,7 @@ if ($my_orders) {
         </div>
 
         <div class="no-print">
+            <span id="measurement">&nbsp;</span>
             <button type="button" class="btn btn-success float-right mb-3" id="btn_print_receipt"><i class="fas fa-print"></i>&nbsp;&nbsp;Print</button>
         </div>
     </div>
@@ -279,9 +280,23 @@ if ($my_orders) {
 
     <script>
         $(document).ready(function() {
+            check_screen_width();
+
+            $(window).resize(function() {
+                check_screen_width();
+            })
+
             $("#btn_print_receipt").click(function() {
                 window.print();
             })
+
+            function check_screen_width() {
+                var divWidth = $(".under-line").width();
+                var nbspWidth = document.getElementById('measurement').offsetWidth;
+                var numSpaces = Math.floor((divWidth / nbspWidth) - (nbspWidth * 5));
+
+                $(".fill-width").html('&nbsp;'.repeat(numSpaces));
+            }
         })
     </script>
 

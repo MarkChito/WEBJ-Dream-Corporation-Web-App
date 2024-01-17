@@ -103,7 +103,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_PENDING_ORDERS()
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `status` = 'To Approve'";
@@ -183,7 +183,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_DELIVERIES()
     {
         $sql = "SELECT DISTINCT `tracking_id`, `customer_id` FROM `tbl_webjdreamcorp_orders` WHERE `status` != 'Cart' AND `status` != 'To Approve' AND `status` != 'Rejected' AND `status` != 'Delivered'";
@@ -191,7 +191,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_DELIVERY_ORDERS($tracking_id)
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `tracking_id` = ?";
@@ -199,7 +199,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_ORDER_DATA($tracking_id, $customer_id)
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `tracking_id` = ? AND `customer_id` = ?";
@@ -207,11 +207,27 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_TRACKING_DATA($tracking_id)
     {
-        $sql = "SELECT * FROM `tbl_webjdreamcorp_tracker` WHERE `tracking_id` = ?";
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_tracker` WHERE `tracking_id` = ? ORDER BY `id` DESC";
         $query = $this->db->query($sql, array($tracking_id));
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_SALES()
+    {
+        $sql = "SELECT `tracking_id`, `customer_id`, `transaction_date`, SUM(`amount`) AS `total_amount` FROM `tbl_webjdreamcorp_sales` GROUP BY `tracking_id`, `customer_id`, `transaction_date` ORDER BY MAX(`id`) DESC";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function GET_TOTAL_SALES()
+    {
+        $sql = "SELECT SUM(`amount`) as `total_sales` FROM `tbl_webjdreamcorp_sales`";
+        $query = $this->db->query($sql);
 
         return $query->result();
     }
@@ -272,12 +288,19 @@ class model extends CI_Model
 
         $this->db->query($sql, array($transaction_date, $customer_id, $item_id, $quantity, $total_amount, $status));
     }
-    
+
     public function MOD_ADD_TRACKING_DATA($transaction_date, $tracking_id, $status, $description)
     {
         $sql = "INSERT INTO `tbl_webjdreamcorp_tracker` (`id`, `transaction_date`, `tracking_id`, `status`, `description`) VALUES (NULL, ?, ?, ?, ?)";
 
         $this->db->query($sql, array($transaction_date, $tracking_id, $status, $description));
+    }
+    
+    public function ADD_TO_SALES($transaction_date, $tracking_id, $customer_id, $total_amount)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_sales` (`id`, `transaction_date`, `tracking_id`, `customer_id`, `amount`) VALUES (NULL, ?, ?, ?, ?)";
+
+        $this->db->query($sql, array($transaction_date, $tracking_id, $customer_id, $total_amount));
     }
 
     /*============================== UPDATE QUERIES ==============================*/
@@ -307,6 +330,13 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_products` SET `name` = ?, `description` = ?, `price` = ?, `cost_price` = ?, `quantity` = ?, `category_id` = ?, `supplier_id` = ?, `image` = ? WHERE `id` = ?";
 
         $this->db->query($sql, array($name, $description, $price, $cost_price, $quantity, $category_id, $supplier_id, $image, $id));
+    }
+
+    public function UPDATE_PRODUCT_QUANTITY($new_quantity, $item_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_products` SET `quantity` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($new_quantity, $item_id));
     }
 
     public function MOD_UPDATE_CUSTOMER($first_name, $middle_name, $last_name, $mobile_number, $email, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code, $useraccount_id)
@@ -343,14 +373,14 @@ class model extends CI_Model
 
         $this->db->query($sql);
     }
-    
+
     public function MOD_UPDATE_ORDER_STATUS_AND_TRACKING_ID($transaction_date, $tracking_id, $status, $order_ids)
     {
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = ?, `tracking_id` = ?, `status` = ? WHERE `id` IN (" . $order_ids . ")";
 
         $this->db->query($sql, array($transaction_date, $tracking_id, $status));
     }
-    
+
     public function MOD_UPDATE_DELIVERY_STATUS($status, $tracking_id)
     {
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `delivery_status` = ? WHERE `tracking_id` = ? ";
