@@ -27,6 +27,14 @@ class model extends CI_Model
         return $query->result();
     }
 
+    public function MOD_GET_PRODUCT_SUPPLIER($supplier_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_categories` WHERE `id` = ?";
+        $query = $this->db->query($sql, array($supplier_id));
+
+        return $query->result();
+    }
+
     public function MOD_GET_PRODUCTS($category_id)
     {
         if ($category_id == "0") {

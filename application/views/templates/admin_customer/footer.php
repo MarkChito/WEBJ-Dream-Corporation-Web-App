@@ -1275,6 +1275,50 @@
         </div>
     </div>
 
+    <!-- View Product Modal -->
+    <div class="modal fade" id="view_product" tabindex="-1" role="dialog" aria-labelledby="viewOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewOrderModalLabel">View Product Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="actual-form d-none">
+                        <div class="row">
+                            <div class="col-md-5 d-flex align-items-center">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <img id="view_product_image" src="<?= base_url() ?>dist/images/uploads/1_1.png" class="img-fluid" alt="Product Image">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>Order Details</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Product Name:</strong> <span id="view_product_name">Product Name</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="loading text-center py-5">
+                        <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                        <h5 class="text-muted">Please Wait...</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -3333,6 +3377,68 @@
                         console.error(error);
                     }
                 });
+            })
+
+            $(document).on('click', '.view_product', function() {
+                var parent_tr = $(this).parent("td.text-center").parent("tr");
+                var id = parent_tr.children("td.id").text();
+                var name = parent_tr.children("td.name").text();
+                var category_id = parent_tr.children("td.category_id").text();
+                var supplier_id = parent_tr.children("td.supplier_id").text();
+                var description = parent_tr.children("td.description").text();
+                var price = parent_tr.children("td.price").text();
+                var cost_price = parent_tr.children("td.cost_price").text();
+                var quantity = parent_tr.children("td.quantity").text();
+                var image = parent_tr.children("td.image").text();
+
+                var formData = new FormData();
+                
+                formData.append('category_id', category_id);
+                
+                $.ajax({
+                    url: base_url + 'server/get_category_data',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var category_name = response[0].name;
+
+                        var formData = new FormData();
+                        
+                        formData.append('supplier_id', supplier_id);
+                        
+                        $.ajax({
+                            url: base_url + 'server/get_supplier_data',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response_2) {
+                                var supplier_name = response_2[0].name;
+
+                                $("#view_product").modal("show");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+
+                // $("#view_product_name").val(name);
+                // $("#view_product_category").val(category_id);
+                // $("#view_product_supplier").val(supplier_id);
+                // $("#view_product_description").val(description);
+                // $("#view_product_price").val(price);
+                // $("#view_product_cost_price").val(cost_price);
+                // $("#view_product_quantity").val(quantity);
+                // $("#view_product_image").attr("src", base_url + "dist/images/uploads/" + image);
             })
         })
     </script>

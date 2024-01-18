@@ -741,6 +741,24 @@ class server extends CI_Controller
         echo json_encode(true);
     }
 
+    public function get_category_data()
+    {
+        $category_id = $this->input->post("category_id");
+
+        $category = $this->model->MOD_GET_PRODUCT_CATEGORY($category_id);
+
+        echo json_encode($category);
+    }
+    
+    public function get_supplier_data()
+    {
+        $supplier_id = $this->input->post("supplier_id");
+
+        $supplier = $this->model->MOD_GET_PRODUCT_SUPPLIER($supplier_id);
+
+        echo json_encode($supplier);
+    }
+
     public function logout()
     {
         $this->session->unset_userdata("id");

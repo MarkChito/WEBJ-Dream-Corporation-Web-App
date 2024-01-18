@@ -174,6 +174,14 @@ if ($deliveries) {
                                     <div class="counter-badge badge badge-pill badge-danger float-right <?= $undelivered_items ? null : "d-none" ?>" role="status"><?= $undelivered_items ?></div>
                                 </a>
                             </li>
+                            <!-- Inventory Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/inventory" class="nav-link <?= $this->session->userdata("current_tab") == "admin/inventory" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-box-open"></i>
+                                    <p>Inventory</p>
+                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
                             <!-- Customers Tab -->
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>admin/customers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/customers" ? "active" : null ?>">

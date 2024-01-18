@@ -4,13 +4,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Manage Products</h1>
+                    <h1 class="m-0">Inventory</h1>
                 </div>
                 <div class="col-sm-6">
-                    <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#new_product">
-                        <i class="fas fa-plus"></i>
-                        New Product
-                    </button>
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="<?= base_url() ?>admin/dashboard">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Inventory</li>
+                    </ol>
                 </div>
             </div>
         </div>
@@ -54,8 +54,7 @@
                                                 <td class="d-none supplier_id"><?= $product->supplier_id ?></td>
                                                 <td class="d-none image"><?= $product->image ?></td>
                                                 <td class="text-center">
-                                                    <a href="javascript:void(0)" class="update_product"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
-                                                    <a href="javascript:void(0)" class="delete_product"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                    <a title="View Product Information" href="javascript:void(0)" class="view_product"><i class="fas fa-eye text-primary"></i></a>
                                                 </td>
                                             </tr>
                                         <?php endforeach ?>

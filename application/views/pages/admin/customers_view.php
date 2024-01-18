@@ -3,10 +3,10 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-8">
+                <div class="col-sm-6">
                     <h1 class="m-0">Customers</h1>
                 </div>
-                <div class="col-4">
+                <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="<?= base_url() ?>admin/dashboard">Dashboard</a></li>
                         <li class="breadcrumb-item active">Customers</li>
@@ -72,6 +72,7 @@
                                                 $address = concatenateAddress($house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
                                                 ?>
                                                 <td class="name">
+                                                    <img title="Click to view image" style="cursor: pointer; width: 30px; height: 30px;" class="rounded-circle img-bordered-sm view_image mr-1" src="<?= base_url() ."dist/images/uploads/". $useraccounts[0]->image ?>" data-toggle="modal" data-target="#view_profile_picture">
                                                     <a href="javascript:void(0)" class="view_customer" is_update="false" useraccount_id="<?= $customer->useraccount_id ?>">
                                                         <?= $name ?>
                                                     </a>
