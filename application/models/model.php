@@ -232,9 +232,25 @@ class model extends CI_Model
         return $query->result();
     }
 
-    public function GET_TOTAL_SALES()
+    public function MOD_GET_TOTAL_SALES()
     {
         $sql = "SELECT SUM(`amount`) as `total_sales` FROM `tbl_webjdreamcorp_sales`";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_MESSAGES()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_messages` ORDER BY `id` DESC";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_UNREAD_MESSAGES()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_messages` WHERE `status` = 'unread'";
         $query = $this->db->query($sql);
 
         return $query->result();
@@ -262,11 +278,11 @@ class model extends CI_Model
         $this->db->query($sql, array($email));
     }
 
-    public function MOD_ADD_CONTACT_MESSAGE($name, $mobile_number, $email, $subject, $message)
+    public function MOD_ADD_CONTACT_MESSAGE($message_date, $name, $mobile_number, $email, $subject, $message)
     {
-        $sql = "INSERT INTO `tbl_webjdreamcorp_messages` (`id`, `name`, `mobile_number`, `email`, `subject`, `message`) VALUES (NULL, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO `tbl_webjdreamcorp_messages` (`id`, `message_date`, `name`, `mobile_number`, `email`, `subject`, `message`, `status`) VALUES (NULL, ?, ?, ?, ?, ?, ?, 'unread')";
 
-        $this->db->query($sql, array($name, $mobile_number, $email, $subject, $message));
+        $this->db->query($sql, array($message_date, $name, $mobile_number, $email, $subject, $message));
     }
 
     public function MOD_ADD_USER_ACCOUNT($name, $username, $password, $image)
@@ -401,6 +417,13 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `delivery_status` = ? WHERE `tracking_id` = ? ";
 
         $this->db->query($sql, array($status, $tracking_id));
+    }
+    
+    public function MOD_UPDATE_MESSAGE_STATUS($id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_messages` SET `status` = 'read' WHERE `id` = ? ";
+
+        $this->db->query($sql, array($id));
     }
 
     /*============================== DELETE QUERIES ==============================*/

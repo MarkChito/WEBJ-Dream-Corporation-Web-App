@@ -1,9 +1,9 @@
     <!-- Footer -->
     <footer class="main-footer">
-        <strong>Copyright &copy; 2023 <a href="<?= base_url() ?>">WEBJ Dream Corporation</a>.</strong>
+        <strong>Copyright &copy; 2024 <a href="<?= base_url() ?>">WEBJ Dream Corporation</a>.</strong>
         All rights reserved.
         <div class="float-right d-none d-sm-inline-block">
-            <b>Version</b> 1.0.0
+            <b>Version</b> 1.5.0
         </div>
     </footer>
 
@@ -949,7 +949,7 @@
                     <form action="javascript:void(0)" id="place_order_form">
                         <div class="modal-body">
                             <h5 class="mb-3">Do you want to place these order/s?</h5>
-                            <div class="card">
+                            <div class="card mb-1">
                                 <div class="card-body">
                                     <div class="row" id="place_order_row">
                                         <!-- Data from AJAX -->
@@ -981,6 +981,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <small class="text-danger d-none" id="error_stock">*Some item/s have insufficient stock. Please edit your order/s first.</small>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -1280,7 +1281,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewOrderModalLabel">View Product Details</h5>
+                    <h5 class="modal-title" id="viewOrderModalLabel">Product Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -1298,10 +1299,16 @@
                             <div class="col-md-7">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3>Order Details</h3>
+                                        <h3>Product Details</h3>
                                     </div>
                                     <div class="card-body">
                                         <p><strong>Product Name:</strong> <span id="view_product_name">Product Name</span></p>
+                                        <p><strong>Description:</strong> <span id="view_product_description">Product Description</span></p>
+                                        <p><strong>Price:</strong> <span id="view_product_price">0.00</span></p>
+                                        <p><strong>Cost Price:</strong> <span id="view_product_cost_price">0.00</span></p>
+                                        <p><strong>Category:</strong> <span id="view_product_category">Product Category</span></p>
+                                        <p><strong>Supplier:</strong> <span id="view_product_supplier">Product Supplier</span></p>
+                                        <p><strong>Quantity:</strong> <span id="view_product_quantity">0</span> stocks</p>
                                     </div>
                                 </div>
                             </div>
@@ -1310,6 +1317,34 @@
                     <div class="loading text-center py-5">
                         <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
                         <h5 class="text-muted">Please Wait...</h5>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Message Modal -->
+    <div class="modal fade" id="view_message" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="emailModalLabel">Message Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-header">
+                        <p><strong>From:</strong> <span id="view_message_name"></span></p>
+                        <p><strong>Date:</strong> <span id="view_message_date"></span></p>
+                        <p><strong>Subject:</strong> <span id="view_message_subject"></span></p>
+                    </div>
+                    <hr>
+                    <div class="message-content">
+                        <p id="view_message_message"></p>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -2257,8 +2292,8 @@
                 var category_id = parent_tr.children("td.category_id").text();
                 var supplier_id = parent_tr.children("td.supplier_id").text();
                 var description = parent_tr.children("td.description").text();
-                var price = parent_tr.children("td.price").text();
-                var cost_price = parent_tr.children("td.cost_price").text();
+                var price = parent_tr.children("td.price").text().replace('₱', '');
+                var cost_price = parent_tr.children("td.cost_price").text().replace('₱', '');
                 var quantity = parent_tr.children("td.quantity").text();
                 var image = parent_tr.children("td.image").text();
 
@@ -2779,6 +2814,9 @@
 
                 order_id_to_be_placed = order_ids;
 
+                $("#place_order_submit").removeClass("d-none");
+                $("#error_stock").addClass("d-none");
+
                 $(".loading").removeClass("d-none");
                 $(".actual-form").addClass("d-none");
 
@@ -2804,6 +2842,8 @@
 
                         $.each(responses, function(index, response) {
                             var item_name = "";
+                            var remaining_stocks = "";
+                            var is_invalid = "";
 
                             sub_total = sub_total + parseFloat(response.total_amount);
                             tax = sub_total * 0.12;
@@ -2822,6 +2862,14 @@
                                 contentType: false,
                                 success: function(response_2) {
                                     item_name = response_2[0].name;
+                                    remaining_stocks = response_2[0].quantity;
+
+                                    if (response.quantity > remaining_stocks) {
+                                        $("#error_stock").removeClass("d-none");
+                                        $("#place_order_submit").addClass("d-none");
+
+                                        is_invalid = "border-danger";
+                                    }
 
                                     content += `
                                         <div class="col-12">
@@ -2830,7 +2878,7 @@
                                                     <p id="place_order_name">` + item_name + `</p>
                                                 </div>
                                                 <div class="col-2">
-                                                    <input type="text" class="form-control text-center" id="place_order_quantity_` + response.id + `" style="height: 25px !important;" readonly value="` + response.quantity + `">
+                                                    <input type="text" class="form-control text-center ` + is_invalid + `" id="place_order_quantity_` + response.id + `" style="height: 25px !important;" readonly value="` + response.quantity + `">
                                                 </div>
                                                 <div class="col-3">
                                                     <p class="float-right">₱<span id="place_order_total_amount">` + response.total_amount + `</span></p>
@@ -3391,10 +3439,15 @@
                 var quantity = parent_tr.children("td.quantity").text();
                 var image = parent_tr.children("td.image").text();
 
+                $(".actual-form").addClass("d-none");
+                $(".loading").removeClass("d-none");
+
+                $("#view_product").modal("show");
+
                 var formData = new FormData();
-                
+
                 formData.append('category_id', category_id);
-                
+
                 $.ajax({
                     url: base_url + 'server/get_category_data',
                     data: formData,
@@ -3406,9 +3459,9 @@
                         var category_name = response[0].name;
 
                         var formData = new FormData();
-                        
+
                         formData.append('supplier_id', supplier_id);
-                        
+
                         $.ajax({
                             url: base_url + 'server/get_supplier_data',
                             data: formData,
@@ -3419,7 +3472,17 @@
                             success: function(response_2) {
                                 var supplier_name = response_2[0].name;
 
-                                $("#view_product").modal("show");
+                                $("#view_product_image").attr("src", base_url + "dist/images/uploads/" + image);
+                                $("#view_product_name").text(name);
+                                $("#view_product_description").text(description);
+                                $("#view_product_price").text(price);
+                                $("#view_product_cost_price").text(cost_price);
+                                $("#view_product_category").text(category_name);
+                                $("#view_product_supplier").text(supplier_name);
+                                $("#view_product_quantity").text(quantity);
+
+                                $(".actual-form").removeClass("d-none");
+                                $(".loading").addClass("d-none");
                             },
                             error: function(xhr, status, error) {
                                 console.error(error);
@@ -3430,15 +3493,78 @@
                         console.error(error);
                     }
                 });
+            })
 
-                // $("#view_product_name").val(name);
-                // $("#view_product_category").val(category_id);
-                // $("#view_product_supplier").val(supplier_id);
-                // $("#view_product_description").val(description);
-                // $("#view_product_price").val(price);
-                // $("#view_product_cost_price").val(cost_price);
-                // $("#view_product_quantity").val(quantity);
-                // $("#view_product_image").attr("src", base_url + "dist/images/uploads/" + image);
+            $(".view_message, .reply_message, .delete_message").on("click", function() {
+                var parent_tr = $(this).parent("div.action-buttons").parent("td.text-center").parent("tr");
+                var id = parent_tr.children("td.id").text();
+
+                $(this).closest('tr').removeClass('font-weight-bold');
+
+                parent_tr.children("td.actn-btns").children("div.table-spinner").removeClass("d-none");
+                parent_tr.children("td.actn-btns").children("div.action-buttons").addClass("d-none");
+
+                var formData = new FormData();
+
+                formData.append('id', id);
+
+                $.ajax({
+                    url: base_url + 'server/update_message_status',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var formData = new FormData();
+
+                        formData.append('none', true);
+
+                        $.ajax({
+                            url: base_url + 'server/get_unread_messages',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response_2) {
+                                if (response_2.length > 0) {
+                                    $("#counter_unread_messages").text(response_2.length);
+                                } else {
+                                    $("#counter_unread_messages").addClass("d-none");
+                                }
+
+                                parent_tr.children("td.actn-btns").children("div.action-buttons").removeClass("d-none");
+                                parent_tr.children("td.actn-btns").children("div.table-spinner").addClass("d-none");
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $(document).on('click', '.view_message', function() {
+                var parent_tr = $(this).parent("div.action-buttons").parent("td.text-center").parent("tr");
+                var name = parent_tr.children("td.name").text();
+                var message_date = parent_tr.children("td.message_date").text();
+                var mobile_number = parent_tr.children("td.mobile_number").text();
+                var email = parent_tr.children("td.email").text();
+                var subject = parent_tr.children("td.subject").text();
+                var message = parent_tr.children("td.message").text();
+
+                $("#view_message_name").text(name);
+                $("#view_message_date").text(formatDate(message_date));
+                $("#view_message_mobile_number").text(mobile_number);
+                $("#view_message_email").text(email);
+                $("#view_message_subject").text(subject);
+                $("#view_message_message").text(message);
+
+                $("#view_message").modal("show");
             })
         })
     </script>

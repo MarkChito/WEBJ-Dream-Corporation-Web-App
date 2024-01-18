@@ -23,6 +23,7 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
 
 $my_orders = $this->model->MOD_GET_ORDERS("Cart", $this->session->userdata("id"));
 $pending_orders = $this->model->MOD_GET_PENDING_ORDERS();
+$unread_messages = $this->model->MOD_GET_UNREAD_MESSAGES();
 
 $undelivered_items = 0;
 
@@ -92,12 +93,11 @@ if ($deliveries) {
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown open" style="padding-left: 15px;">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                        <img src="<?= base_url() ?>dist/images/uploads/<?= $image ? $image : "default_user_image.png" ?>" class="rounded-circle img-bordered-sm" style="width: 32px; height: 32px" alt="">
-                        &nbsp;<?= $name ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)" role="button">
+                        <i class="fas fa-cog"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu dropdown-usermenu">
                         <a class="dropdown-item btn_edit_login_account" href="javascript:void(0)" data-toggle="modal" data-target="#edit_login_account"><i class="fas fa-user-circle"></i>&nbsp;&nbsp;&nbsp;&nbsp;Account</a>
                         <?php if ($this->session->userdata("user_type") == "customer") : ?>
                             <a class="dropdown-item" href="profile"><i class="fas fa-user-alt"></i>&nbsp;&nbsp;&nbsp;&nbsp;Profile</a>
@@ -110,16 +110,36 @@ if ($deliveries) {
         </nav>
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-success elevation-4">
-            <!-- Brand Logo -->
-            <div class="w-100 text-center pt-4 py-3">
-                <img src="<?= base_url() ?>dist/images/logo.png" style="height: auto; width: 200px !important; padding-top: 10px" id="favicon">
-            </div>
-
-            <hr class="bg-light">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a href="<?= base_url() ?>" class="brand-link">
+                <img src="<?= base_url() ?>dist/images/logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">WEBJ Dream Corp.</span>
+            </a>
 
             <!-- Sidebar -->
             <div class="sidebar">
+                <!-- User Panel -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="<?= base_url() ?>dist/images/uploads/<?= $image ? $image : "default_user_image.png" ?>" class="img-circle elevation-2" style="width: 35px; height: 35px;" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="<?= $this->session->userdata("user_type") == "customer" ? "profile" : "javascript:void(0)" ?>" class="d-block text-truncate"><?= $name ?></a>
+                    </div>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search Tab" aria-label="Search" id="search_tab">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                                <i class="fas fa-search fa-fw"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -129,7 +149,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "admin/dashboard" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-chart-bar"></i>
                                     <p>Dashboard</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Manage Orders Tab -->
@@ -138,7 +158,7 @@ if ($deliveries) {
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>Manage Orders</p>
                                     <div class="counter-badge badge badge-pill badge-danger float-right <?= $pending_orders ? null : "d-none" ?>" role="status"><?= count($pending_orders) ?></div>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Manage Products Tab -->
@@ -146,7 +166,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/manage_products" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_products" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-cubes"></i>
                                     <p>Manage Products</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Manage Categories Tab -->
@@ -154,7 +174,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/manage_categories" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_categories" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-folder-open"></i>
                                     <p>Manage Categories</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Manage Suppliers Tab -->
@@ -162,16 +182,25 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/manage_suppliers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_suppliers" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-truck"></i>
                                     <p>Manage Suppliers</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
-                            <!-- Customers Tab -->
+                            <!-- Deliveries Tab -->
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>admin/deliveries" class="nav-link <?= $this->session->userdata("current_tab") == "admin/deliveries" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shipping-fast"></i>
                                     <p>Deliveries</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                     <div class="counter-badge badge badge-pill badge-danger float-right <?= $undelivered_items ? null : "d-none" ?>" role="status"><?= $undelivered_items ?></div>
+                                </a>
+                            </li>
+                            <!-- Messages Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/messages" class="nav-link <?= $this->session->userdata("current_tab") == "admin/messages" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-envelope"></i>
+                                    <p>Messages</p>
+                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $unread_messages ? null : "d-none" ?>" id="counter_unread_messages" role="status"><?= count($unread_messages) ?></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Inventory Tab -->
@@ -179,7 +208,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/inventory" class="nav-link <?= $this->session->userdata("current_tab") == "admin/inventory" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-box-open"></i>
                                     <p>Inventory</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Customers Tab -->
@@ -187,7 +216,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/customers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/customers" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-users"></i>
                                     <p>Customers</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Sales Tab -->
@@ -195,7 +224,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>admin/sales" class="nav-link <?= $this->session->userdata("current_tab") == "admin/sales" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-chart-line"></i>
                                     <p>Sales</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                         <?php else : ?>
@@ -204,7 +233,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>customer/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "customer/dashboard" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-chart-bar"></i>
                                     <p>Dashboard</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Shopping Tab -->
@@ -212,7 +241,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>" class="nav-link <?= $this->session->userdata("current_tab") == "" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>Shopping</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- My Orders Tab -->
@@ -221,7 +250,7 @@ if ($deliveries) {
                                     <i class="nav-icon fas fa-list-alt"></i>
                                     <p>My Orders</p>
                                     <div class="counter-badge badge badge-pill badge-danger float-right <?= $my_orders ? null : "d-none" ?>"><?= count($my_orders) ?></div>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Track My Order Tab -->
@@ -229,7 +258,7 @@ if ($deliveries) {
                                 <a href="<?= base_url() ?>customer/track_my_order" class="nav-link <?= $this->session->userdata("current_tab") == "customer/track_my_order" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shipping-fast"></i>
                                     <p>Track My Order</p>
-                                    <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                         <?php endif ?>
@@ -239,7 +268,7 @@ if ($deliveries) {
                             <a href="javascript:void(0)" class="nav-link btn_logout">
                                 <i class="nav-icon fas fa-sign-out-alt"></i>
                                 <p>Logout</p>
-                                <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                             </a>
                         </li>
                     </ul>

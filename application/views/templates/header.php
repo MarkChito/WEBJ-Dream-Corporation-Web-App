@@ -107,13 +107,13 @@ function isMobileDevice()
             <div class="w3ls_logo_products_left1">
                 <ul class="special_items">
                     <li>
-                        <a href="<?= base_url() ?>"><span style="color: <?= $this->session->userdata("current_tab") == 'home' ? 'red' : 'default' ?> !important;">Home</span></a><i>/</i>
+                        <a href="<?= base_url() ?>"><span style="color: <?= $this->session->userdata("current_tab") == 'home' ? 'red' : 'default' ?> !important; font-size: larger;">Home</span></a><i>/</i>
                     </li>
                     <li>
-                        <a href="about_us"><span style="color: <?= $this->session->userdata("current_tab") == 'about_us' ? 'red' : 'default' ?> !important;">About Us</span></a><i>/</i>
+                        <a href="about_us"><span style="color: <?= $this->session->userdata("current_tab") == 'about_us' ? 'red' : 'default' ?> !important; font-size: larger;">About Us</span></a><i>/</i>
                     </li>
                     <li>
-                        <a href="products"><span style="color: <?= $this->session->userdata("current_tab") == 'products' ? 'red' : 'default' ?> !important;">Products</span></a>
+                        <a href="products"><span style="color: <?= $this->session->userdata("current_tab") == 'products' ? 'red' : 'default' ?> !important; font-size: larger;">Products</span></a>
                     </li>
                 </ul>
             </div>
@@ -526,7 +526,8 @@ function isMobileDevice()
                                             <div class="form-group">
                                                 <div class="row">
                                                     <div class="col-lg-6 mb-sm-3">
-                                                        <input type="text" id="contact_us_mobile_number" class="form-control" placeholder="Mobile Number" required>
+                                                        <input type="text" id="contact_us_mobile_number" class="form-control is-invalid" placeholder="Mobile Number" required>
+                                                        <small class="hidden" style="color: red;" id="error_contact_us_mobile_number">Invalid Mobile Number</small>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <input type="text" id="contact_us_subject" class="form-control" placeholder="Subject" required>

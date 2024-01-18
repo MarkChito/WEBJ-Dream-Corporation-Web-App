@@ -127,13 +127,14 @@ class server extends CI_Controller
 
     public function add_contact_message()
     {
+        $message_date = date("Y-m-d H:i");
         $name = $this->input->post("name");
         $mobile_number = $this->input->post("mobile_number");
         $email = $this->input->post("email");
         $subject = $this->input->post("subject");
         $message = $this->input->post("message");
 
-        $this->model->MOD_ADD_CONTACT_MESSAGE($name, $mobile_number, $email, $subject, $message);
+        $this->model->MOD_ADD_CONTACT_MESSAGE($message_date, $name, $mobile_number, $email, $subject, $message);
 
         $this->session->set_userdata("alert", array(
             "title" => "Success",
@@ -749,7 +750,7 @@ class server extends CI_Controller
 
         echo json_encode($category);
     }
-    
+
     public function get_supplier_data()
     {
         $supplier_id = $this->input->post("supplier_id");
@@ -757,6 +758,22 @@ class server extends CI_Controller
         $supplier = $this->model->MOD_GET_PRODUCT_SUPPLIER($supplier_id);
 
         echo json_encode($supplier);
+    }
+
+    public function update_message_status()
+    {
+        $id = $this->input->post("id");
+
+        $this->model->MOD_UPDATE_MESSAGE_STATUS($id);
+
+        echo json_encode(true);
+    }
+
+    public function get_unread_messages()
+    {
+        $unread_messages = $this->model->MOD_GET_UNREAD_MESSAGES();
+
+        echo json_encode($unread_messages);
     }
 
     public function logout()

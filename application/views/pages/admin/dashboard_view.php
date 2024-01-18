@@ -60,7 +60,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>₱<?= number_format($this->model->GET_TOTAL_SALES()[0]->total_sales, 2) ?></h3>
+                            <h3>₱<?= number_format($this->model->MOD_GET_TOTAL_SALES()[0]->total_sales, 2) ?></h3>
 
                             <p>Total Sales</p>
                         </div>

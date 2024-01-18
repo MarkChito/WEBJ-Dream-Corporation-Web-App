@@ -336,38 +336,42 @@
                 var subject = $("#contact_us_subject").val();
                 var message = $("#contact_us_message").val();
 
-                $("#contact_us_name").attr("disabled", true);
-                $("#contact_us_mobile_number").attr("disabled", true);
-                $("#contact_us_email").attr("disabled", true);
-                $("#contact_us_subject").attr("disabled", true);
-                $("#contact_us_message").attr("disabled", true);
+                var mobile_number_error_label = $("#error_contact_us_mobile_number");
 
-                $("#contact_us_submit").val("Processing Request...");
-                $("#contact_us_submit").attr("disabled", true);
-                $("#contact_us_reset").attr("disabled", true);
+                if (verify_mobile_number(mobile_number, mobile_number_error_label)) {
+                    $("#contact_us_name").attr("disabled", true);
+                    $("#contact_us_mobile_number").attr("disabled", true);
+                    $("#contact_us_email").attr("disabled", true);
+                    $("#contact_us_subject").attr("disabled", true);
+                    $("#contact_us_message").attr("disabled", true);
 
-                var formData = new FormData();
+                    $("#contact_us_submit").val("Processing Request...");
+                    $("#contact_us_submit").attr("disabled", true);
+                    $("#contact_us_reset").attr("disabled", true);
 
-                formData.append('name', name);
-                formData.append('mobile_number', mobile_number);
-                formData.append('email', email);
-                formData.append('subject', subject);
-                formData.append('message', message);
+                    var formData = new FormData();
 
-                $.ajax({
-                    url: 'server/add_contact_message',
-                    data: formData,
-                    type: 'POST',
-                    dataType: 'JSON',
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        location.href = base_url + current_tab;
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                    }
-                });
+                    formData.append('name', name);
+                    formData.append('mobile_number', mobile_number);
+                    formData.append('email', email);
+                    formData.append('subject', subject);
+                    formData.append('message', message);
+
+                    $.ajax({
+                        url: 'server/add_contact_message',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            location.href = base_url + current_tab;
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
             })
 
             $('#register_upload_button').click(function() {
@@ -495,6 +499,10 @@
 
             $("#register_mobile_number").keypress(function() {
                 $("#error_register_mobile_number").addClass("hidden");
+            })
+            
+            $("#contact_us_mobile_number").keypress(function() {
+                $("#error_contact_us_mobile_number").addClass("hidden");
             })
 
             $("#register_username").keypress(function() {

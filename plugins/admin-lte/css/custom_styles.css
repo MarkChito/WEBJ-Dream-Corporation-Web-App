@@ -45,3 +45,17 @@
     text-decoration: underline;
     color: #000;
 }
+
+.message-header {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.message-header p {
+    margin-bottom: 0;
+}
+
+.message-content {
+    padding: 10px;
+}
