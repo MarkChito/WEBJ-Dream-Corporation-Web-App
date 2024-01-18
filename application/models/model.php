@@ -215,7 +215,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_SALES()
     {
         $sql = "SELECT `tracking_id`, `customer_id`, `transaction_date`, SUM(`amount`) AS `total_amount` FROM `tbl_webjdreamcorp_sales` GROUP BY `tracking_id`, `customer_id`, `transaction_date` ORDER BY MAX(`id`) DESC";
@@ -223,7 +223,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function GET_TOTAL_SALES()
     {
         $sql = "SELECT SUM(`amount`) as `total_sales` FROM `tbl_webjdreamcorp_sales`";
@@ -295,8 +295,8 @@ class model extends CI_Model
 
         $this->db->query($sql, array($transaction_date, $tracking_id, $status, $description));
     }
-    
-    public function ADD_TO_SALES($transaction_date, $tracking_id, $customer_id, $total_amount)
+
+    public function MOD_ADD_TO_SALES($transaction_date, $tracking_id, $customer_id, $total_amount)
     {
         $sql = "INSERT INTO `tbl_webjdreamcorp_sales` (`id`, `transaction_date`, `tracking_id`, `customer_id`, `amount`) VALUES (NULL, ?, ?, ?, ?)";
 
@@ -332,7 +332,7 @@ class model extends CI_Model
         $this->db->query($sql, array($name, $description, $price, $cost_price, $quantity, $category_id, $supplier_id, $image, $id));
     }
 
-    public function UPDATE_PRODUCT_QUANTITY($new_quantity, $item_id)
+    public function MOD_UPDATE_PRODUCT_QUANTITY($new_quantity, $item_id)
     {
         $sql = "UPDATE `tbl_webjdreamcorp_products` SET `quantity` = ? WHERE `id` = ?";
 
@@ -372,6 +372,13 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = '" . $transaction_date . "', `status` = 'To Approve' WHERE `id` IN (" . $order_ids . ")";
 
         $this->db->query($sql);
+    }
+
+    public function MOD_UPDATE_SINGLE_ORDER_STATUS($transaction_date, $order_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = '" . $transaction_date . "', `status` = 'To Rate' WHERE `id` = ?";
+
+        $this->db->query($sql, array($order_id));
     }
 
     public function MOD_UPDATE_ORDER_STATUS_AND_TRACKING_ID($transaction_date, $tracking_id, $status, $order_ids)

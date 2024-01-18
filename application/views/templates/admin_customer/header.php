@@ -22,7 +22,21 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
 }
 
 $my_orders = $this->model->MOD_GET_ORDERS("Cart", $this->session->userdata("id"));
-$pending_orders = $this->model->MOD_GET_PENDING_ORDERS()
+$pending_orders = $this->model->MOD_GET_PENDING_ORDERS();
+
+$undelivered_items = 0;
+
+$deliveries = $this->model->MOD_GET_DELIVERIES();
+
+if ($deliveries) {
+    foreach ($deliveries as $delivery) {
+        $orders = $this->model->MOD_GET_TRACKING_DATA($delivery->tracking_id);
+
+        if ($orders[0]->status != "Delivered" && $orders[0]->status != "Returned to Sender") {
+            $undelivered_items++;
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -157,6 +171,7 @@ $pending_orders = $this->model->MOD_GET_PENDING_ORDERS()
                                     <i class="nav-icon fas fa-shipping-fast"></i>
                                     <p>Deliveries</p>
                                     <div class="spinner-border spinner-border-sm text-success float-right d-none tab_spinner" role="status"></div>
+                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $undelivered_items ? null : "d-none" ?>" role="status"><?= $undelivered_items ?></div>
                                 </a>
                             </li>
                             <!-- Customers Tab -->

@@ -293,7 +293,7 @@ if ($my_orders) {
             function check_screen_width() {
                 var divWidth = $(".under-line").width();
                 var nbspWidth = document.getElementById('measurement').offsetWidth;
-                var numSpaces = Math.floor((divWidth / nbspWidth) - (nbspWidth * 5));
+                var numSpaces = Math.floor((divWidth / nbspWidth) - (nbspWidth * 4));
 
                 $(".fill-width").html('&nbsp;'.repeat(numSpaces));
             }

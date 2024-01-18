@@ -3046,9 +3046,10 @@
 
                                             row.html(content);
 
-                                            if (is_view_only == "true")
-                                            {
+                                            if (is_view_only == "true") {
                                                 $("#btn_print_receipt").addClass("d-none");
+                                            } else {
+                                                $("#btn_print_receipt").removeClass("d-none");
                                             }
 
                                             $("#view_delivery_order_customer_name").text(name);
@@ -3305,16 +3306,16 @@
                 $("#error_track_order_tracking_id").addClass("d-none");
             })
 
-            $("#btn_print_receipt").click(function(){
-                var tracking_id =  $("#view_delivery_order_tracking_id").val();
+            $("#btn_print_receipt").click(function() {
+                var tracking_id = $("#view_delivery_order_tracking_id").val();
 
                 $("#btn_print_receipt").text("Processing Request...");
                 $("#btn_print_receipt").attr("disabled", true);
 
                 var formData = new FormData();
-                
+
                 formData.append('tracking_id', tracking_id);
-                
+
                 $.ajax({
                     url: base_url + 'server/print_receipt',
                     data: formData,
@@ -3339,7 +3340,7 @@
 
     <?php $this->session->unset_userdata("alert"); ?>
     <?php $this->session->unset_userdata("login_message"); ?>
-    <?php $this->session->unset_userdata("tracking_id"); ?>
+    <?php $this->session->unset_userdata("undelivered_items"); ?>
 
     </body>
 

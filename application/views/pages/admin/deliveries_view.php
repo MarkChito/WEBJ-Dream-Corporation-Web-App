@@ -71,7 +71,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <a href="javascript:void(0)" class="view_delivery_order" is_view_only="false" tracking_id="<?= $delivery->tracking_id ?>"><?= $delivery->tracking_id ?></a>
+                                                    <a href="javascript:void(0)" class="view_delivery_order" is_view_only="<?= $orders[0]->status != "Delivered" && $orders[0]->status != "Returned to Sender" ? "false" : "true" ?>" tracking_id="<?= $delivery->tracking_id ?>"><?= $delivery->tracking_id ?></a>
                                                 </td>
                                                 <td><?= $name ?></td>
                                                 <td><?= $customers[0]->mobile_number ?></td>

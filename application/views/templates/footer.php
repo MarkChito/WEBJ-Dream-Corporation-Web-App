@@ -213,7 +213,7 @@
             };
 
             if (alert.length != 0) {
-                $("#alert").modal().show();
+                $("#alert").modal("show");
             }
 
             if (id) {
@@ -225,7 +225,8 @@
 
                 $("#login_location").val(login_location);
 
-                $("#login").modal().show();
+                $("#alert").modal("hide");
+                $("#login").modal("show");
             })
 
             $(".testimonial").wmuSlider();

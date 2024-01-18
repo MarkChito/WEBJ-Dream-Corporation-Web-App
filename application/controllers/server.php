@@ -403,6 +403,7 @@ class server extends CI_Controller
 
             if ($image) {
                 $uniqueImageName = $this->generate_unique_image_name($image);
+
                 if (!$this->upload_image($image, $uniqueImageName)) {
                     $errors++;
                 }
@@ -686,6 +687,7 @@ class server extends CI_Controller
 
             if ($orders) {
                 foreach ($orders as $order) {
+                    $id = $order->id;
                     $item_id = $order->item_id;
                     $customer_id = $order->customer_id;
                     $quantity = $order->quantity;
@@ -699,8 +701,9 @@ class server extends CI_Controller
 
                     $new_quantity = $old_quantity - $quantity;
 
-                    $this->model->UPDATE_PRODUCT_QUANTITY($new_quantity, $item_id);
-                    $this->model->ADD_TO_SALES($transaction_date, $tracking_id, $customer_id, $total_amount);
+                    $this->model->MOD_UPDATE_SINGLE_ORDER_STATUS($transaction_date, $id);
+                    $this->model->MOD_UPDATE_PRODUCT_QUANTITY($new_quantity, $item_id);
+                    $this->model->MOD_ADD_TO_SALES($transaction_date, $tracking_id, $customer_id, $total_amount);
                 }
             }
         }
@@ -758,8 +761,8 @@ class server extends CI_Controller
         $targetFile = $targetDirectory . $originalFileName;
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-        // Check if file already exists, if so, rename it
         $counter = 1;
+
         while (file_exists($targetFile)) {
             $fileNameWithoutExt = pathinfo($originalFileName, PATHINFO_FILENAME);
             $targetFile = $targetDirectory . $fileNameWithoutExt . '_' . $counter . '.' . $imageFileType;
