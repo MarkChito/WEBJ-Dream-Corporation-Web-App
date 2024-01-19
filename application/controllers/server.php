@@ -798,7 +798,73 @@ class server extends CI_Controller
         $subject = $this->input->post("subject");
         $message = $this->input->post("message");
 
-        $send_success = send_email($name, $email, $subject, $message, "WEBJ Dream Corporation", "webjdreamcorp@ssystem.online", "09465287111");
+        $message =
+            '
+                <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;background-color:#edf2f7;margin:0;padding:0;width:100%">
+                    <tbody>
+                        <tr>
+                            <td style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif">
+                                <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;width:100%">
+                                    <tbody>
+                                        <tr>
+                                        <td style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;padding:25px 0;text-align:center">
+                                            <img src="https://webjdreamcorp.ssystem.online/dist/images/logo.png" style="margin-right: 5px; width: 40px; height: 40px; display: inline-block; border-radius: 50%; vertical-align: middle;" alt="logo">
+                                            <h1 style="margin: 0; text-transform: capitalize; font-style: italic; display: inline-block; vertical-align: middle;">
+                                                WEBJ Dream Corporation
+                                            </h1>
+                                        </td>                                    
+                                        </tr>
+                                        <tr>
+                                            <td width="100%" cellpadding="0" cellspacing="0" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;background-color:#edf2f7;border-bottom:1px solid #edf2f7;border-top:1px solid #edf2f7;margin:0;padding:0;width:100%;border:hidden!important">
+                                                <table class="m_-6454603622214203898inner-body" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;background-color:#ffffff;border-color:#e8e5ef;border-radius:2px;border-width:1px;margin:0 auto;padding:0;width:570px">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;max-width:100vw;padding:32px">
+                                                            <h2 style="box-sizing:border-box; margin: 0; text-transform: capitalize; font-style: italic; text-align:center">
+                                                            ' . $subject . '
+                                                            </h2>
+                                                            <br>
+                                                            <p style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;line-height:1.5em;margin-top:0;font-size:13px;text-align:justify">
+                                                                <br><br>
+                                                                Dear Mr./Ms. ' . $name . ',
+                                                                <br><br><br><br>
+                                                                ' . $message . '
+                                                                <br><br><br><br><br>
+                                                                <b style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif">WEBJ Dream Corporation</b>
+                                                                <br><br><br>
+                                                                *** This is a system generated message.<b style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif">DO NOT REPLY TO THIS EMAIL</b>.***
+                                                                <br>
+                                                            </p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif">
+                                                <table class="m_-6454603622214203898footer" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;margin:0 auto;padding:0;text-align:center;width:570px">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td align="center" style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;max-width:100vw;padding:32px">
+                                                                <p style="box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif;line-height:1.5em;margin-top:0;color:#b0adc5;font-size:12px;text-align:center">
+                                                                    © 2024 WEBJ Dream Corporation. All rights reserved.
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            ';
+
+        $send_success = send_email($name, $email, $subject, $message, "WEBJ Dream Corporation", "no-reply.webjdreamcorp@ssystem.online", "09465287111@Mark");
 
         if ($send_success) {
             $this->session->set_userdata("alert", array(

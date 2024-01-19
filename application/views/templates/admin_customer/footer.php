@@ -1366,17 +1366,23 @@
                 </div>
                 <form action="javascript:void(0)" id="reply_message_form">
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="reply_message_email">To:</label>
-                            <input type="text" class="form-control" id="reply_message_email" readonly>
+                        <div class="actual-form">
+                            <div class="form-group">
+                                <label for="reply_message_email">To:</label>
+                                <input type="text" class="form-control" id="reply_message_email" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="reply_message_subject">Subject:</label>
+                                <input type="text" class="form-control" id="reply_message_subject" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reply_message_message">Message:</label>
+                                <textarea class="form-control" id="reply_message_message" rows="5" required></textarea>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="reply_message_subject">Subject:</label>
-                            <input type="text" class="form-control" id="reply_message_subject" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="reply_message_message">Message:</label>
-                            <textarea class="form-control" id="reply_message_message" rows="5" required></textarea>
+                        <div class="loading text-center py-5 d-none">
+                            <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                            <h5 class="text-muted">Please Wait...</h5>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -3504,6 +3510,12 @@
                 var email = $("#reply_message_email").val();
                 var subject = $("#reply_message_subject").val();
                 var message = $("#reply_message_message").val();
+
+                $(".actual-form").addClass("d-none");
+                $(".loading").removeClass("d-none");
+
+                $("#reply_message_subject").attr("disabled", true);
+                $("#reply_message_message").attr("disabled", true);
 
                 $("#reply_message_submit").attr("disabled", true);
                 $("#reply_message_submit").text("Processing Request...");

@@ -66,7 +66,8 @@ if (!function_exists('send_email')) {
 		try {
 			// SMTP configuration for Gmail
 			$mail->isSMTP();
-			$mail->Host       = 'smtp.gmail.com';
+			$mail->Host       = 'sg2plzcpnl458818.prod.sin2.secureserver.net';
+			// $mail->Host       = 'smtp.gmail.com';
 			$mail->SMTPAuth   = true;
 			$mail->Username   = $sender_username;
 			$mail->Password   = $sender_password;
