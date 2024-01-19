@@ -903,13 +903,13 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="row">
-                                                <div class="col-7">
+                                                <div class="col-lg-7 col-6">
                                                     <p id="edit_order_name">Product Name</p>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-lg-2 col-3">
                                                     <input type="text" class="form-control text-center" id="edit_order_quantity" style="height: 25px !important;">
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-lg-3 col-3">
                                                     <p class="float-right">₱<span id="edit_order_total_amount">0.00</span></p>
                                                 </div>
                                             </div>
@@ -1354,6 +1354,42 @@
         </div>
     </div>
 
+    <!-- Reply Message Modal -->
+    <div class="modal fade" id="reply_message" tabindex="-1" role="dialog" aria-labelledby="replyMessageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="replyMessageModalLabel">Reply with Email</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="javascript:void(0)" id="reply_message_form">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="reply_message_email">To:</label>
+                            <input type="text" class="form-control" id="reply_message_email" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="reply_message_subject">Subject:</label>
+                            <input type="text" class="form-control" id="reply_message_subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reply_message_message">Message:</label>
+                            <textarea class="form-control" id="reply_message_message" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="reply_message_name">
+
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="reply_message_submit">Send Reply</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -1448,160 +1484,6 @@
 
             login_alert(login_message);
             sweetalert(alert);
-
-            function getCheckedOrderIds() {
-                const checkedOrderIds = $('.selected_item:checked').map(function() {
-                    return $(this).data('order_id');
-                }).get();
-
-                return checkedOrderIds;
-            }
-
-            function addZeros(str) {
-                const zerosToAdd = 5 - str.length;
-                if (zerosToAdd > 0) {
-                    const zeros = '0'.repeat(zerosToAdd);
-                    return zeros + str;
-                }
-                return str;
-            }
-
-            function verify_password(password, confirm_password, password_error_label) {
-                var error = 0;
-                var error_message = null;
-
-                if (password.val() || confirm_password.val()) {
-                    if (!/[A-Z]/.test(password.val())) {
-                        error_message = "Password must have at least one uppercase letter (A-Z)";
-
-                        error++;
-                    }
-
-                    if (!/[a-z]/.test(password.val())) {
-                        error_message = "Password must have at least one lowercase letter (a-z)";
-
-                        error++;
-                    }
-
-                    if (!/[0-9]/.test(password.val())) {
-                        error_message = "Password must have at least one digit (0-9)";
-
-                        error++;
-                    }
-
-                    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password.val())) {
-                        error_message = "Password must have at least one special character (e.g., !@#$%^&*()_+-=[]{};':\"\\|,.<>/?)";
-
-                        error++;
-                    }
-
-                    if (password.val().length < 8) {
-                        error_message = "Password must be at least 8 characters long";
-
-                        error++;
-                    }
-
-                    if (password.val() != confirm_password.val()) {
-                        error_message = "Passwords do not match";
-
-                        error++;
-                    }
-                }
-
-                if (error > 0) {
-                    password_error_label.html(error_message);
-                    password_error_label.removeClass("d-none");
-
-                    password.addClass("is-invalid");
-                    confirm_password.addClass("is-invalid");
-
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            function verify_mobile_number(mobile_number, mobile_number_error_label) {
-                var error_message = null;
-
-                error = 0;
-
-                mobile_number_input = mobile_number;
-                mobile_number = mobile_number.val().replace(/[^\d]/g, '');
-
-                var validPrefix = ['09'];
-                var prefix = mobile_number.substr(0, 2);
-
-                if (mobile_number.length !== 11) {
-                    error_message = "Mobile Number must be 11 digits long";
-
-                    error++;
-                }
-
-                if (!validPrefix.includes(prefix)) {
-                    error_message = "Mobile Number must start with '09'";
-
-                    error++;
-                }
-
-                if (error == 0) {
-                    return true;
-                } else {
-                    mobile_number_input.addClass("is-invalid");
-                    mobile_number_error_label.removeClass("d-none");
-                    mobile_number_error_label.html(error_message);
-
-                    return false;
-                }
-            }
-
-            function sweetalert(alert) {
-                if (alert.length != 0) {
-                    Swal.fire(
-                        alert["title"],
-                        alert["message"],
-                        alert["type"]
-                    );
-                }
-            }
-
-            function login_alert(login_message) {
-                if (login_message) {
-                    var Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-
-                    Toast.fire({
-                        icon: 'info',
-                        title: '' + login_message
-                    });
-                }
-            }
-
-            function formatDate(inputDate) {
-                const months = [
-                    'January', 'February', 'March', 'April', 'May', 'June', 'July',
-                    'August', 'September', 'October', 'November', 'December'
-                ];
-
-                const dateObj = new Date(inputDate);
-                const month = months[dateObj.getMonth()];
-                const day = dateObj.getDate();
-                const year = dateObj.getFullYear();
-                let hours = dateObj.getHours();
-                const minutes = (dateObj.getMinutes() < 10 ? '0' : '') + dateObj.getMinutes();
-                const meridiem = hours >= 12 ? 'PM' : 'AM';
-
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-
-                const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${meridiem}`;
-
-                return formattedDate;
-            }
 
             $(".datatable").DataTable({
                 "responsive": true,
@@ -2874,13 +2756,13 @@
                                     content += `
                                         <div class="col-12">
                                             <div class="row">
-                                                <div class="col-7">
+                                                <div class="col-lg-7 col-6">
                                                     <p id="place_order_name">` + item_name + `</p>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-lg-2 col-3">
                                                     <input type="text" class="form-control text-center ` + is_invalid + `" id="place_order_quantity_` + response.id + `" style="height: 25px !important;" readonly value="` + response.quantity + `">
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-lg-3 col-3">
                                                     <p class="float-right">₱<span id="place_order_total_amount">` + response.total_amount + `</span></p>
                                                 </div>
                                             </div>
@@ -3566,13 +3448,248 @@
 
                 $("#view_message").modal("show");
             })
+
+            $(document).on('click', '.delete_message', function() {
+                var parent_tr = $(this).parent("div.action-buttons").parent("td.text-center").parent("tr");
+                var id = parent_tr.children("td.id").text();
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var formData = new FormData();
+
+                        formData.append('id', id);
+
+                        $.ajax({
+                            url: base_url + 'server/delete_message',
+                            data: formData,
+                            type: 'POST',
+                            dataType: 'JSON',
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                location.href = base_url + current_tab;
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(error);
+                            }
+                        });
+                    }
+                });
+            })
+
+            $(document).on('click', '.reply_message', function() {
+                var parent_tr = $(this).parent("div.action-buttons").parent("td.text-center").parent("tr");
+                var id = parent_tr.children("td.id").text();
+                var name = parent_tr.children("td.name").text();
+                var email = parent_tr.children("td.email").text();
+
+                $("#reply_message_email").val(email);
+                $("#reply_message_name").val(name);
+                $("#reply_message_subject").val("");
+                $("#reply_message_message").val("");
+
+                $("#reply_message").modal("show");
+            })
+
+            $("#reply_message_form").submit(function(){
+                var name = $("#reply_message_name").val();
+                var email = $("#reply_message_email").val();
+                var subject = $("#reply_message_subject").val();
+                var message = $("#reply_message_message").val();
+
+                $("#reply_message_submit").attr("disabled", true);
+                $("#reply_message_submit").text("Processing Request...");
+
+                var formData = new FormData();
+                
+                formData.append('name', name);
+                formData.append('email', email);
+                formData.append('subject', subject);
+                formData.append('message', message);
+                
+                $.ajax({
+                    url: base_url + 'server/reply_with_email',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            function getCheckedOrderIds() {
+                const checkedOrderIds = $('.selected_item:checked').map(function() {
+                    return $(this).data('order_id');
+                }).get();
+
+                return checkedOrderIds;
+            }
+
+            function addZeros(str) {
+                const zerosToAdd = 5 - str.length;
+                if (zerosToAdd > 0) {
+                    const zeros = '0'.repeat(zerosToAdd);
+                    return zeros + str;
+                }
+                return str;
+            }
+
+            function verify_password(password, confirm_password, password_error_label) {
+                var error = 0;
+                var error_message = null;
+
+                if (password.val() || confirm_password.val()) {
+                    if (!/[A-Z]/.test(password.val())) {
+                        error_message = "Password must have at least one uppercase letter (A-Z)";
+
+                        error++;
+                    }
+
+                    if (!/[a-z]/.test(password.val())) {
+                        error_message = "Password must have at least one lowercase letter (a-z)";
+
+                        error++;
+                    }
+
+                    if (!/[0-9]/.test(password.val())) {
+                        error_message = "Password must have at least one digit (0-9)";
+
+                        error++;
+                    }
+
+                    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(password.val())) {
+                        error_message = "Password must have at least one special character (e.g., !@#$%^&*()_+-=[]{};':\"\\|,.<>/?)";
+
+                        error++;
+                    }
+
+                    if (password.val().length < 8) {
+                        error_message = "Password must be at least 8 characters long";
+
+                        error++;
+                    }
+
+                    if (password.val() != confirm_password.val()) {
+                        error_message = "Passwords do not match";
+
+                        error++;
+                    }
+                }
+
+                if (error > 0) {
+                    password_error_label.html(error_message);
+                    password_error_label.removeClass("d-none");
+
+                    password.addClass("is-invalid");
+                    confirm_password.addClass("is-invalid");
+
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            function verify_mobile_number(mobile_number, mobile_number_error_label) {
+                var error_message = null;
+
+                error = 0;
+
+                mobile_number_input = mobile_number;
+                mobile_number = mobile_number.val().replace(/[^\d]/g, '');
+
+                var validPrefix = ['09'];
+                var prefix = mobile_number.substr(0, 2);
+
+                if (mobile_number.length !== 11) {
+                    error_message = "Mobile Number must be 11 digits long";
+
+                    error++;
+                }
+
+                if (!validPrefix.includes(prefix)) {
+                    error_message = "Mobile Number must start with '09'";
+
+                    error++;
+                }
+
+                if (error == 0) {
+                    return true;
+                } else {
+                    mobile_number_input.addClass("is-invalid");
+                    mobile_number_error_label.removeClass("d-none");
+                    mobile_number_error_label.html(error_message);
+
+                    return false;
+                }
+            }
+
+            function sweetalert(alert) {
+                if (alert.length != 0) {
+                    Swal.fire(
+                        alert["title"],
+                        alert["message"],
+                        alert["type"]
+                    );
+                }
+            }
+
+            function login_alert(login_message) {
+                if (login_message) {
+                    var Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+
+                    Toast.fire({
+                        icon: 'info',
+                        title: '' + login_message
+                    });
+                }
+            }
+
+            function formatDate(inputDate) {
+                const months = [
+                    'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December'
+                ];
+
+                const dateObj = new Date(inputDate);
+                const month = months[dateObj.getMonth()];
+                const day = dateObj.getDate();
+                const year = dateObj.getFullYear();
+                let hours = dateObj.getHours();
+                const minutes = (dateObj.getMinutes() < 10 ? '0' : '') + dateObj.getMinutes();
+                const meridiem = hours >= 12 ? 'PM' : 'AM';
+
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+
+                const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${meridiem}`;
+
+                return formattedDate;
+            }
         })
     </script>
     </div>
 
     <?php $this->session->unset_userdata("alert"); ?>
     <?php $this->session->unset_userdata("login_message"); ?>
-    <?php $this->session->unset_userdata("undelivered_items"); ?>
 
     </body>
 

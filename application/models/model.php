@@ -454,4 +454,11 @@ class model extends CI_Model
 
         $this->db->query($sql, array($id));
     }
+    
+    public function MOD_DELETE_MESSAGE($id)
+    {
+        $sql = "DELETE FROM `tbl_webjdreamcorp_messages` WHERE `id` = ?";
+
+        $this->db->query($sql, array($id));
+    }
 }

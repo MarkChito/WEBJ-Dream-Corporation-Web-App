@@ -776,6 +776,47 @@ class server extends CI_Controller
         echo json_encode($unread_messages);
     }
 
+    public function delete_message()
+    {
+        $id = $this->input->post("id");
+
+        $this->model->MOD_DELETE_MESSAGE($id);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Message has been successfully deleted!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+
+    public function reply_with_email()
+    {
+        $name = $this->input->post("name");
+        $email = $this->input->post("email");
+        $subject = $this->input->post("subject");
+        $message = $this->input->post("message");
+
+        $send_success = send_email($name, $email, $subject, $message, "WEBJ Dream Corporation", "webjdreamcorp@ssystem.online", "09465287111");
+
+        if ($send_success) {
+            $this->session->set_userdata("alert", array(
+                "title" => "Success",
+                "message" => "Message has been sent!",
+                "type" => "success"
+            ));
+        } else {
+            $this->session->set_userdata("alert", array(
+                "title" => "Oops...",
+                "message" => "There is a problem while sending your messsage.",
+                "type" => "error"
+            ));
+        }
+
+        echo json_encode(true);
+    }
+
     public function logout()
     {
         $this->session->unset_userdata("id");

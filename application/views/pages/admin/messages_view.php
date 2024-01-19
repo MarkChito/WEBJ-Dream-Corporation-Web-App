@@ -54,7 +54,7 @@
                                                     <div class="action-buttons">
                                                         <a title="View Message" href="javascript:void(0)" class="view_message"><i class="fas fa-eye text-primary mr-1"></i></a>
                                                         <a title="Reply with Email" href="javascript:void(0)" class="reply_message"><i class="fas fa-reply text-success mr-1"></i></a>
-                                                        <a title="Delete Message" href="javascript:void(0)" class="reply_message"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                        <a title="Delete Message" href="javascript:void(0)" class="delete_message"><i class="fas fa-trash-alt text-danger"></i></a>
                                                     </div>
                                                     <div class="spinner-border spinner-border-sm text-primary table-spinner d-none" role="status"></div>
                                                 </td>
