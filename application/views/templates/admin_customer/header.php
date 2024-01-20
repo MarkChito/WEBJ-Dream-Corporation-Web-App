@@ -57,6 +57,8 @@ if ($current_tab == "customer/my_orders") {
     $menu_open_customer = "menu-open";
     $active_customer = "active";
 }
+
+// Test
 ?>
 
 <!DOCTYPE html>
