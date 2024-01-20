@@ -1396,6 +1396,67 @@
         </div>
     </div>
 
+    <!-- Rate Order Modal -->
+    <div class="modal fade" id="rate_order" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ratingModalLabel">Rate Your Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="actual-form d-none">
+                    <form action="javascript:void(0)" id="rate_order_form">
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img id="rate_order_item_image" src="<?= base_url() ?>dist/images/uploads/1_1.png" alt="Item Image" style="width: 145px; height: 145px;" class="img-thumbnail">
+                                </div>
+                                <div class="col-md-8">
+                                    <h5 id="rate_order_item_name">Item Name</h5>
+                                    <p>Description: <span id="rate_order_item_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span></p>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <span>Please Rate Your Order</span>
+
+                            <div class="rating">
+                                <span class="star" data-rating="1" style="font-size: 50px;" role="button">&#9733;</span>
+                                <span class="star" data-rating="2" style="font-size: 50px;" role="button">&#9733;</span>
+                                <span class="star" data-rating="3" style="font-size: 50px;" role="button">&#9733;</span>
+                                <span class="star" data-rating="4" style="font-size: 50px;" role="button">&#9733;</span>
+                                <span class="star" data-rating="5" style="font-size: 50px;" role="button">&#9733;</span>
+                            </div>
+
+                            <div class="star-interpretation">
+                                Your Rating: <span id="rate_order_rating_text">0 Stars</span>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label for="feedback">Feedback:</label>
+                                <textarea class="form-control" id="rate_order_feedback" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="rate_order_rating" value="0">
+                            <input type="hidden" id="rate_order_id">
+
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="rate_order_submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="loading text-center py-5">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- jQuery -->
     <script src="<?= base_url() ?>plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
@@ -3505,7 +3566,7 @@
                 $("#reply_message").modal("show");
             })
 
-            $("#reply_message_form").submit(function(){
+            $("#reply_message_form").submit(function() {
                 var name = $("#reply_message_name").val();
                 var email = $("#reply_message_email").val();
                 var subject = $("#reply_message_subject").val();
@@ -3521,12 +3582,12 @@
                 $("#reply_message_submit").text("Processing Request...");
 
                 var formData = new FormData();
-                
+
                 formData.append('name', name);
                 formData.append('email', email);
                 formData.append('subject', subject);
                 formData.append('message', message);
-                
+
                 $.ajax({
                     url: base_url + 'server/reply_with_email',
                     data: formData,
@@ -3536,6 +3597,112 @@
                     contentType: false,
                     success: function(response) {
                         location.href = base_url + current_tab;
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $(document).on('click', '.rate_order', function() {
+                var order_id = $(this).attr("order_id");
+                var item_id = $(this).attr("item_id");
+
+                $('.actual-form').addClass("d-none");
+                $('.loading').removeClass("d-none");
+
+                $("#rate_order").modal("show");
+
+                var formData = new FormData();
+
+                formData.append('id', item_id);
+
+                $.ajax({
+                    url: base_url + 'server/get_item_info',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var item_name = response[0].name;
+                        var item_description = response[0].description;
+                        var item_image = response[0].image;
+
+                        $('.star').removeClass('checked');
+                        $('.star[data-rating="0"]').addClass('checked');
+                        $('#rate_order_rating').val('0');
+                        $('#rate_order_rating_text').text('0 Stars');
+                        $('#rate_order_feedback').val('');
+                        $('#rate_order_id').val(order_id);
+
+                        $('#rate_order_item_name').text(item_name);
+                        $('#rate_order_item_description').text(item_description);
+                        $('#rate_order_item_image').attr("src", base_url + "dist/images/uploads/" + item_image);
+
+                        $('.actual-form').removeClass("d-none");
+                        $('.loading').addClass("d-none");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $('.star').on('click', function() {
+                var rating = $(this).data('rating');
+
+                $('#rate_order_rating').val(rating);
+                $('.star').removeClass('checked');
+                $(this).prevAll('.star').addBack().addClass('checked');
+
+                $('#rate_order_rating_text').text(rating + ' Stars');
+            })
+
+            $("#rate_order_form").submit(function() {
+                var order_id = $("#rate_order_id").val();
+                var rating = $("#rate_order_rating").val();
+                var feedback = $("#rate_order_feedback").val();
+
+                $('#rate_order_submit').attr("disabled", true);
+                $('#rate_order_submit').text("Processing Request...");
+
+                var formData = new FormData();
+
+                formData.append('order_id', order_id);
+                formData.append('rating', rating);
+                formData.append('feedback', feedback);
+
+                $.ajax({
+                    url: base_url + 'server/rate_order',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + current_tab + "?category=to_rate";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $("#btn_completed").click(function(){
+                var formData = new FormData();
+                
+                formData.append('user_id', user_id);
+                
+                $.ajax({
+                    url: base_url + 'server/update_unread_rated_orders',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        location.href = base_url + "customer/my_orders?category=completed";
                     },
                     error: function(xhr, status, error) {
                         console.error(error);

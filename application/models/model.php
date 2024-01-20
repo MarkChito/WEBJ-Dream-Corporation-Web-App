@@ -104,6 +104,38 @@ class model extends CI_Model
         return $query->result();
     }
 
+    public function MOD_GET_CURRENT_ORDERS($customer_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? AND (`status` = 'Cart' OR `status` = 'To Approve' OR `status` = 'To Receive') ORDER BY `id` DESC";
+        $query = $this->db->query($sql, array($customer_id));
+
+        return $query->result();
+    }
+
+    public function MOD_GET_TO_RATE_ORDERS($customer_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? AND `status` = 'To Rate' ORDER BY `id` DESC";
+        $query = $this->db->query($sql, array($customer_id));
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_COMPLETED_ORDERS($customer_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? AND `status` = 'Completed' ORDER BY `id` DESC";
+        $query = $this->db->query($sql, array($customer_id));
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_COMPLETED_UNREAD_ORDERS($customer_id)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? AND `status` = 'Completed' AND `completed_status` = 'unread' ORDER BY `id` DESC";
+        $query = $this->db->query($sql, array($customer_id));
+
+        return $query->result();
+    }
+
     public function MOD_GET_ORDERS($status, $customer_id)
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `status` = ? AND `customer_id` = ? ORDER BY `id` DESC";
@@ -239,7 +271,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_MESSAGES()
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_messages` ORDER BY `id` DESC";
@@ -247,7 +279,7 @@ class model extends CI_Model
 
         return $query->result();
     }
-    
+
     public function MOD_GET_UNREAD_MESSAGES()
     {
         $sql = "SELECT * FROM `tbl_webjdreamcorp_messages` WHERE `status` = 'unread'";
@@ -325,6 +357,13 @@ class model extends CI_Model
         $sql = "INSERT INTO `tbl_webjdreamcorp_sales` (`id`, `transaction_date`, `tracking_id`, `customer_id`, `amount`) VALUES (NULL, ?, ?, ?, ?)";
 
         $this->db->query($sql, array($transaction_date, $tracking_id, $customer_id, $total_amount));
+    }
+    
+    public function MOD_ADD_RATINGS($order_id, $rating, $feedback)
+    {
+        $sql = "INSERT INTO `tbl_webjdreamcorp_ratings` (`id`, `order_id`, `rating`, `feedback`) VALUES (NULL, ?, ?, ?)";
+
+        $this->db->query($sql, array($order_id, $rating, $feedback));
     }
 
     /*============================== UPDATE QUERIES ==============================*/
@@ -404,6 +443,13 @@ class model extends CI_Model
 
         $this->db->query($sql, array($order_id));
     }
+    
+    public function MOD_UPDATE_SINGLE_ORDER_STATUS_COMPLETED($transaction_date, $order_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `transaction_date` = '" . $transaction_date . "', `status` = 'Completed', `completed_status` = 'unread' WHERE `id` = ?";
+
+        $this->db->query($sql, array($order_id));
+    }
 
     public function MOD_UPDATE_ORDER_STATUS_AND_TRACKING_ID($transaction_date, $tracking_id, $status, $order_ids)
     {
@@ -418,12 +464,19 @@ class model extends CI_Model
 
         $this->db->query($sql, array($status, $tracking_id));
     }
-    
+
     public function MOD_UPDATE_MESSAGE_STATUS($id)
     {
         $sql = "UPDATE `tbl_webjdreamcorp_messages` SET `status` = 'read' WHERE `id` = ? ";
 
         $this->db->query($sql, array($id));
+    }
+    
+    public function MOD_UPDATE_UNREAD_RATED_ORDERS($customer_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `completed_status` = 'read' WHERE `completed_status` = 'unread' AND `customer_id` = ?";
+
+        $this->db->query($sql, array($customer_id));
     }
 
     /*============================== DELETE QUERIES ==============================*/
@@ -454,7 +507,7 @@ class model extends CI_Model
 
         $this->db->query($sql, array($id));
     }
-    
+
     public function MOD_DELETE_MESSAGE($id)
     {
         $sql = "DELETE FROM `tbl_webjdreamcorp_messages` WHERE `id` = ?";

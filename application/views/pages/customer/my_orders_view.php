@@ -1,10 +1,29 @@
+<?php
+$category = $this->input->get("category");
+
+if ($category == "current") {
+    $category = "Current";
+
+    $my_orders = $this->model->MOD_GET_CURRENT_ORDERS($this->session->userdata("id"));
+} else if ($category == "to_rate") {
+    $category = "To Rate";
+
+    $my_orders = $this->model->MOD_GET_TO_RATE_ORDERS($this->session->userdata("id"));
+} else if ($category == "completed") {
+    $category = "Completed";
+
+    $my_orders = $this->model->MOD_GET_COMPLETED_ORDERS($this->session->userdata("id"));
+}
+
+?>
+
 <div class="content-wrapper">
     <!-- Header -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-8">
-                    <h1 class="m-0">My Orders</h1>
+                    <h1 class="m-0">My Orders <?= $category ? "- " . ucfirst($category) : null ?></h1>
                 </div>
                 <div class="col-sm-4">
                     <ol class="breadcrumb float-sm-right">
@@ -27,7 +46,9 @@
                                 <table class="table table-hover datatable">
                                     <thead>
                                         <tr>
-                                            <th class="text-center"><input type="checkbox" id="checkAll"></th>
+                                            <?php if ($category != "To Rate" && $category != "Completed") : ?>
+                                                <th class="text-center"><input type="checkbox" id="checkAll"></th>
+                                            <?php endif ?>
                                             <th>Order ID</th>
                                             <th>Tracking ID</th>
                                             <th>Transaction Date</th>
@@ -35,22 +56,24 @@
                                             <th class="text-center">Quantity</th>
                                             <th class="text-center">Amount</th>
                                             <th class="text-center">Status</th>
-                                            <th class="text-center">Action</th>
+                                            <?php if ($category != "Completed") : ?>
+                                                <th class="text-center">Action</th>
+                                            <?php endif ?>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $my_orders = $this->model->MOD_GET_MY_ORDERS($this->session->userdata("id")) ?>
-
                                         <?php if ($my_orders) : ?>
                                             <?php foreach ($my_orders as $my_order) : ?>
                                                 <tr>
-                                                    <td class="text-center">
-                                                        <?php if ($my_order->status == "Cart") : ?>
-                                                            <input type="checkbox" class="selected_item" data-order_id="<?= $my_order->id ?>">
-                                                        <?php else : ?>
-                                                            <input type="checkbox" checked disabled>
-                                                        <?php endif ?>
-                                                    </td>
+                                                    <?php if ($category != "To Rate" && $category != "Completed") : ?>
+                                                        <td class="text-center">
+                                                            <?php if ($my_order->status == "Cart") : ?>
+                                                                <input type="checkbox" class="selected_item" data-order_id="<?= $my_order->id ?>">
+                                                            <?php else : ?>
+                                                                <input type="checkbox" checked disabled>
+                                                            <?php endif ?>
+                                                        </td>
+                                                    <?php endif ?>
                                                     <td><a class="order_details" href="javascript:void(0)" data-toggle="modal" data-target="#view_order" order_id="<?= $my_order->id ?>">OR<?= str_pad($my_order->id, 5, '0', STR_PAD_LEFT); ?></a></td>
                                                     <td><?= $my_order->tracking_id ? $my_order->tracking_id : "Not Yet Available"  ?></td>
                                                     <td><?= date("F j, Y g:i A", strtotime($my_order->transaction_date)) ?></td>
@@ -81,19 +104,27 @@
                                                     if ($my_order->status == "Rejected") {
                                                         $badge_color = "danger";
                                                     }
+                                                    
+                                                    if ($my_order->status == "Completed") {
+                                                        $badge_color = "secondary";
+                                                    }
                                                     ?>
 
                                                     <td class="text-center"><span class="badge badge-<?= $badge_color ?>"><?= $my_order->status ?></span></td>
-                                                    <td class="text-center">
-                                                        <?php if ($my_order->status == "Cart") : ?>
-                                                            <a title="Edit Order Quantity" href="javascript:void(0)" class="update_order" order_id="<?= $my_order->id ?>"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
-                                                            <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
-                                                        <?php elseif ($my_order->status == "To Approve") : ?>
-                                                            <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
-                                                        <?php else : ?>
-                                                            <i class="fas fa-ellipsis-h text-muted"></i>
-                                                        <?php endif ?>
-                                                    </td>
+                                                    <?php if ($category != "Completed") : ?>
+                                                        <td class="text-center">
+                                                            <?php if ($my_order->status == "Cart") : ?>
+                                                                <a title="Edit Order Quantity" href="javascript:void(0)" class="update_order" order_id="<?= $my_order->id ?>"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
+                                                                <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                            <?php elseif ($my_order->status == "To Approve") : ?>
+                                                                <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
+                                                            <?php elseif ($my_order->status == "To Rate") : ?>
+                                                                <a title="Rate Order" href="javascript:void(0)" class="rate_order" order_id="<?= $my_order->id ?>" item_id="<?= $my_order->item_id ?>"><i class="fas fa-edit text-primary"></i></a>
+                                                            <?php else : ?>
+                                                                <i class="fas fa-ellipsis-h text-muted"></i>
+                                                            <?php endif ?>
+                                                        </td>
+                                                    <?php endif ?>
                                                 </tr>
                                             <?php endforeach ?>
                                         <?php endif ?>

@@ -18,7 +18,7 @@ class my_orders extends CI_Controller
 
             redirect(base_url());
         }
-        
+
         if ($this->session->userdata("user_type") != "customer") {
             $this->session->set_userdata("alert", array(
                 "title" => "Oops...",
@@ -32,6 +32,20 @@ class my_orders extends CI_Controller
 
     public function index()
     {
+        if (!$this->input->get("category")) {
+            redirect(base_url() . "customer/my_orders?category=current");
+        }
+
+        if ($this->input->get("category") != "current" && $this->input->get("category") != "to_rate" && $this->input->get("category") != "completed") {
+            $this->session->set_userdata("alert", array(
+                "title" => "Oops...",
+                "message" => "Invalid my orders category!",
+                "type" => "error"
+            ));
+
+            redirect(base_url() . "customer/my_orders");
+        }
+
         $administrator = $this->model->MOD_GET_ADMINISTRATOR_DATA($this->session->userdata("id"));
 
         if ($administrator) {

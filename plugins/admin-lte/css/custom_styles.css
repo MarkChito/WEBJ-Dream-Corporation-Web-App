@@ -59,3 +59,13 @@
 .message-content {
     padding: 10px;
 }
+
+.rating .star.checked {
+    color: #ffc107;
+}
+
+.star-interpretation {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}

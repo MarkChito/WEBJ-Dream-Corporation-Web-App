@@ -24,6 +24,8 @@ if ($this->session->userdata("user_type") == "admin" && isMobileDevice()) {
 $my_orders = $this->model->MOD_GET_ORDERS("Cart", $this->session->userdata("id"));
 $pending_orders = $this->model->MOD_GET_PENDING_ORDERS();
 $unread_messages = $this->model->MOD_GET_UNREAD_MESSAGES();
+$rate_orders = $this->model->MOD_GET_TO_RATE_ORDERS($this->session->userdata("id"));
+$completed = $this->model->MOD_GET_COMPLETED_UNREAD_ORDERS($this->session->userdata("id"));
 
 $undelivered_items = 0;
 
@@ -37,6 +39,23 @@ if ($deliveries) {
             $undelivered_items++;
         }
     }
+}
+
+$menu_open = null;
+$active = null;
+$current_tab = $this->session->userdata("current_tab");
+
+if ($current_tab == "admin/manage_orders" || $current_tab == "admin/manage_deliveries" || $current_tab == "admin/manage_products" || $current_tab == "admin/manage_categories" || $current_tab == "admin/manage_suppliers") {
+    $menu_open = "menu-open";
+    $active = "active";
+}
+
+$menu_open_customer = null;
+$active_customer = null;
+
+if ($current_tab == "customer/my_orders") {
+    $menu_open_customer = "menu-open";
+    $active_customer = "active";
 }
 ?>
 
@@ -147,52 +166,64 @@ if ($deliveries) {
                             <!-- Dashboard Tab -->
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>admin/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "admin/dashboard" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>Dashboard</p>
                                     <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
-                            <!-- Manage Orders Tab -->
-                            <li class="nav-item">
-                                <a href="<?= base_url() ?>admin/manage_orders" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_orders" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-shopping-cart"></i>
-                                    <p>Manage Orders</p>
-                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $pending_orders ? null : "d-none" ?>" role="status"><?= count($pending_orders) ?></div>
-                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                            <!-- Supply Chain Management -->
+                            <li class="nav-item <?= $menu_open ?>">
+                                <a href="javascript:void(0)" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-sitemap"></i>
+                                    <p>
+                                        Supply Chain
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
                                 </a>
-                            </li>
-                            <!-- Manage Products Tab -->
-                            <li class="nav-item">
-                                <a href="<?= base_url() ?>admin/manage_products" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_products" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-cubes"></i>
-                                    <p>Manage Products</p>
-                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
-                                </a>
-                            </li>
-                            <!-- Manage Categories Tab -->
-                            <li class="nav-item">
-                                <a href="<?= base_url() ?>admin/manage_categories" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_categories" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-folder-open"></i>
-                                    <p>Manage Categories</p>
-                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
-                                </a>
-                            </li>
-                            <!-- Manage Suppliers Tab -->
-                            <li class="nav-item">
-                                <a href="<?= base_url() ?>admin/manage_suppliers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_suppliers" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-truck"></i>
-                                    <p>Manage Suppliers</p>
-                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
-                                </a>
-                            </li>
-                            <!-- Deliveries Tab -->
-                            <li class="nav-item">
-                                <a href="<?= base_url() ?>admin/deliveries" class="nav-link <?= $this->session->userdata("current_tab") == "admin/deliveries" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-shipping-fast"></i>
-                                    <p>Deliveries</p>
-                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
-                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $undelivered_items ? null : "d-none" ?>" role="status"><?= $undelivered_items ?></div>
-                                </a>
+                                <ul class="nav nav-treeview">
+                                    <!-- Manage Orders Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>admin/manage_orders" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_orders" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Orders</p>
+                                            <div class="counter-badge badge badge-pill badge-danger float-right <?= $pending_orders ? null : "d-none" ?>" role="status"><?= count($pending_orders) ?></div>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                    <!-- Manage Deliveries Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>admin/manage_deliveries" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_deliveries" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Deliveries</p>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                            <div class="counter-badge badge badge-pill badge-danger float-right <?= $undelivered_items ? null : "d-none" ?>" role="status"><?= $undelivered_items ?></div>
+                                        </a>
+                                    </li>
+                                    <!-- Manage Products Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>admin/manage_products" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_products" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Products</p>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                    <!-- Manage Categories Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>admin/manage_categories" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_categories" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Categories</p>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                    <!-- Manage Suppliers Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>admin/manage_suppliers" class="nav-link <?= $this->session->userdata("current_tab") == "admin/manage_suppliers" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Suppliers</p>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <!-- Messages Tab -->
                             <li class="nav-item">
@@ -231,27 +262,57 @@ if ($deliveries) {
                             <!-- Dashboard Tab -->
                             <li class="nav-item">
                                 <a href="<?= base_url() ?>customer/dashboard" class="nav-link <?= $this->session->userdata("current_tab") == "customer/dashboard" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-chart-bar"></i>
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>Dashboard</p>
                                     <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
                             <!-- Shopping Tab -->
                             <li class="nav-item">
-                                <a href="<?= base_url() ?>" class="nav-link <?= $this->session->userdata("current_tab") == "" ? "active" : null ?>">
+                                <a href="<?= base_url() ?>products" class="nav-link <?= $this->session->userdata("current_tab") == "" ? "active" : null ?>">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>Shopping</p>
                                     <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
-                            <!-- My Orders Tab -->
-                            <li class="nav-item">
-                                <a href="<?= base_url() ?>customer/my_orders" class="nav-link <?= $this->session->userdata("current_tab") == "customer/my_orders" ? "active" : null ?>">
-                                    <i class="nav-icon fas fa-list-alt"></i>
-                                    <p>My Orders</p>
-                                    <div class="counter-badge badge badge-pill badge-danger float-right <?= $my_orders ? null : "d-none" ?>"><?= count($my_orders) ?></div>
-                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                            <!-- My Orders -->
+                            <li class="nav-item <?= $menu_open_customer ?>">
+                                <a href="javascript:void(0)" class="nav-link <?= $active_customer ?>">
+                                    <i class="nav-icon fas fa-sitemap"></i>
+                                    <p>
+                                        My Orders
+                                        <i class="right fas fa-angle-left"></i>
+                                    </p>
                                 </a>
+                                <ul class="nav nav-treeview">
+                                    <!-- My Orders (Current) Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>customer/my_orders?category=current" class="nav-link <?= $this->session->userdata("current_tab") == "customer/my_orders" && $this->input->get("category") == "current" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Current</p>
+                                            <div class="counter-badge badge badge-pill badge-danger float-right <?= $my_orders ? null : "d-none" ?>"><?= count($my_orders) ?></div>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                    <!-- My Orders (Completed) Tab -->
+                                    <li class="nav-item">
+                                        <a href="<?= base_url() ?>customer/my_orders?category=to_rate" class="nav-link <?= $this->session->userdata("current_tab") == "customer/my_orders" && $this->input->get("category") == "to_rate" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>To Rate</p>
+                                            <div class="counter-badge badge badge-pill badge-danger float-right <?= $rate_orders ? null : "d-none" ?>"><?= count($rate_orders) ?></div>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                    <!-- My Orders (Completed) Tab -->
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0)" id="btn_completed" class="nav-link <?= $this->session->userdata("current_tab") == "customer/my_orders" && $this->input->get("category") == "completed" ? "active" : null ?>">
+                                            <i class="nav-icon far fa-circle"></i>
+                                            <p>Completed</p>
+                                            <div class="counter-badge badge badge-pill badge-danger float-right <?= $completed ? null : "d-none" ?>"><?= count($completed) ?></div>
+                                            <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                             <!-- Track My Order Tab -->
                             <li class="nav-item">

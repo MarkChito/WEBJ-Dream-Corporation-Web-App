@@ -883,6 +883,34 @@ class server extends CI_Controller
         echo json_encode(true);
     }
 
+    public function rate_order()
+    {
+        $transaction_date = date("Y-m-d H:i");
+        $order_id = $this->input->post("order_id");
+        $rating = $this->input->post("rating");
+        $feedback = $this->input->post("feedback");
+
+        $this->model->MOD_UPDATE_SINGLE_ORDER_STATUS_COMPLETED($transaction_date, $order_id);
+        $this->model->MOD_ADD_RATINGS($order_id, $rating, $feedback);
+
+        $this->session->set_userdata("alert", array(
+            "title" => "Success",
+            "message" => "Thank you for your feedback!",
+            "type" => "success"
+        ));
+
+        echo json_encode(true);
+    }
+    
+    public function update_unread_rated_orders()
+    {
+        $customer_id = $this->input->post("user_id");
+        
+        $this->model->MOD_UPDATE_UNREAD_RATED_ORDERS($customer_id);
+
+        echo json_encode(true);
+    }
+
     public function logout()
     {
         $this->session->unset_userdata("id");
