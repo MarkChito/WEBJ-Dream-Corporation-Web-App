@@ -1436,7 +1436,7 @@
                             </div>
 
                             <div class="form-group mt-3">
-                                <label for="feedback">Feedback:</label>
+                                <label for="rate_order_feedback">Feedback:</label>
                                 <textarea class="form-control" id="rate_order_feedback" rows="3" required></textarea>
                             </div>
                         </div>
@@ -1507,7 +1507,15 @@
             var current_tab = "<?= $this->session->userdata("current_tab") ?>";
             var base_url = "<?= base_url() ?>";
             var user_id = "<?= $this->session->userdata("id") ?>";
-            var order_id_to_be_placed = null;
+            var order_id_to_be_placed = "";
+            var currentDate = new Date();
+            var currentMonth = currentDate.getMonth() + 1;
+            var currentYear = currentDate.getFullYear();
+            var monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            var currentMonthName = monthNames[currentMonth - 1];
 
             const zipCodes = {
                 "Baao": "4432",
@@ -1552,12 +1560,29 @@
             login_alert(login_message);
             sweetalert(alert);
 
+            if (current_tab == "admin/dashboard") {
+                populate_chart(currentMonth.toString(), currentYear.toString());
+            }
+
             $(".datatable").DataTable({
                 "responsive": true,
                 "lengthChange": true,
                 "bPaginate": true,
                 "bLengthChange": true,
                 "bFilter": true,
+                "bInfo": false,
+                "bAutoWidth": false,
+                "targets": 'no-sort',
+                "bSort": false,
+                "order": []
+            })
+
+            $(".datatable_sales").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "bPaginate": false,
+                "bLengthChange": true,
+                "bFilter": false,
                 "bInfo": false,
                 "bAutoWidth": false,
                 "targets": 'no-sort',
@@ -2605,7 +2630,7 @@
                     $("#btn_place_order").addClass("d-none");
                     $("#btn_approve_reject").addClass("d-none");
                 }
-            });
+            })
 
             $(document).on('click', '.update_order', function() {
                 var order_id = $(this).attr("order_id");
@@ -3043,12 +3068,12 @@
                                     var first_name = response_2[0].first_name;
                                     var middle_name = response_2[0].middle_name;
                                     var last_name = response_2[0].last_name;
-                                    var middle_initial = middle_name ? middle_name[0] + ". " : null;
+                                    var middle_initial = middle_name ? middle_name[0] + ". " : "";
                                     var name = first_name + " " + middle_initial + last_name;
                                     var mobile_number = response_2[0].mobile_number;
                                     var email = response_2[0].email;
-                                    var house_number = response_2[0].house_number ? response_2[0].house_number + ", " : null;
-                                    var subdivision_zone_purok = response_2[0].subdivision_zone_purok ? response_2[0].subdivision_zone_purok + ", " : null;
+                                    var house_number = response_2[0].house_number ? response_2[0].house_number + ", " : "";
+                                    var subdivision_zone_purok = response_2[0].subdivision_zone_purok ? response_2[0].subdivision_zone_purok + ", " : "";
                                     var city = response_2[0].city;
                                     var province = response_2[0].province;
                                     var country = response_2[0].country;
@@ -3162,12 +3187,12 @@
                                 var first_name = response_2[0].first_name;
                                 var middle_name = response_2[0].middle_name;
                                 var last_name = response_2[0].last_name;
-                                var middle_initial = middle_name ? middle_name[0] + ". " : null;
+                                var middle_initial = middle_name ? middle_name[0] + ". " : "";
                                 var name = first_name + " " + middle_initial + last_name;
                                 var mobile_number = response_2[0].mobile_number;
                                 var email = response_2[0].email;
-                                var house_number = response_2[0].house_number ? response_2[0].house_number + ", " : null;
-                                var subdivision_zone_purok = response_2[0].subdivision_zone_purok ? response_2[0].subdivision_zone_purok + ", " : null;
+                                var house_number = response_2[0].house_number ? response_2[0].house_number + ", " : "";
+                                var subdivision_zone_purok = response_2[0].subdivision_zone_purok ? response_2[0].subdivision_zone_purok + ", " : "";
                                 var city = response_2[0].city;
                                 var province = response_2[0].province;
                                 var country = response_2[0].country;
@@ -3182,7 +3207,7 @@
                                 $("#set_delivery_status_delivery_status").text(delivery_status);
 
                                 $("#set_delivery_status_set_tracking_id").val(tracking_id);
-                                $("#set_delivery_status_set_status").val(delivery_status != "Not Yet Available" ? delivery_status : null);
+                                $("#set_delivery_status_set_status").val(delivery_status != "Not Yet Available" ? delivery_status : "");
 
                                 $(".actual-form").removeClass("d-none");
                                 $(".loading").addClass("d-none");
@@ -3689,11 +3714,11 @@
                 });
             })
 
-            $("#btn_completed").click(function(){
+            $("#btn_completed").click(function() {
                 var formData = new FormData();
-                
+
                 formData.append('user_id', user_id);
-                
+
                 $.ajax({
                     url: base_url + 'server/update_unread_rated_orders',
                     data: formData,
@@ -3710,6 +3735,287 @@
                 });
             })
 
+            $("#from_date").change(function() {
+                var from_date = $("#from_date").val();
+                var to_date = $("#to_date").val();
+
+                $("#from_date").removeClass("is-invalid");
+
+                if (from_date <= to_date) {
+                    $("#to_date").removeClass("is-invalid");
+                }
+            })
+
+            $("#to_date").change(function() {
+                var from_date = $("#from_date").val();
+                var to_date = $("#to_date").val();
+
+                $("#from_date").removeClass("is-invalid");
+
+                if (from_date <= to_date) {
+                    $("#to_date").removeClass("is-invalid");
+                }
+            })
+
+            $("#btn_filter_date").click(function() {
+                var from_date = $("#from_date").val();
+                var to_date = $("#to_date").val();
+                var sales_body = $("#sales_body");
+
+                var content = "";
+                var errors = 0;
+                var total_sales = 0;
+
+                if (to_date) {
+                    to_date = new Date(to_date);
+                    to_date.setDate(to_date.getDate() + 1);
+                    to_date = to_date.toISOString().split('T')[0];
+                }
+
+                if (from_date > to_date) {
+                    $("#from_date").addClass("is-invalid");
+                    $("#to_date").addClass("is-invalid");
+
+                    errors++;
+                }
+
+                if (from_date && !to_date) {
+                    $("#to_date").addClass("is-invalid");
+
+                    errors++;
+                }
+
+                if (!from_date && to_date) {
+                    $("#from_date").addClass("is-invalid");
+
+                    errors++;
+                }
+
+                if (errors == 0 && from_date && to_date) {
+                    content = `
+                        <tr class="odd">
+                            <td colspan="4" class="dataTables_empty">
+                                <div class="loading text-center py-5">
+                                    <img src="` + base_url + `dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                                    <h5 class="text-muted">Please Wait...</h5>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+
+                    $("#btn_filter_date").attr("disabled", true);
+                    $("#btn_filter_date").text("Processing Request...");
+
+                    var formData = new FormData();
+
+                    formData.append('from_date', from_date);
+                    formData.append('to_date', to_date);
+
+                    $.ajax({
+                        url: base_url + 'server/get_filtered_sales',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(responses) {
+                            var total_sales = 0;
+
+                            content = "";
+
+                            if (responses) {
+                                var ajaxRequests = [];
+
+                                $.each(responses, function(_, response) {
+                                    var total_amount = 0;
+
+                                    var innerFormData = new FormData();
+
+                                    innerFormData.append('id', response.customer_id);
+
+                                    var innerAjaxRequest = $.ajax({
+                                        url: base_url + 'server/get_userdata',
+                                        data: innerFormData,
+                                        type: 'POST',
+                                        dataType: 'JSON',
+                                        processData: false,
+                                        contentType: false,
+                                        success: function(response_2) {
+                                            total_amount = parseFloat(response.total_amount) + (parseFloat(response.total_amount) * 0.12);
+
+                                            content += `
+                                                <tr>
+                                                    <td>
+                                                        <a href="javascript:void(0)" class="view_delivery_order" is_view_only="true" tracking_id="` + response.tracking_id + `">` + response.tracking_id + `</a>
+                                                    </td>
+                                                    <td>` + formatDate(response.transaction_date) + `</td>
+                                                    <td>` + response_2[0].name + `</td>
+                                                    <td>₱` + formatNumberWithCommas(total_amount.toFixed(2)) + `</td>
+                                                </tr>
+                                            `;
+
+                                            total_sales += parseFloat(response.total_amount);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error(error);
+                                        }
+                                    });
+
+                                    ajaxRequests.push(innerAjaxRequest);
+                                });
+
+                                $.when.apply($, ajaxRequests).done(function() {
+                                    total_sales = total_sales + (total_sales * 0.12);
+
+                                    content += `
+                                        <tr class="table-primary">
+                                            <td></td>
+                                            <td></td>
+                                            <td><strong>Total Sales</strong></td>
+                                            <td><strong>₱` + formatNumberWithCommas(total_sales.toFixed(2)) + `</strong></td>
+                                        </tr>
+                                    `;
+
+                                    $("#btn_filter_date").removeAttr("disabled");
+                                    $("#btn_filter_date").text("Filter");
+
+                                    sales_body.html(content);
+                                });
+                            } else {
+                                $("#btn_filter_date").removeAttr("disabled");
+                                $("#btn_filter_date").text("Filter");
+
+                                content = `
+                                    <tr class="odd">
+                                        <td valign="top" colspan="4" class="dataTables_empty">No data available in table</td>
+                                    </tr>
+                                `;
+
+                                sales_body.html(content);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+
+                }
+            })
+
+            $("#btn_filter_date_chart").click(function(){
+                var date_input = $("#date_input").val();
+                const dateObject = new Date(date_input + "-01");
+                const month = dateObject.getMonth() + 1;
+                const year = dateObject.getFullYear();
+
+                $("#btn_filter_date_chart").attr("disabled", true);
+                $("#btn_filter_date_chart").text("Processing...");
+
+                $(".actual-form").addClass("d-none");
+                $(".loading").addClass("d-flex");
+                $(".loading").removeClass("d-none");
+
+                populate_chart(month, year);
+            })
+
+            function populate_chart(input_month, input_year) {
+                var formData = new FormData();
+
+                formData.append('month', input_month);
+                formData.append('year', input_year);
+
+                $.ajax({
+                    url: base_url + 'server/get_sales_data',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(responses) {
+                        var total_sales = 0;
+
+                        $.each(responses, function(_, response){
+                            total_sales += parseFloat(response.total_sales);
+                        })
+
+                        total_sales = total_sales + (total_sales * 0.12);
+
+                        $("#btn_filter_date_chart").removeAttr("disabled");
+                        $("#btn_filter_date_chart").text("Filter");
+
+                        $(".actual-form").removeClass("d-none");
+                        $(".loading").addClass("d-none");
+                        $(".loading").removeClass("d-flex");
+
+                        $("#total_sales").text(total_sales.toFixed(2));
+
+                        createChart(responses, input_month, input_year);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            }
+
+            function createChart(data, input_month, input_year) {
+                var display_month = monthNames[input_month - 1];
+                var display_year = input_year.toString();
+
+                var taxedData = data.map(item => {
+                    return {
+                        day_of_month: item.day_of_month,
+                        total_sales: (parseFloat(item.total_sales) * 1.12).toFixed(2)
+                    };
+                });
+
+                var salesData = {
+                    labels: taxedData.map(item => formatDate_2(item.day_of_month)),
+                    datasets: [{
+                        label: 'Daily Sales',
+                        borderColor: 'rgb(75, 192, 192)',
+                        data: taxedData.map(item => parseFloat(item.total_sales))
+                    }]
+                };
+
+                var ctx = document.getElementById('salesChart').getContext('2d');
+
+                var salesChart = new Chart(ctx, {
+                    type: 'line',
+                    data: salesData,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        title: {
+                            display: true,
+                            text: 'Sales for the Month of ' + display_month + " " + display_year
+                        },
+                        scales: {
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Days'
+                                }
+                            }],
+                            yAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Sales (₱)'
+                                },
+                                ticks: {
+                                    callback: function(value, index, values) {
+                                        return '₱' + value.toFixed(2);
+                                    }
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+            function formatNumberWithCommas(number) {
+                return parseFloat(number).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
             function getCheckedOrderIds() {
                 const checkedOrderIds = $('.selected_item:checked').map(function() {
                     return $(this).data('order_id');
@@ -3720,16 +4026,18 @@
 
             function addZeros(str) {
                 const zerosToAdd = 5 - str.length;
+                
                 if (zerosToAdd > 0) {
                     const zeros = '0'.repeat(zerosToAdd);
                     return zeros + str;
                 }
+
                 return str;
             }
 
             function verify_password(password, confirm_password, password_error_label) {
                 var error = 0;
-                var error_message = null;
+                var error_message = "";
 
                 if (password.val() || confirm_password.val()) {
                     if (!/[A-Z]/.test(password.val())) {
@@ -3783,7 +4091,7 @@
             }
 
             function verify_mobile_number(mobile_number, mobile_number_error_label) {
-                var error_message = null;
+                var error_message = "";
 
                 error = 0;
 
@@ -3862,6 +4170,14 @@
                 const formattedDate = `${month} ${day}, ${year} ${hours}:${minutes} ${meridiem}`;
 
                 return formattedDate;
+            }
+
+            function formatDate_2(dateString) {
+                var date = new Date(dateString);
+                return date.toLocaleDateString('en-US', {
+                    month: 'numeric',
+                    day: 'numeric'
+                });
             }
         })
     </script>

@@ -258,6 +258,14 @@ if ($current_tab == "customer/my_orders") {
                                     <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
                                 </a>
                             </li>
+                            <!-- Rated Items Tab -->
+                            <li class="nav-item">
+                                <a href="<?= base_url() ?>admin/rated_items" class="nav-link <?= $this->session->userdata("current_tab") == "admin/rated_items" ? "active" : null ?>">
+                                    <i class="nav-icon fas fa-star"></i>
+                                    <p>Rated Items</p>
+                                    <div class="spinner-border spinner-border-sm text-primary float-right d-none tab_spinner" role="status"></div>
+                                </a>
+                            </li>
                         <?php else : ?>
                             <!-- Dashboard Tab -->
                             <li class="nav-item">

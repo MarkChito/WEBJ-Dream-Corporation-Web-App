@@ -60,9 +60,9 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-danger">
                         <div class="inner">
-                            <h3>₱<?= number_format($this->model->MOD_GET_TOTAL_SALES()[0]->total_sales, 2) ?></h3>
+                            <h3>₱<?= number_format($this->model->MOD_GET_TOTAL_SALES()[0]->total_sales + ($this->model->MOD_GET_TOTAL_SALES()[0]->total_sales * 0.12), 2) ?></h3>
 
-                            <p>Total Sales</p>
+                            <p>Overall Sales</p>
                         </div>
                         <div class="icon">
                             <i class="fas fa-chart-line"></i>
@@ -71,19 +71,55 @@
                     </div>
                 </div>
             </div>
+            <!-- Sales Chart -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-6 d-flex align-items-center">
+                                    Total Sales: ₱<strong id="total_sales">0.00</strong>
+                                </div>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-lg-3 d-flex align-items-center justify-content-end">
+                                            <strong>Select Date:</strong>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <input type="month" class="form-control" id="date_input">
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <button class="btn btn-primary btn-block" id="btn_filter_date_chart">Filter</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="actual-form d-none">
+                                <canvas id="salesChart" style="height: 300px;"></canvas>
+                            </div>
+                            <div class="loading d-flex align-items-center justify-content-center" style="height: 300px;">
+                                <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                                <h5 class="text-muted">Please Wait...</h5>
+                            </div>
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="sales">View All Sales</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <!-- Latest Orders -->
                 <div class="col-lg-7 col-12">
                     <div class="card">
-                        <div class="card-header border-transparent">
+                        <div class="card-header">
                             <h3 class="card-title">Latest Orders</h3>
 
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
@@ -134,9 +170,6 @@
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>

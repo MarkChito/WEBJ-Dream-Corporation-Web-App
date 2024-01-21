@@ -901,14 +901,38 @@ class server extends CI_Controller
 
         echo json_encode(true);
     }
-    
+
     public function update_unread_rated_orders()
     {
         $customer_id = $this->input->post("user_id");
-        
+
         $this->model->MOD_UPDATE_UNREAD_RATED_ORDERS($customer_id);
 
         echo json_encode(true);
+    }
+
+    public function get_filtered_sales()
+    {
+        $from_date = $this->input->post("from_date");
+        $to_date = $this->input->post("to_date");
+
+        $filtered_sales = $this->model->MOD_GET_FILTERED_SALES($from_date, $to_date);
+
+        if ($filtered_sales) {
+            echo json_encode($filtered_sales);
+        } else {
+            echo json_encode(false);
+        }
+    }
+
+    public function get_sales_data()
+    {
+        $month = $this->input->post("month");
+        $year = $this->input->post("year");
+
+        $sales_data = $this->model->MOD_GET_SALES_DATA($month, $year);
+
+        echo json_encode($sales_data);
     }
 
     public function logout()

@@ -282,8 +282,36 @@ class model extends CI_Model
 
     public function MOD_GET_UNREAD_MESSAGES()
     {
-        $sql = "SELECT * FROM `tbl_webjdreamcorp_messages` WHERE `status` = 'unread'";
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_messages` WHERE `status` = 'unread' ORDER BY `id` DESC";
         $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_RATED_ITEMS()
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_ratings` ORDER BY `id` DESC";
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_FILTERED_SALES($from_date, $to_date)
+    {
+        $sql = "SELECT `tracking_id`, `customer_id`, `transaction_date`, SUM(`amount`) AS `total_amount` FROM `tbl_webjdreamcorp_sales` WHERE `transaction_date` BETWEEN ? AND ? GROUP BY `tracking_id`, `customer_id`, `transaction_date` ORDER BY MAX(`id`) DESC";
+        $query = $this->db->query($sql, array($from_date, $to_date));
+
+        return $query->result();
+    }
+    
+    public function MOD_GET_SALES_DATA($currentMonth, $currentYear)
+    {
+        $sql = "SELECT DATE_FORMAT(transaction_date, '%Y-%m-%d') AS day_of_month, SUM(amount) AS total_sales
+        FROM tbl_webjdreamcorp_sales
+        WHERE MONTH(transaction_date) = ? AND YEAR(transaction_date) = ?
+        GROUP BY day_of_month
+        ORDER BY day_of_month";
+        $query = $this->db->query($sql, array($currentMonth, $currentYear));
 
         return $query->result();
     }

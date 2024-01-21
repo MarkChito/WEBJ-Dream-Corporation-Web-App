@@ -75,7 +75,7 @@
                         <div class="icon">
                             <i class="fas fa-star"></i>
                         </div>
-                        <a href="my_orders" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="my_orders?category=to_rate" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -89,9 +89,6 @@
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
@@ -144,6 +141,10 @@
                                                     
                                                     if ($my_order->status == "Rejected") {
                                                         $badge_color = "danger";
+                                                    }
+                                                    
+                                                    if ($my_order->status == "Completed") {
+                                                        $badge_color = "secondary";
                                                     }
                                                     ?>
 
