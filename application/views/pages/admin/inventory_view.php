@@ -30,13 +30,13 @@
                                         <th class="d-none">ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
-                                        <th>Price</th>
+                                        <th>Unit Price</th>
                                         <th>Cost Price</th>
                                         <th>Quantity</th>
                                         <th class="d-none">Category ID</th>
                                         <th class="d-none">Supplier ID</th>
                                         <th class="d-none">Image</th>
-                                        <th class="text-center">Actions</th>
+                                        <th class="text-center">Product Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -30,9 +30,9 @@
                                         <th class="d-none">ID</th>
                                         <th>Name</th>
                                         <th>Description</th>
-                                        <th>Price</th>
                                         <th>Cost Price</th>
                                         <th>Quantity</th>
+                                        <th>Unit Price</th>
                                         <th class="d-none">Category ID</th>
                                         <th class="d-none">Supplier ID</th>
                                         <th class="d-none">Image</th>
@@ -47,9 +47,9 @@
                                                 <td class="d-none id"><?= $product->id ?></td>
                                                 <td class="name"><?= $product->name ?></td>
                                                 <td class="description"><?= $product->description ?></td>
-                                                <td class="price">₱<?= $product->price ?></td>
                                                 <td class="cost_price">₱<?= $product->cost_price ?></td>
                                                 <td class="quantity"><?= $product->quantity ?></td>
+                                                <td class="price">₱<?= $product->price ?></td>
                                                 <td class="d-none category_id"><?= $product->category_id ?></td>
                                                 <td class="d-none supplier_id"><?= $product->supplier_id ?></td>
                                                 <td class="d-none image"><?= $product->image ?></td>

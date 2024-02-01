@@ -535,7 +535,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="new_product_price" class="form-label">Price <span class="text-danger">*</span></label>
+                                    <label for="new_product_price" class="form-label">Unit Price <span class="text-danger">*</span></label>
                                     <input type="number" step="any" id="new_product_price" class="form-control" required>
                                 </div>
                             </div>
@@ -634,7 +634,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="update_product_price" class="form-label">Price <span class="text-danger">*</span></label>
+                                    <label for="update_product_price" class="form-label">Unit Price <span class="text-danger">*</span></label>
                                     <input type="number" step="any" id="update_product_price" class="form-control" required>
                                 </div>
                             </div>
@@ -1304,7 +1304,7 @@
                                     <div class="card-body">
                                         <p><strong>Product Name:</strong> <span id="view_product_name">Product Name</span></p>
                                         <p><strong>Description:</strong> <span id="view_product_description">Product Description</span></p>
-                                        <p><strong>Price:</strong> <span id="view_product_price">0.00</span></p>
+                                        <p><strong>Unit Price:</strong> <span id="view_product_price">0.00</span></p>
                                         <p><strong>Cost Price:</strong> <span id="view_product_cost_price">0.00</span></p>
                                         <p><strong>Category:</strong> <span id="view_product_category">Product Category</span></p>
                                         <p><strong>Supplier:</strong> <span id="view_product_supplier">Product Supplier</span></p>
