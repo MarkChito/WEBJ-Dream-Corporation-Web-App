@@ -69,7 +69,7 @@
                                                 <div class="col-sm-9">
                                                     <div class="row">
                                                         <div class="col-sm-7">
-                                                            <div class="row">
+                                                            <!-- <div class="row">
                                                                 <div class="col-sm-3">
                                                                     <button type="button" class="btn btn-default" id="btn_subtract_item">
                                                                         &minus;
@@ -83,6 +83,19 @@
                                                                         &plus;
                                                                     </button>
                                                                 </div>
+                                                            </div> -->
+                                                            <div class="input-group">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button" id="btn_subtract_item">
+                                                                        <span style="font-weight: bold;">&minus;</span>
+                                                                    </button>
+                                                                </span>
+                                                                <input type="text" class="form-control text-center" id="add_to_cart_quantity" value="1">
+                                                                <span class="input-group-btn">
+                                                                    <button class="btn btn-default" type="button" id="btn_add_item">
+                                                                        <span style="font-weight: bold;">&plus;</span>
+                                                                    </button>
+                                                                </span>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-5"></div>

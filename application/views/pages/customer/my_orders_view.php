@@ -81,20 +81,26 @@ if ($category == "current") {
 
                                                     <td><?= $product[0]->name ?></td>
                                                     <td class="text-center">
-                                                        <div class="row">
-                                                            <div class="col-3">
-                                                                <button type="button" class="btn btn-default btn_subtract_item" order_id="<?= $my_order->id ?>">&minus;</button>
-                                                            </div>
-                                                            <div class="col-6">
+                                                        <?php if ($my_order->status == "Cart") : ?>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <button class="btn btn-default btn_subtract_item" order_id="<?= $my_order->id ?>" type="button">
+                                                                        <span style="font-weight: bold;">&minus;</span>
+                                                                    </button>
+                                                                </div>
                                                                 <input type="text" class="form-control text-center quantity" value="<?= $my_order->quantity ?>">
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-default btn_add_item" order_id="<?= $my_order->id ?>" type="button">
+                                                                        <span style="font-weight: bold;">&plus;</span>
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-3">
-                                                                <button type="button" class="btn btn-default btn_add_item" order_id="<?= $my_order->id ?>">&plus;</button>
+                                                            <div class="loading_2 d-none">
+                                                                <div class="spinner-border spinner-border-sm text-primary"></div>
                                                             </div>
-                                                        </div>
-                                                        <div class="loading_2 d-none">
-                                                            <div class="spinner-border spinner-border-sm text-primary"></div>
-                                                        </div>
+                                                        <?php else : ?>
+                                                            <?= $my_order->quantity ?>
+                                                        <?php endif ?>
                                                     </td>
                                                     <td class="text-center total_amount">₱<span class="total_amount_2"><?= $my_order->total_amount ?></span></td>
                                                     <?php

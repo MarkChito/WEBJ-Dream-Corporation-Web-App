@@ -1592,8 +1592,8 @@
 
             $(".btn_subtract_item").click(function() {
                 var order_id = $(this).attr("order_id");
-                var parent_row = $(this).parent("div.col-3").parent("div.row");
-                var quantity = parseInt(parent_row.children("div.col-6").children("input.quantity").val());
+                var parent_row = $(this).parent("div.input-group-prepend").parent("div.input-group");
+                var quantity = parseInt(parent_row.children("input.quantity").val());
                 var display_price = parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text();
                 var original_price = parseFloat(parseFloat(display_price) / parseFloat(quantity)).toFixed(2);
 
@@ -1619,7 +1619,7 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            parent_row.children("div.col-6").children("input.quantity").val(quantity);
+                            parent_row.children("input.quantity").val(quantity);
                             parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text(total_amount);
 
                             parent_row.parent("td.text-center").children("div.loading_2").addClass("d-none");
@@ -1646,8 +1646,8 @@
 
             $(".btn_add_item").click(function() {
                 var order_id = $(this).attr("order_id");
-                var parent_row = $(this).parent("div.col-3").parent("div.row");
-                var quantity = parseInt(parent_row.children("div.col-6").children("input.quantity").val());
+                var parent_row = $(this).parent("div.input-group-append").parent("div.input-group");
+                var quantity = parseInt(parent_row.children("input.quantity").val());
                 var display_price = parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text();
                 var original_price = parseFloat(parseFloat(display_price) / parseFloat(quantity)).toFixed(2);
 
@@ -1673,7 +1673,7 @@
                         processData: false,
                         contentType: false,
                         success: function(response) {
-                            parent_row.children("div.col-6").children("input.quantity").val(quantity);
+                            parent_row.children("input.quantity").val(quantity);
                             parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text(total_amount);
 
                             parent_row.parent("td.text-center").children("div.loading_2").addClass("d-none");

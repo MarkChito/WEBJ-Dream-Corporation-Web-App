@@ -61,8 +61,9 @@ if ($my_orders) {
         <div class="text-center">
             <p class="font-weight-bold mb-0">WEBJ Dream Corporation</p>
             <p class="mb-0">National Highway, Balagbag, Milaor, Camarines Sur</p>
-            <p class="mb-0"><?= strtoupper($name) ?> - Customer</p>
-            <p><?= $contact_number ?></p>
+            <p class="mb-0"><?= strtoupper($name) ?> - Prop.</p>
+            <p class="mb-0">Vat. Reg. TIN 489-429-430-000</p>
+            <p>Tel. No. (054) 473-53-85</p>
         </div>
         <div class="card">
             <div class="card-body">

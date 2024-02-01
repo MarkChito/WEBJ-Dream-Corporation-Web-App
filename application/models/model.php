@@ -234,7 +234,7 @@ class model extends CI_Model
 
     public function MOD_GET_DELIVERIES()
     {
-        $sql = "SELECT DISTINCT `tracking_id`, `customer_id` FROM `tbl_webjdreamcorp_orders` WHERE `status` != 'Cart' AND `status` != 'To Approve' AND `status` != 'Rejected' AND `status` != 'Delivered'";
+        $sql = "SELECT DISTINCT `tracking_id`, `customer_id` FROM `tbl_webjdreamcorp_orders` WHERE `status` != 'Cart' AND `status` != 'To Approve' AND `status` != 'Rejected' AND `status` != 'Delivered' ORDER BY `id` DESC";
         $query = $this->db->query($sql);
 
         return $query->result();
