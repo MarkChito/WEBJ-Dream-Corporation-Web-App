@@ -23,7 +23,7 @@ if ($category == "current") {
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-8">
-                    <h1 class="m-0">My Orders <?= $category ? "- " . ucfirst($category) : null ?></h1>
+                    <h1 class="m-0">My Orders <?= $category && ($category != "Current") ? "- " . ucfirst($category) : null ?></h1>
                 </div>
                 <div class="col-sm-4">
                     <ol class="breadcrumb float-sm-right">
@@ -80,8 +80,23 @@ if ($category == "current") {
                                                     <?php $product = $this->model->MOD_GET_PRODUCT($my_order->item_id) ?>
 
                                                     <td><?= $product[0]->name ?></td>
-                                                    <td class="text-center"><?= $my_order->quantity ?></td>
-                                                    <td class="text-center">₱<?= $my_order->total_amount ?></td>
+                                                    <td class="text-center">
+                                                        <div class="row">
+                                                            <div class="col-3">
+                                                                <button type="button" class="btn btn-default btn_subtract_item" order_id="<?= $my_order->id ?>">&minus;</button>
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <input type="text" class="form-control text-center quantity" value="<?= $my_order->quantity ?>">
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <button type="button" class="btn btn-default btn_add_item" order_id="<?= $my_order->id ?>">&plus;</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="loading_2 d-none">
+                                                            <div class="spinner-border spinner-border-sm text-primary"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center total_amount">₱<span class="total_amount_2"><?= $my_order->total_amount ?></span></td>
                                                     <?php
                                                     $badge_color = "";
 
@@ -104,7 +119,7 @@ if ($category == "current") {
                                                     if ($my_order->status == "Rejected") {
                                                         $badge_color = "danger";
                                                     }
-                                                    
+
                                                     if ($my_order->status == "Completed") {
                                                         $badge_color = "secondary";
                                                     }
@@ -114,7 +129,6 @@ if ($category == "current") {
                                                     <?php if ($category != "Completed") : ?>
                                                         <td class="text-center">
                                                             <?php if ($my_order->status == "Cart") : ?>
-                                                                <a title="Edit Order Quantity" href="javascript:void(0)" class="update_order" order_id="<?= $my_order->id ?>"><i class="fas fa-pencil-alt text-success mr-1"></i></a>
                                                                 <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>
                                                             <?php elseif ($my_order->status == "To Approve") : ?>
                                                                 <a title="Cancel Order" href="javascript:void(0)" class="delete_order" order_id="<?= $my_order->id ?>"><i class="fas fa-trash-alt text-danger"></i></a>

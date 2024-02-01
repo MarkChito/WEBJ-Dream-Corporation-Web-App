@@ -103,6 +103,14 @@ class model extends CI_Model
 
         return $query->result();
     }
+    
+    public function MOD_GET_CART_DETAILS($customer_id, $item_id, $status)
+    {
+        $sql = "SELECT * FROM `tbl_webjdreamcorp_orders` WHERE `customer_id` = ? AND `item_id` = ? AND `status` = ?";
+        $query = $this->db->query($sql, array($customer_id, $item_id, $status));
+
+        return $query->result();
+    }
 
     public function MOD_GET_CURRENT_ORDERS($customer_id)
     {
@@ -505,6 +513,13 @@ class model extends CI_Model
         $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `completed_status` = 'read' WHERE `completed_status` = 'unread' AND `customer_id` = ?";
 
         $this->db->query($sql, array($customer_id));
+    }
+    
+    public function MOD_UPDATE_ORDER_QUANTITY($quantity, $total_amount, $order_id)
+    {
+        $sql = "UPDATE `tbl_webjdreamcorp_orders` SET `quantity` = ?, `total_amount` = ? WHERE `id` = ?";
+
+        $this->db->query($sql, array($quantity, $total_amount, $order_id));
     }
 
     /*============================== DELETE QUERIES ==============================*/

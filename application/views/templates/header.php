@@ -75,10 +75,14 @@ function isMobileDevice()
         </div>
         <!-- Search -->
         <div class="w3l_search">
-            <form action="javascript:void(0)" method="post" id="search_form">
-                <input type="text" id="search_query" placeholder="Search a product..." required>
-                <input type="submit" value=" ">
-            </form>
+            <?php if ($this->session->userdata("id")) : ?>
+                <form action="javascript:void(0)" method="post" id="search_form">
+                    <input type="text" id="search_query" placeholder="Search a product..." required>
+                    <input type="submit" value=" ">
+                </form>
+            <?php else : ?>
+                <button class="btn_view_products">View Products</button>
+            <?php endif ?>
         </div>
         <!-- Cart -->
         <div class="product_list_header">
@@ -148,54 +152,56 @@ function isMobileDevice()
     <!-- Banner -->
     <div class="banner">
         <!-- Side Navigation -->
-        <div class="w3l_banner_nav_left">
-            <nav class="navbar nav_bottom">
-                <!-- Mobile Navigation -->
-                <div class="navbar-header nav_2">
-                    <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <!-- Categories -->
-                <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
-                    <ul class="nav navbar-nav nav_1">
-                        <?php $categories = $this->model->MOD_GET_PRODUCT_CATEGORIES() ?>
-                        <?php $limit = 6; ?>
-                        <?php if ($categories) : ?>
-                            <?php $count = 0; ?>
-                            <?php foreach ($categories as $category) : ?>
-                                <?php if ($count < $limit) : ?>
-                                    <li style="background-color: <?= $this->input->get("category") && $this->input->get("category") == $category->id ? "#84C639" : "default" ?>;">
-                                        <a href="products?category=<?= $category->id ?>" style="color: <?= $this->input->get("category") && $this->input->get("category") == $category->id ? "white" : "default" ?>;">
-                                            <?= $category->name ?>
-                                        </a>
+        <?php if ($this->session->userdata("current_tab") != "contact_us" && $this->session->userdata("current_tab") != "register" && $this->session->userdata("current_tab") != "about_us" && $this->session->userdata("current_tab") != "product") : ?>
+            <div class="w3l_banner_nav_left">
+                <nav class="navbar nav_bottom">
+                    <!-- Mobile Navigation -->
+                    <div class="navbar-header nav_2">
+                        <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
+                    <!-- Categories -->
+                    <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                        <ul class="nav navbar-nav nav_1">
+                            <?php $categories = $this->model->MOD_GET_PRODUCT_CATEGORIES() ?>
+                            <?php $limit = 6; ?>
+                            <?php if ($categories) : ?>
+                                <?php $count = 0; ?>
+                                <?php foreach ($categories as $category) : ?>
+                                    <?php if ($count < $limit) : ?>
+                                        <li style="background-color: <?= $this->input->get("category") && $this->input->get("category") == $category->id ? "#84C639" : "default" ?>;">
+                                            <a href="products?category=<?= $category->id ?>" style="color: <?= $this->input->get("category") && $this->input->get("category") == $category->id ? "white" : "default" ?>;">
+                                                <?= $category->name ?>
+                                            </a>
+                                        </li>
+                                    <?php endif ?>
+                                    <?php $count++; ?>
+                                <?php endforeach ?>
+
+                                <?php if (count($categories) > $limit) : ?>
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+                                        <ul class="dropdown-menu">
+                                            <?php foreach ($categories as $category) : ?>
+                                                <li>
+                                                    <a href="products?category=<?= $category->id ?>">
+                                                        <?= $category->name ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach ?>
+                                        </ul>
                                     </li>
                                 <?php endif ?>
-                                <?php $count++; ?>
-                            <?php endforeach ?>
-
-                            <?php if (count($categories) > $limit) : ?>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <?php foreach ($categories as $category) : ?>
-                                            <li>
-                                                <a href="products?category=<?= $category->id ?>">
-                                                    <?= $category->name ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach ?>
-                                    </ul>
-                                </li>
                             <?php endif ?>
-                        <?php endif ?>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        <?php endif ?>
         <?php if ($this->session->userdata("current_tab") == "home") : ?>
             <div class="w3l_banner_nav_right">
                 <div class="w3l_banner_nav_right_banner3" style="background: url(./dist/images/banner-9.jpg);">
@@ -204,9 +210,6 @@ function isMobileDevice()
             </div>
         <?php elseif ($this->session->userdata("current_tab") == "product") : ?>
             <div class="w3l_banner_nav_right">
-                <div class="w3l_banner_nav_right_banner3" style="background: url(./dist/images/banner-9.jpg)">
-                    <h3>Best Deals For New Products<span class="blink_me"></span></h3>
-                </div>
                 <div class="agileinfo_single">
                     <h5><?= $product_name ?></h5>
                     <div class="col-md-4 agileinfo_single_left"><img src="./dist/images/uploads/<?= $product_image ?>" style="width: 320px; height: 320px" class="img-responsive" /></div>
@@ -220,46 +223,11 @@ function isMobileDevice()
                                 <strong>Price:</strong> <span>₱<?= $product_price ?></span>
                             </div>
                             <div class="snipcart-details agileinfo_single_right_details">
-                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product_id ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
+                                <input type="submit" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product_id ?>" product_name="<?= $product_name ?>" product_price="<?= $product_price ?>" product_image="<?= $product_image ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
                             </div>
                         </div>
                     </div>
                     <div class="clearfix"> </div>
-                </div>
-            </div>
-        <?php elseif ($this->session->userdata("current_tab") == "about_us") : ?>
-            <div class="w3l_banner_nav_right">
-                <div class="privacy about">
-                    <h3>About Us</h3>
-                    <p class="animi">WEBJ Corporation originated from the initials of Mr. Lim's three brothers. The company has been in business for nearly 48 years and continues to thrive. They employ three accountants, two encoders, six sales agents, three dispatching officers, and five drivers alongside six helper boys. Their operations cover 13 towns in Camarines Sur and manage 25 stores in Tinambac. The undeniable success of the company lies in its ability to endure, persistently providing goods and services to its loyal customers.</p>
-                    <p class="animi">The process begins with the receipt of orders from suppliers once the products are ready. Agents then receive written orders from customers, transcribing them onto paper. Subsequently, the agents encrypt and print the orders. Upon completion, orders are shipped with the assistance of dispatchers and stockroom assistants. Once the products are loaded onto trucks, the drivers deliver the goods, carefully ensuring they match the respective orders of the grocery owners. The delivery personnel count and verify all customer orders upon arrival. If the order is complete and in good condition, the customer acknowledges receipt by signing. In the event of any concerns regarding the products, the customer notes them on both the original and duplicate receipt papers. If necessary, goods are returned, and the customer calculates the total amount owed, deducting the value of the returned items. Subsequently, the drivers and delivery personnel return to the company, transferring the collected payments to the accountants.</p>
-                    <p class="animi">At the company, the accountants reconcile all delivered stock to customers and manage returns. This cyclical process repeats continually. To optimize this system, a proposed approach aims to streamline the company's ordering, delivery, and customer interactions. The final step involves collecting new orders from customers after a week</p>
-                    <div class="agile_about_grids">
-                        <div class="col-md-6 agile_about_grid_right">
-                            <img src="./dist/images/31.jpg" alt=" " class="img-responsive" />
-                        </div>
-                        <div class="col-md-6 agile_about_grid_left">
-                            <h2>Our Goals</h2>
-                            <ol>
-                                <li>
-                                    <p class="animi"><strong>Customer Excellence:</strong> To prioritize customer satisfaction by consistently delivering high-quality products and services that meet and exceed their needs.</p>
-                                </li>
-                                <li>
-                                    <p class="animi"><strong>Innovation and Adaptability:</strong> Continuously innovate and adapt to emerging trends and technologies, staying ahead in an ever-evolving market.</p>
-                                </li>
-                                <li>
-                                    <p class="animi"><strong>Integrity and Ethics:</strong> Uphold the highest ethical standards in all aspects of our operations, fostering trust and transparency in our relationships with customers, suppliers, and stakeholders.</p>
-                                </li>
-                                <li>
-                                    <p class="animi"><strong>Sustainable Practices:</strong> Commit to environmentally conscious practices, reducing our ecological footprint, and contributing positively to the communities we serve.</p>
-                                </li>
-                                <li>
-                                    <p class="animi"><strong>Employee Empowerment:</strong> Cultivate an inclusive and empowering work culture that encourages creativity, collaboration, and professional growth among our team members.</p>
-                                </li>
-                            </ol>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
                 </div>
             </div>
         <?php elseif ($this->session->userdata("current_tab") == "faqs") : ?>
@@ -489,210 +457,14 @@ function isMobileDevice()
                     </div>
                 </div>
             </div>
-        <?php elseif ($this->session->userdata("current_tab") == "contact_us") : ?>
-            <div class="w3l_banner_nav_right">
-                <div class="mail">
-                    <h3>Contact Us</h3>
-                    <div class="agileinfo_mail_grids">
-                        <div class="col-md-5 agileinfo_mail_grid_left">
-                            <ul>
-                                <li><i class="fa fa-home" aria-hidden="true"></i></li>
-                                <li>address<span>Milaor, Camarines Sur</span></li>
-                            </ul>
-                            <ul>
-                                <li><i class="fa fa-envelope" aria-hidden="true"></i></li>
-                                <li>email<span><a href="mailto:webjdreamcorp@gmail.com">webjdreamcorp@gmail.com</a></span></li>
-                            </ul>
-                            <ul>
-                                <li><i class="fa fa-phone" aria-hidden="true"></i></li>
-                                <li>call to us<span>(+63) 912 345 6789</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-7 agileinfo_mail_grid_right_2">
-                            <div class="container">
-                                <div class="row">
-                                    <form action="javascript:void(0)" id="contact_us_form">
-                                        <div class="col-lg-6">
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-lg-6 mb-sm-3">
-                                                        <input type="text" id="contact_us_name" class="form-control" placeholder="Name" required>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="email" id="contact_us_email" class="form-control" placeholder="Email" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="row">
-                                                    <div class="col-lg-6 mb-sm-3">
-                                                        <input type="text" id="contact_us_mobile_number" class="form-control is-invalid" placeholder="Mobile Number" required>
-                                                        <small class="hidden" style="color: red;" id="error_contact_us_mobile_number">Invalid Mobile Number</small>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <input type="text" id="contact_us_subject" class="form-control" placeholder="Subject" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <textarea id="contact_us_message" class="form-control" placeholder="Message" rows="4" required></textarea>
-                                            </div>
-                                            <div class="form-group pull-right">
-                                                <input type="reset" id="contact_us_clear" class="btn btn-default" value="Clear">
-                                                <input type="submit" id="contact_us_submit" class="btn btn-primary" value="Submit">
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"> </div>
-                    </div>
-                </div>
-            </div>
-        <?php elseif ($this->session->userdata("current_tab") == "register") : ?>
-            <div class="w3l_banner_nav_right">
-                <div class="w3_login">
-                    <h3>Create an Account</h3>
-                    <br>
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <form action="javascript:void(0)" id="register_form">
-                                <div class="text-center">
-                                    <img id="register_image_display" class="img-circle img-bordered" width="200" height="200" src="./dist/images/uploads/default_user_image.png">
-
-                                    <button type="button" class="btn btn-success" id="register_upload_button" style="width: 100%; margin-top: 10px; display:block;">Upload Image</button>
-                                    <input type="file" id="register_image" style="display: none;">
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_first_name">First Name: <span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" id="register_first_name" required>
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_middle_name">Middle Name:</label>
-                                        <input type="text" class="form-control" id="register_middle_name">
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_last_name">Last Name: <span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" id="register_last_name" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="register_mobile_number">Mobile Number: <span style="color: red;">*</span></label>
-                                        <input type="number" class="form-control" id="register_mobile_number" required>
-                                        <small class="hidden" style="color: red;" id="error_register_mobile_number"></small>
-                                    </div>
-                                    <div class="form-group col-lg-6 col-12">
-                                        <label for="register_email">Email: <span style="color: red;">*</span></label>
-                                        <input type="email" class="form-control" id="register_email" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_house_number">House Number:</label>
-                                        <input type="number" class="form-control" id="register_house_number">
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_subdivision_zone_purok">Subdivision/Zone/Purok:</label>
-                                        <input type="text" class="form-control" id="register_subdivision_zone_purok">
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_city">City/Municipality: <span style="color: red;">*</span></label>
-                                        <select class="form-control" id="register_city" required>
-                                            <option value="" selected disabled>Choose...</option>
-                                            <option value="Baao">Baao</option>
-                                            <option value="Balatan">Balatan</option>
-                                            <option value="Bato">Bato</option>
-                                            <option value="Bombon">Bombon</option>
-                                            <option value="Buhi">Buhi</option>
-                                            <option value="Bula">Bula</option>
-                                            <option value="Cabusao">Cabusao</option>
-                                            <option value="Calabanga">Calabanga</option>
-                                            <option value="Camaligan">Camaligan</option>
-                                            <option value="Canaman">Canaman</option>
-                                            <option value="Caramoan">Caramoan</option>
-                                            <option value="Del Gallego">Del Gallego</option>
-                                            <option value="Gainza">Gainza</option>
-                                            <option value="Garchitorena">Garchitorena</option>
-                                            <option value="Goa">Goa</option>
-                                            <option value="Iriga City">Iriga City</option>
-                                            <option value="Lagonoy">Lagonoy</option>
-                                            <option value="Libmanan">Libmanan</option>
-                                            <option value="Lupi">Lupi</option>
-                                            <option value="Magarao">Magarao</option>
-                                            <option value="Milaor">Milaor</option>
-                                            <option value="Minalabac">Minalabac</option>
-                                            <option value="Nabua">Nabua</option>
-                                            <option value="Naga City">Naga City</option>
-                                            <option value="Ocampo">Ocampo</option>
-                                            <option value="Pamplona">Pamplona</option>
-                                            <option value="Pasacao">Pasacao</option>
-                                            <option value="Pili">Pili</option>
-                                            <option value="Presentacion">Presentacion</option>
-                                            <option value="Ragay">Ragay</option>
-                                            <option value="Sagnay">Sagnay</option>
-                                            <option value="San Fernando">San Fernando</option>
-                                            <option value="San Jose">San Jose</option>
-                                            <option value="Sipocot">Sipocot</option>
-                                            <option value="Siruma">Siruma</option>
-                                            <option value="Tigaon">Tigaon</option>
-                                            <option value="Tinambac">Tinambac</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_province">Province: <span style="color: red;">*</span></label>
-                                        <select class="form-control" id="register_province" required disabled>
-                                            <option value="" selected disabled>Choose...</option>
-                                            <option value="Camarines Sur">Camarines Sur</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_country">Country: <span style="color: red;">*</span></label>
-                                        <select class="form-control" id="register_country" required disabled>
-                                            <option value="" selected disabled>Choose...</option>
-                                            <option value="Philippines">Philippines</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_zip_code">Zip Code: <span style="color: red;">*</span></label>
-                                        <input type="number" class="form-control" id="register_zip_code" readonly required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_username">Username: <span style="color: red;">*</span></label>
-                                        <input type="text" class="form-control" id="register_username" required>
-                                        <small class="hidden" style="color: red;" id="error_register_username"></small>
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_password">Password: <span style="color: red;">*</span></label>
-                                        <input type="password" class="form-control" id="register_password" required>
-                                        <small class="hidden" style="color: red;" id="error_register_password"></small>
-                                    </div>
-                                    <div class="form-group col-lg-4 col-12">
-                                        <label for="register_confirm_password">Confirm Password: <span style="color: red;">*</span></label>
-                                        <input type="password" class="form-control" id="register_confirm_password" required>
-                                    </div>
-                                </div>
-
-                                <input type="submit" class="btn btn-primary" id="register_submit" value="Register" style="width: 49%;">
-                                <input type="reset" class="btn btn-danger" id="register_clear" value="Clear" style="width: 49%; float: right;">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         <?php else : ?>
-            <div class="w3l_banner_nav_right">
-                <div class="w3l_banner_nav_right_banner3" style="background: url(./dist/images/banner-9.jpg)">
-                    <h3>Best Deals For New Products<span class="blink_me"></span></h3>
+            <?php if ($this->session->userdata("current_tab") != "contact_us" && $this->session->userdata("current_tab") != "register" && $this->session->userdata("current_tab") != "about_us" && $this->session->userdata("current_tab") != "product") : ?>
+                <div class="w3l_banner_nav_right">
+                    <div class="w3l_banner_nav_right_banner3" style="background: url(./dist/images/banner-9.jpg)">
+                        <h3>Best Deals For New Products<span class="blink_me"></span></h3>
+                    </div>
                 </div>
-            </div>
+            <?php endif ?>
         <?php endif ?>
         <div class="clearfix"></div>
     </div>

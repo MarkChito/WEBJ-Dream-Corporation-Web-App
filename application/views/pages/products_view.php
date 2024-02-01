@@ -21,14 +21,14 @@
                                                 <figure>
                                                     <div class="snipcart-item block">
                                                         <div class="snipcart-thumb">
-                                                            <a href="product?category=<?= $category->id ?>&item_id=<?= $product->id ?>" title="View Product Details">
+                                                            <a href="product?category=<?= $category->id ?>&item_id=<?= $product->id ?>" title="<?= $product->name ?>">
                                                                 <img src="./dist/images/uploads/<?= $product->image ?>" style="width: 140px; height: 140px;" />
                                                             </a>
                                                             <p class="text-truncate"><?= $product->name ?></p>
                                                             <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                                         </div>
                                                         <div class="snipcart-details top_brand_home_details">
-                                                            <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
+                                                            <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" product_name="<?= $product->name ?>" product_price="<?= $product->price ?>" product_image="<?= $product->image ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
                                                         </div>
                                                     </div>
                                                 </figure>
@@ -58,14 +58,14 @@
                                         <figure>
                                             <div class="snipcart-item block">
                                                 <div class="snipcart-thumb">
-                                                    <a href="product?category=<?= $category_id ?>&item_id=<?= $product->id ?>" title="View Product Details">
+                                                    <a href="product?category=<?= $category_id ?>&item_id=<?= $product->id ?>" title="<?= $product->name ?>">
                                                         <img src="./dist/images/uploads/<?= $product->image ?>" style="width: 140px; height: 140px;" />
                                                     </a>
                                                     <p class="text-truncate"><?= $product->name ?></p>
                                                     <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                                 </div>
                                                 <div class="snipcart-details top_brand_home_details">
-                                                    <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
+                                                    <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" product_name="<?= $product->name ?>" product_price="<?= $product->price ?>" product_image="<?= $product->image ?>" login_location="<?= $this->session->userdata("current_tab") ?>" />
                                                 </div>
                                             </div>
                                         </figure>

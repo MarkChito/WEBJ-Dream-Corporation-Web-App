@@ -17,6 +17,7 @@ class register extends CI_Controller
         $this->session->set_userdata("title", " - " . "Create an Account");
 
         $this->load->view('templates/header.php');
+        $this->load->view('pages/register_view.php');
         $this->load->view('templates/footer.php');
     }
 }

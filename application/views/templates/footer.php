@@ -23,26 +23,89 @@
         </div>
     </div>
 
-    <!-- Added to Cart Modal -->
-    <div class="modal fade" id="added_to_cart" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
-        <div class="modal-dialog" role="document">
+    <!-- Add to Cart Modal -->
+    <div class="modal fade" id="add_to_cart" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel">
+        <div class="modal-dialog modal-dialog-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="loginModalLabel">
-                        Success!
-                    </h4>
+                    <h4 class="modal-title" id="loginModalLabel">Add to Cart</h4>
                 </div>
-                <div class="modal-body">
-                    <div style="height: 50px;">
-                        <h3 style="margin-top: 25px;" class="text-center text-success">
-                            <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
-                            Your item has been Added to Cart
-                        </h3>
-                    </div>
+                <div class="actual-form hidden">
+                    <form action="javascript:void(0)" id="add_to_cart_form">
+                        <div class="modal-body">
+                            <div class="row text-center" style="margin-bottom: 1rem;">
+                                <div class="col-sm-12">
+                                    <img id="add_to_cart_image" src="<?php base_url() ?>dist/images/uploads/default_item_image.png" alt="Item Image" class="img-thumbnail" style="width: 250px; height: 250px;">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="card" style="border: 1px solid #ddd;">
+                                        <div class="card-header">
+                                            <h3>Product Details</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="row" style="margin-bottom: 1rem;">
+                                                <div class="col-sm-3">
+                                                    <strong>Name:</strong>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <span id="add_to_cart_name">Sample Product Name</span>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-bottom: 1rem;">
+                                                <div class="col-sm-3">
+                                                    <strong>Price:</strong>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    ₱<span id="add_to_cart_price">0.00</span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <strong>Quantity:</strong>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <div class="row">
+                                                        <div class="col-sm-7">
+                                                            <div class="row">
+                                                                <div class="col-sm-3">
+                                                                    <button type="button" class="btn btn-default" id="btn_subtract_item">
+                                                                        &minus;
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <input type="text" class="form-control text-center" id="add_to_cart_quantity" value="1">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <button type="button" class="btn btn-default" id="btn_add_item">
+                                                                        &plus;
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-5"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" id="add_to_cart_product_id">
+                            <input type="hidden" id="add_to_cart_customer_id">
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-danger" id="add_to_cart_submit">Add to Cart</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <div class="loading text-center" style="padding-top: 5rem; padding-bottom: 5rem;">
+                    <img src="<?= base_url() ?>dist/images/loading.gif" alt="loading_gif" class="mb-3">
+                    <h5 class="text-muted">Please Wait...</h5>
                 </div>
             </div>
         </div>
@@ -171,6 +234,7 @@
             var current_tab = "<?= $this->session->userdata("current_tab") ?>";
             var search_query = "<?= $this->session->userdata("search_query") ?>";
             var base_url = "<?= base_url() ?>";
+            var currentUrl = window.location.href;
 
             const zipCodes = {
                 "Baao": "4432",
@@ -219,6 +283,38 @@
             if (id) {
                 get_cart_count(id);
             }
+
+            $("#btn_add_item").click(function() {
+                var quantity = $("#add_to_cart_quantity").val();
+                var price = $("#add_to_cart_price").text();
+                var original_price = parseFloat(parseFloat(price) / parseFloat(quantity)).toFixed(2);
+
+                quantity = parseInt(quantity) + 1;
+                price = parseFloat(parseInt(quantity) * parseFloat(original_price)).toFixed(2);
+
+                $("#add_to_cart_price").text(price);
+                $("#add_to_cart_quantity").val(quantity);
+                $("#add_to_cart_quantity").focus();
+            })
+
+            $("#btn_subtract_item").click(function() {
+                var quantity = $("#add_to_cart_quantity").val();
+                var price = $("#add_to_cart_price").text();
+                var original_price = parseFloat(parseFloat(price) / parseFloat(quantity)).toFixed(2);
+
+                if (quantity > 1) {
+                    quantity = parseInt(quantity) - 1;
+                    price = parseFloat(parseInt(quantity) * parseFloat(original_price)).toFixed(2);
+                }
+
+                $("#add_to_cart_price").text(price);
+                $("#add_to_cart_quantity").val(quantity);
+                $("#add_to_cart_quantity").focus();
+            })
+
+            $(".btn_view_products").click(function() {
+                location.href = base_url + "products";
+            })
 
             $(".login_or_register").click(function() {
                 var login_location = $(this).attr("login_location");
@@ -472,7 +568,11 @@
                         contentType: false,
                         success: function(response) {
                             if (response) {
-                                location.href = base_url + current_tab;
+                                if (response == "OK") {
+                                    location.href = base_url + "customer/dashboard";
+                                } else {
+                                    location.href = base_url + current_tab;
+                                }
                             } else {
                                 $("#error_register_username").removeClass("hidden");
                                 $("#error_register_username").html("Username is already taken");
@@ -500,7 +600,7 @@
             $("#register_mobile_number").keypress(function() {
                 $("#error_register_mobile_number").addClass("hidden");
             })
-            
+
             $("#contact_us_mobile_number").keypress(function() {
                 $("#error_contact_us_mobile_number").addClass("hidden");
             })
@@ -537,17 +637,67 @@
                 location.href = base_url + "customer/my_orders";
             })
 
+            $("#add_to_cart_quantity").keydown(function(event) {
+                event.preventDefault();
+            })
+
             $(".add_to_cart").click(function() {
                 var customer_id = id;
                 var product_id = $(this).attr("product_id");
+                var product_name = $(this).attr("product_name");
+                var product_price = $(this).attr("product_price");
+                var product_image = $(this).attr("product_image");
 
-                $(this).val("Processing...");
-                $(".add_to_cart").attr("disabled", true);
+                $("#add_to_cart").modal("show");
 
                 var formData = new FormData();
 
-                formData.append('customer_id', id);
+                formData.append('customer_id', customer_id);
+                formData.append('item_id', product_id);
+
+                $.ajax({
+                    url: 'server/get_cart_details',
+                    data: formData,
+                    type: 'POST',
+                    dataType: 'JSON',
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        var quantity = response ? response[0].quantity : 1;
+
+                        $("#add_to_cart_quantity").val(quantity);
+
+                        $("#add_to_cart_image").attr("src", base_url + "dist/images/uploads/" + product_image);
+
+                        $("#add_to_cart_customer_id").val(customer_id);
+                        $("#add_to_cart_product_id").val(product_id);
+                        $("#add_to_cart_name").text(product_name);
+                        $("#add_to_cart_price").text(parseFloat(parseFloat(product_price) * parseFloat(quantity)).toFixed(2));
+
+                        $(".actual-form").removeClass("hidden");
+                        $(".loading").addClass("hidden");
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            })
+
+            $("#add_to_cart_form").submit(function() {
+                var customer_id = $("#add_to_cart_customer_id").val();
+                var product_id = $("#add_to_cart_product_id").val();
+                var quantity = $("#add_to_cart_quantity").val();
+                var total_amount = $("#add_to_cart_price").text();
+
+                $("#add_to_cart_submit").text("Processing...");
+                $("#add_to_cart_submit").attr("disabled", true);
+
+                var formData = new FormData();
+
+                formData.append('customer_id', customer_id);
                 formData.append('product_id', product_id);
+                formData.append('quantity', quantity);
+                formData.append('total_amount', total_amount);
 
                 $.ajax({
                     url: 'server/add_to_cart',
@@ -557,12 +707,7 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        get_cart_count(customer_id);
-
-                        $(".add_to_cart").val("Add to Cart");
-                        $(".add_to_cart").removeAttr("disabled");
-
-                        $("#added_to_cart").modal().show();
+                        location.href = currentUrl;
                     },
                     error: function(xhr, status, error) {
                         console.error(error);

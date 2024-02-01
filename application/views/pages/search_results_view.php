@@ -21,7 +21,7 @@
                                                 <strong>Price:</strong> <span>₱<?= $product->price ?></span>
                                             </div>
                                             <div class="snipcart-details top_brand_home_details">
-                                                <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" login_location="search_result"/>
+                                                <input type="button" value="Add to cart" class="button <?= $this->session->userdata("id") ? "add_to_cart" : "login_or_register" ?>" product_id="<?= $product->id ?>" product_name="<?= $product->name ?>" product_price="<?= $product->price ?>" product_image="<?= $product->image ?>" login_location="search_result"/>
                                             </div>
                                         </div>
                                     </figure>

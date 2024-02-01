@@ -1,3 +1,41 @@
+<!-- Testimonials -->
+<div class="testimonials">
+    <div class="container">
+        <h3>About Us</h3>
+        <div class="w3_testimonials_grids">
+            <p class="animi">WEBJ Corporation originated from the initials of Mr. Lim's three brothers. The company has been in business for nearly 48 years and continues to thrive. They employ three accountants, two encoders, six sales agents, three dispatching officers, and five drivers alongside six helper boys. Their operations cover 13 towns in Camarines Sur and manage 25 stores in Tinambac. The undeniable success of the company lies in its ability to endure, persistently providing goods and services to its loyal customers.</p>
+            <p class="animi">The process begins with the receipt of orders from suppliers once the products are ready. Agents then receive written orders from customers, transcribing them onto paper. Subsequently, the agents encrypt and print the orders. Upon completion, orders are shipped with the assistance of dispatchers and stockroom assistants. Once the products are loaded onto trucks, the drivers deliver the goods, carefully ensuring they match the respective orders of the grocery owners. The delivery personnel count and verify all customer orders upon arrival. If the order is complete and in good condition, the customer acknowledges receipt by signing. In the event of any concerns regarding the products, the customer notes them on both the original and duplicate receipt papers. If necessary, goods are returned, and the customer calculates the total amount owed, deducting the value of the returned items. Subsequently, the drivers and delivery personnel return to the company, transferring the collected payments to the accountants.</p>
+            <p class="animi">At the company, the accountants reconcile all delivered stock to customers and manage returns. This cyclical process repeats continually. To optimize this system, a proposed approach aims to streamline the company's ordering, delivery, and customer interactions. The final step involves collecting new orders from customers after a week</p>
+            <div class="agile_about_grids">
+                <div class="col-md-6 agile_about_grid_right">
+                    <img src="./dist/images/31.jpg" alt=" " class="img-responsive" />
+                </div>
+                <div class="col-md-6 agile_about_grid_left">
+                    <h2>Our Goals</h2>
+                    <ol>
+                        <li>
+                            <p class="animi"><strong>Customer Excellence:</strong> To prioritize customer satisfaction by consistently delivering high-quality products and services that meet and exceed their needs.</p>
+                        </li>
+                        <li>
+                            <p class="animi"><strong>Innovation and Adaptability:</strong> Continuously innovate and adapt to emerging trends and technologies, staying ahead in an ever-evolving market.</p>
+                        </li>
+                        <li>
+                            <p class="animi"><strong>Integrity and Ethics:</strong> Uphold the highest ethical standards in all aspects of our operations, fostering trust and transparency in our relationships with customers, suppliers, and stakeholders.</p>
+                        </li>
+                        <li>
+                            <p class="animi"><strong>Sustainable Practices:</strong> Commit to environmentally conscious practices, reducing our ecological footprint, and contributing positively to the communities we serve.</p>
+                        </li>
+                        <li>
+                            <p class="animi"><strong>Employee Empowerment:</strong> Cultivate an inclusive and empowering work culture that encourages creativity, collaboration, and professional growth among our team members.</p>
+                        </li>
+                    </ol>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Team -->
 <div class="team">
     <div class="container">

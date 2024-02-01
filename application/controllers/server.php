@@ -198,23 +198,25 @@ class server extends CI_Controller
 
                 $useraccount = $this->model->MOD_CHECK_USERNAME($username);
                 $useraccount_id = $useraccount[0]->id;
+                $db_name = $useraccount[0]->name;
 
                 $this->model->MOD_ADD_CUSTOMER($useraccount_id, $currentDate, $first_name, $middle_name, $last_name, $email, $mobile_number, $house_number, $subdivision_zone_purok, $city, $province, $country, $zip_code);
 
-                $this->session->set_userdata("alert", array(
-                    "title" => "Success",
-                    "message" => "Account is successfully registered!",
-                    "type" => "success"
-                ));
+                $this->session->set_userdata("id", $useraccount_id);
+                $this->session->set_userdata("user_type", "customer");
+
+                $this->session->set_userdata("login_message", "Welcome, " . $db_name . "!");
+
+                echo json_encode("OK");
             } else {
                 $this->session->set_userdata("alert", array(
                     "title" => "Oops...",
                     "message" => "There is an error while processing your request!",
                     "type" => "error"
                 ));
-            }
 
-            echo json_encode(true);
+                echo json_encode("error");
+            }
         }
     }
 
@@ -478,6 +480,17 @@ class server extends CI_Controller
         echo json_encode($customer_data);
     }
 
+    public function update_order_quantity()
+    {
+        $order_id = $this->input->post("order_id");
+        $quantity = $this->input->post("quantity");
+        $total_amount = $this->input->post("total_amount");
+
+        $this->model->MOD_UPDATE_ORDER_QUANTITY($quantity, $total_amount, $order_id);
+
+        echo json_encode(true);
+    }
+
     public function update_customer()
     {
         $useraccount_id = $this->input->post("useraccount_id");
@@ -540,22 +553,28 @@ class server extends CI_Controller
         $transaction_date = date("Y-m-d H:i");
         $customer_id = $this->input->post("customer_id");
         $item_id = $this->input->post("product_id");
-        $quantity = "1";
+        $quantity = $this->input->post("quantity");
+        $total_amount = $this->input->post("total_amount");
         $status = "Cart";
-
-        $product = $this->model->MOD_GET_PRODUCT($item_id);
-
-        $total_amount = $product[0]->price;
 
         $order_exists = $this->model->MOD_CHECK_ORDER($customer_id, $item_id, $status);
 
         if ($order_exists) {
-            $quantity = floatval($quantity) + floatval($order_exists[0]->quantity);
-            $total_amount = floatval($total_amount) + floatval($order_exists[0]->total_amount);
-
             $this->model->MOD_UPDATE_CART($transaction_date, $quantity, $total_amount, $customer_id, $item_id, $status);
+
+            $this->session->set_userdata("alert", array(
+                "title" => "Success",
+                "message" => "Order quantity has been updated!",
+                "type" => "success"
+            ));
         } else {
             $this->model->MOD_ADD_TO_CART($transaction_date, $customer_id, $item_id, $quantity, $total_amount, $status);
+
+            $this->session->set_userdata("alert", array(
+                "title" => "Success",
+                "message" => "An item has been added to your cart!",
+                "type" => "success"
+            ));
         }
 
         echo json_encode(true);
@@ -568,6 +587,21 @@ class server extends CI_Controller
         $order_details = $this->model->MOD_GET_ORDER_DETAILS($id);
 
         echo json_encode($order_details);
+    }
+
+    public function get_cart_details()
+    {
+        $customer_id = $this->input->post("customer_id");
+        $item_id = $this->input->post("item_id");
+        $status = "Cart";
+
+        $cart_details = $this->model->MOD_GET_CART_DETAILS($customer_id, $item_id, $status);
+
+        if ($cart_details) {
+            echo json_encode($cart_details);
+        } else {
+            echo json_encode(false);
+        }
     }
 
     public function get_item_info()

@@ -1590,6 +1590,118 @@
                 "order": []
             })
 
+            $(".btn_subtract_item").click(function() {
+                var order_id = $(this).attr("order_id");
+                var parent_row = $(this).parent("div.col-3").parent("div.row");
+                var quantity = parseInt(parent_row.children("div.col-6").children("input.quantity").val());
+                var display_price = parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text();
+                var original_price = parseFloat(parseFloat(display_price) / parseFloat(quantity)).toFixed(2);
+
+                if (quantity > 1) {
+                    quantity -= 1;
+
+                    var total_amount = parseFloat(parseFloat(original_price) * parseInt(quantity)).toFixed(2);
+
+                    parent_row.addClass("d-none");
+                    parent_row.parent("td.text-center").children("div.loading").removeClass("d-none");
+
+                    var formData = new FormData();
+
+                    formData.append('order_id', order_id);
+                    formData.append('quantity', quantity);
+                    formData.append('total_amount', total_amount);
+
+                    $.ajax({
+                        url: base_url + 'server/update_order_quantity',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            parent_row.children("div.col-6").children("input.quantity").val(quantity);
+                            parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text(total_amount);
+
+                            parent_row.parent("td.text-center").children("div.loading_2").addClass("d-none");
+                            parent_row.removeClass("d-none");
+
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Order quantity has been updated!'
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            })
+
+            $(".btn_add_item").click(function() {
+                var order_id = $(this).attr("order_id");
+                var parent_row = $(this).parent("div.col-3").parent("div.row");
+                var quantity = parseInt(parent_row.children("div.col-6").children("input.quantity").val());
+                var display_price = parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text();
+                var original_price = parseFloat(parseFloat(display_price) / parseFloat(quantity)).toFixed(2);
+
+                if (quantity >= 1) {
+                    quantity += 1;
+
+                    var total_amount = parseFloat(parseFloat(original_price) * parseInt(quantity)).toFixed(2);
+
+                    parent_row.addClass("d-none");
+                    parent_row.parent("td.text-center").children("div.loading").removeClass("d-none");
+
+                    var formData = new FormData();
+
+                    formData.append('order_id', order_id);
+                    formData.append('quantity', quantity);
+                    formData.append('total_amount', total_amount);
+
+                    $.ajax({
+                        url: base_url + 'server/update_order_quantity',
+                        data: formData,
+                        type: 'POST',
+                        dataType: 'JSON',
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            parent_row.children("div.col-6").children("input.quantity").val(quantity);
+                            parent_row.parent("td.text-center").parent("tr").children("td.total_amount").children("span.total_amount_2").text(total_amount);
+
+                            parent_row.parent("td.text-center").children("div.loading_2").addClass("d-none");
+                            parent_row.removeClass("d-none");
+
+                            var Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Order quantity has been updated!'
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+            })
+
+            $(".quantity").keydown(function(event) {
+                event.preventDefault();
+            })
+
             $(".nav-link").click(function() {
                 $(this).children(".counter-badge").addClass("d-none");
                 $(this).children(".tab_spinner").removeClass("d-none");
@@ -3902,7 +4014,7 @@
                 }
             })
 
-            $("#btn_filter_date_chart").click(function(){
+            $("#btn_filter_date_chart").click(function() {
                 var date_input = $("#date_input").val();
                 const dateObject = new Date(date_input + "-01");
                 const month = dateObject.getMonth() + 1;
@@ -3934,7 +4046,7 @@
                     success: function(responses) {
                         var total_sales = 0;
 
-                        $.each(responses, function(_, response){
+                        $.each(responses, function(_, response) {
                             total_sales += parseFloat(response.total_sales);
                         })
 
@@ -4026,7 +4138,7 @@
 
             function addZeros(str) {
                 const zerosToAdd = 5 - str.length;
-                
+
                 if (zerosToAdd > 0) {
                     const zeros = '0'.repeat(zerosToAdd);
                     return zeros + str;
